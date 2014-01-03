@@ -26,7 +26,7 @@ class Tag_m extends SB_Model{
 
     }
     //获取所有省份信息
-    public function get_all_provice($num){
+    public function get_all_province(){
         $this->db->select('tag_id, tag_title')->order_by('tag_id','desc')->limit($num);
         $query = $this->db->get('tags');
         if($query->num_rows>0){
