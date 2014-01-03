@@ -28,7 +28,7 @@ class Index_m extends SB_Model{
         }
         if(is_array($res) && !empty($res)){
             foreach($res as $one){
-                $result[$one['provs_id']][] = $one;
+                $result[$one['provs_id']] = $one;
             }
         }
         return $result;
