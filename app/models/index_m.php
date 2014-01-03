@@ -17,7 +17,7 @@ class Index_m extends SB_Model{
         return $query->result_array();
     }
     
-    //获取所有省份信息
+    //获取所有省份信息 
     public function get_all_province(){
         $result = array();
         $this->db->select('provs_id, provs_name')
