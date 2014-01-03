@@ -21,7 +21,7 @@ class Index_m extends SB_Model{
                     $query=$this->db->get();
                     return $query->result_array();
             } else {
-                    return false;
+                   return false;
             }
     }
     //获取所有省份信息
