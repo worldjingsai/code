@@ -1,13 +1,11 @@
-﻿<!DOCTYPE HTML >
+<!DOCTYPE HTML >
 <HEAD >
 <TITLE>环球竞赛网</TITLE>
 <META content="text/html; charset=UTF-8" >
 <META name=keywords content="竞赛,数学建模,高校竞赛,全国竞赛,ACM">
 <META name=description content="环球竞赛网,全国高校竞赛的集中营,出国、保研、就业,各种竞赛等你拿">
 <META name=application-name content="环球竞赛网,为大学生服务">
-
 <link  rel='stylesheet' type='text/css' href='./static/common/css/css.css' >
-
 </HEAD>
 <BODY>
 
@@ -65,43 +63,15 @@
 <DIV class=mnews_left>
 <DIV class="clearfix zoom">
 <div class="area">
-	<dl>
-		<dt>北京</dt>
-			<dd>
-			<a href="gaoxiao.html" class="hot">清华大学</a>
-			<a href="http://lm.madio.net/html/z70/">北京大学</a>
-            <a href="http://lm.madio.net/index.php?m=content&amp;c=index&amp;a=lists&amp;catid=1240">北京邮电大学</a>
-            <a href="http://lm.madio.net/index.php?m=content&amp;c=index&amp;a=lists&amp;catid=2181">中国石油大学</a>
-			</dd>
-    </dl>
-	<dl>
-		<dt>天津</dt>
-		<dd>
-            <a href="http://lm.madio.net/html/z58/">河北工业大学</a>	
-            <a href="http://lm.madio.net/html/z113/">天津工业大学</a>
-            <a href="http://lm.madio.net/html/z120/">天津大学</a>			
-		</dd> 
-    </dl>
-	<dl>
-		<dt>上海</dt>
-		<dd>
-			<a href="http://lm.madio.net/html/z42/">上海交通大学</a>
-		</dd>
-    </dl>
-	<dl>
-		<dt>重庆</dt>
-		<dd>
-		<a href="http://lm.madio.net/html/z19/">重庆邮电大学移通学院</a>
-        <a href="http://lm.madio.net/html/z112/">重庆大学</a>
-		</dd>
-    </dl>
-	<dl>
-			<dt>河北</dt>
-		<dd>
-			<a href="http://lm.madio.net/html/z91/">北华航天工业学院</a>	  			
-		</dd>
-    </dl>
-
+    <%foreach item=value key=key from=$tplData.provincs%>
+        <dl><dt><%$value.provs_name%></dt>
+	<dd>
+        <%foreach item=value2 from=$value.universities%>
+            <a href="unvs/$value2.univs_id" class="hot">$value2.univs_name</a>
+        <%/foreach%>
+        </dd>
+        </dl>
+    <%/foreach>
 </div>
 </DIV><!--12版电影院-->
 </DIV>
