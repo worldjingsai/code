@@ -9,7 +9,7 @@ class Home extends SB_Controller{
         parent::__construct();
         $this->load->library('myclass');
     }
-    
+     
     public function index (){
         $data['date'] = date("m月d日");
         $this->load->model('index_m');
