@@ -3,7 +3,7 @@
  * 首页的Model
  */
 
-class Tag_m extends SB_Model{
+class Index_m extends SB_Model{
     function __construct (){
         parent::__construct();
     }
