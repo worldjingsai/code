@@ -12,7 +12,6 @@ class Home extends SB_Controller{
     public function index (){
         $data['date'] = date("m月d日");
         $this->load->model('index_m');
-        var_dump($this->index_m);
         $data['provices'] = $this->index_m->get_all_province();
         $this->tplData = $data;
         $this->display("index/index.html");
