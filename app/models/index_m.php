@@ -7,7 +7,7 @@ class Index_m extends SB_Model{
     function __construct (){
         parent::__construct();
     }
-    //tag贴子列表
+    //tag贴子列表 
     public function get_tag_forums_list($page,$limit,$tag_title){
             $tag = $this->db->select('tag_id')->where('tag_title',$tag_title)->get('tags')->row_array();
             if($tag){
@@ -23,14 +23,14 @@ class Index_m extends SB_Model{
             } else {
                     return false;
             }
-
     }
     //获取所有省份信息
     public function get_all_province(){
-        $this->db->select('tag_id, tag_title')->order_by('tag_id','desc')->limit($num);
-        $query = $this->db->get('tags');
+        $this->db->select('provs_id, provs_name')
+        ->from('province');
+        $query = $this->db->get();
         if($query->num_rows>0){
-                return $query->result_array();
+            return $query->result_array();
         }
     }
 }
