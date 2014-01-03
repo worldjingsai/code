@@ -7,30 +7,8 @@ class Tag_m extends SB_Model{
     function __construct (){
         parent::__construct();
     }
-    
-    //X条相关贴子
-    public function get_related_forums_by_tag($tags,$limit) {
-            $get_tag_ids = $this->db->select('tag_id')->where_in('tag_title',$tags)->get('tags')->result_array();
-            foreach($get_tag_ids as $k => $v){
-                    $tag_ids[]=$v['tag_id'];
-            }
-            $tag_ids = implode(',',$tag_ids);		
-            if($tag_ids){
-                    $this->db->select('a.fid, a.title')
-                    ->from('forums a')
-                    ->join('tags_relation b','a.fid=b.fid')
-                    ->join('tags c','b.tag_id=c.tag_id')
-                    ->where_in('c.tag_id',$tag_ids)
-                    ->limit($limit);
-                    return $query=$this->db->get()->result_array();
-
-            } else {
-                    return false;
-            }
-    }
     //tag贴子列表
-    public function get_tag_forums_list($page,$limit,$tag_title)
-    {
+    public function get_tag_forums_list($page,$limit,$tag_title){
             $tag = $this->db->select('tag_id')->where('tag_title',$tag_title)->get('tags')->row_array();
             if($tag){
                     $this->db->select('a.fid, a.title, a.comments, a.updatetime, b.uid, b.username, b.avatar')
@@ -47,14 +25,12 @@ class Tag_m extends SB_Model{
             }
 
     }
-    //最新tag列表
-    public function get_latest_tags($num)
-    {
-            $this->db->select('tag_id, tag_title')->order_by('tag_id','desc')->limit($num);
-            $query = $this->db->get('tags');
-            if($query->num_rows>0){
-                    return $query->result_array();
-            }
-
+    //获取所有省份信息
+    public function get_all_provice($num){
+        $this->db->select('tag_id, tag_title')->order_by('tag_id','desc')->limit($num);
+        $query = $this->db->get('tags');
+        if($query->num_rows>0){
+                return $query->result_array();
+        }
     }
 }
