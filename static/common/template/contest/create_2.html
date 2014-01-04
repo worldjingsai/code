@@ -1,0 +1,42 @@
+<%include file="contest/contest_header.html"%>
+<!--第一栏-->
+        <div class="right_div FR">
+        
+          <div class="block fixed">
+          
+          <div class="article FL">
+            <div class="article_title">
+              <h3 >1.竞赛基本信息 -> <span <%if $step==2%>class="current"<%/if%>>2.竞赛简介</span> -> <span <%if $step==3%>class="current"<%/if%>>3.竞赛通知</span> -> <span <%if $step==4%>class="current"<%/if%>>4.赛题发布</span></h3> 
+            </div>
+            <div class="article_menu">
+            </div>
+            <div class="article_body">
+               <div class="create_title current">2.竞赛简介</div>
+               <div class="create_data">
+              
+            <form id="form-practice" action="/univs/create/?step=<%$step+1%>" method="post" class="dialog-box">
+            <textarea class="article"></textarea>
+            <table width="100%" class="create_teble">
+        <colgroup>
+            <col width="100">
+            <col width="200">
+        </colgroup>
+        <tbody>
+        <tr>
+            <th>&nbsp;</th>
+            <th id="next" >
+            <%if $step==4%>
+                <button type="submit" class="button" >下一步</a>
+            <%else%>
+            	<button type="submit" class="button" >完 成</a>
+            <%/if%>
+            </th>
+        </tr>
+             </tbody>
+             </table>
+             </form>  
+            </div>
+          </div>
+        </div>
+
+<%include file="univs/univs_footer.html"%>
