@@ -1,0 +1,330 @@
+@charset "utf-8";
+/*
+ * 将具有默认margin和padding的标记置零
+ * @overlay *
+ * @desc	所有标记的margin、padding都在使用时具体定义
+ */
+*{margin:0;padding:0;}
+/*
+ * 修正IE5.x和IE6的斜体溢出bug
+ * @bugfix
+ * @css-for IE 5.x/Win, IE6
+ */
+* html body{
+overflow: visible;
+}
+* html iframe, * html frame{
+overflow: auto;
+}
+* html frameset{
+overflow: hidden;
+}
+
+/* @group 常用标签 */
+/*
+* 基本标签默认样式取消
+* @overlay HTML标签
+* @desc 取消基本标签默认样式,防止不同浏览器显示效果不同
+* @Prop text-align:center; 解决不同浏览器剧中问题
+*/
+body{color:#000;background:#08679C; font:12px/22px Verdana,Arial,sans-serif,"Times New Roman",宋体;text-align:center;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,tr{margin:0;padding:0;}
+input,select{font-size:12px;vertical-align:middle;}
+/*
+* 设置内容左对齐
+* @overlay div
+* @desc 恢复因BODY设置剧中产生的继承
+*/
+body div{text-align:left;}
+
+/*
+* 标签属性
+* @overlay textarea,input
+* @desc 强制输入时内容超出时换行
+*/
+textarea,input{	word-wrap:break-word;word-break:break-all;padding:0px;}
+/*
+* 清除ul列表标记的样式
+* @overlay li
+* @desc	ul列表更多的用在不需要列表前置符号的样式里
+*/
+li{list-style-type:none;}
+/*
+* 定义图片边框
+* @overlay img
+* @desc	当图片作为链接内容被填充时，会有默认边框出现，重定义掉
+*/
+img{border:0 none;}
+/*
+* 定义默认的链接样式
+* @overlay a
+* @desc	仅仅是作为默认样式提供，可以在各自的实例中覆盖掉
+*/
+a:link, a:visited{
+color:#333;
+text-decoration: none;
+}
+a:hover{
+color:#F60;
+text-decoration: underline;
+}
+/* 去掉链接的虚线框 */
+/* a {outline: none; a {star:expression(this.onFocus=this.blur()); */  
+
+/*
+* 定义H系列标签
+* @overlay HN
+* @desc 覆盖H系列标签默认属性
+*/
+h1{ font-size:24px;}
+h2{ font-size:20px;}
+h3{ font-size:18px;}
+h4{ font-size:16px;}
+h5{ font-size:14px;}
+h6{ font-size:12px;}
+
+/* @end */
+
+
+/* @group 通用属性定义 */
+/* 鼠标样式 */
+.pointer{cursor:pointer;}
+/* 取消边框 */
+.NoBorder{border:0 none;}
+/* 文本对齐方式 */
+.t-l{text-align:left;}
+.t-c{text-align:center;}
+.t-r{text-align:right;}
+
+/*
+* 字母和单词换行设置
+* @class Break 强制内容换行
+* @class Nobreak 强制内容不换行
+*/
+.Break{word-break:break-all;word-wrap:break-word;}
+.Nobreak{word-break:keep-all;word-wrap:normal;}
+
+/* 浮动定义 */
+.FL{float:left;}
+.FR{float:right;}
+
+/* 定义文本下划线 */
+.UnLine{text-decoration:underline;}
+.DisunLine{text-decoration:none;}
+
+/* 定位关系 */
+.absolute{position:absolute;}
+.relative{position:relative;}
+
+/*
+ * 清理元素
+ * @class clear
+ * @desc	清理浮动元素,当浮动换行时后面元素不希望浮动，添加此属性，防止IE BUG
+ */
+ .clear{clear:both; height:0px; width:100%; font-size:1px; line-height:0px; visibility:hidden; overflow:hidden;}
+ 
+/*
+* 定义字体样式
+* @Pro 由大写字母F开头,表示FONT
+* @desc 常用样式可更具一个项目的样式使用频率重新定义,扩展
+*/
+
+/* 字体样式 */
+.FB{font-weight:bold;}
+.FN{ font-weight:normal;}
+.FI{font-style:italic;}
+/* 字体大小 */
+.F10{font-size:10px;}
+.F11{font-size:11px;}
+.F12{font-size:12px;}
+.F13{font-size:13px;}
+.F14{font-size:14px;}
+.F16{font-size:16px;}
+.F18{font-size:18px;}
+
+/*
+* 定义间距,上下2个DIV间距
+* @Pro 使用DIVH开头.
+* @desc 上下DIV有间距时使用,尽量不使用margin/padding值,防止不同浏览器出现BUG,
+*	 使用下面属性可兼容大多浏览器.
+*/
+.DivH5,.DivH10,.DivH15,.DivH20,.DivH25,.DivH30,DivH1,.DivH40{width:100%;overflow:hidden;}
+.DivH1{ height:1px;}
+.DivH5{height:5px;}
+.DivH10{height:10px;}
+.DivH15{height:15px;}
+.DivH20{height:20px;}
+.DivH25{height:25px;}
+.DivH30{height:30px;}
+.DivH40{height:40px;}
+
+/*
+* 定义行高
+* @class LH
+* @desc 使用较少,主要定义line-height属性
+*/
+.LH1{ line-height:1px; }
+.LH10{ line-height:10px; }
+.LH15{ line-height:15px; }
+.LH18{ line-height:18px; }
+.LH20{ line-height:20px; }
+.LH25{ line-height:25px;}
+.LH30{ line-height:30px;}
+.LH35{ line-height:35px;}
+
+/*
+* 标题样式定义
+* @Pro PTit
+* @desc 在定义p标签元素或其它元素时,需要同时定义行高和高度,一般使用在标题显示中.
+*/
+
+.PTit25,.PTit20,.PTit18,.PTit30,.PTit,.PTit1,.PTit22{	width:100%;	overflow:hidden;}
+.PTit30{line-height:30px;height:30px;}
+.PTit25{line-height:25px;height:25px;}
+.PTit22{line-height:22px;height:22px;}
+.PTit20{line-height:20px;height:20px;}
+.PTit18{line-height:18px;height:18px;}
+.PTit15{line-height:15px;height:15px;}
+.PTit10{line-height:10px;height:10px;}
+.PTit1{line-height:1px;height:1px;}
+
+a.green{color:green;}
+a.red{color:red;}
+
+/*
+* MORE更多样式设计
+* @Pro MORE
+* @desc 显示在右侧更多/MORE样式,可根据需求扩展
+*/
+
+.More{text-align:right;position:absolute; top:0; right:3px;}
+.MoreR5{ position:absolute; top:0px; right:3px; font:12px normal; }
+.MoreR15{ position:absolute; top:0px; right:15px; font:12px normal;}
+.More a{color:#0000FF; font-size:13px}
+
+/*
+* 普通列表样式定义
+* @desc 文章列表样
+* @use 一般列表使用,ul li列表
+*/
+.ArtList,.ArtList25,.ArtList22,.ArtList24{ width:100%; overflow:hidden; margin:0 auto;}
+.ArtList li{ width:100%; height:20px; line-height:20px; overflow:hidden;}
+.ArtList25 li{ width:100%; height:25px; line-height:25px; overflow:hidden;}
+.ArtList24 li{ width:100%; height:24px; line-height:24px; overflow:hidden;}
+.ArtList22 li{ width:100%; height:22px; line-height:22px; overflow:hidden;}
+
+.fixed:after { content: "."; display: block; clear: both; height: 0; visibility: hidden; }
+.fixed { display: block; min-height: 1%; }
+
+.button{border:#055A5A 1px solid; background:#42F3F3; border-radius:5px; padding:3px 15px; border-style:outset; cursor:pointer; font-size:13px;}
+
+.container{width:1000px; margin:0 auto; overflow:hidden;}
+.class_title{height:90px; line-height:90px; color:#FFF; font-size:50px;letter-spacing:10px; font-family:"华文中宋", "Microsoft Yahei", "新宋体";}
+
+.class_sub_title{height:80px; line-height:80px; margin-top:30px; color: #FFF; font-size:30px;letter-spacing:10px; font-family:"华文新魏", "Microsoft Yahei", "新宋体"; text-align:right;}
+
+.top{  width:100%; height:40px; background-color:#064466; color:#FFF;}
+.top_logo{font-family:"华文中宋","Microsoft Yahei", "新宋体"; font-size:20px; height:40px; line-height:40px;}
+.c_red {color:red;}
+.fs_italic{font-style:italic;}
+.ml_30 {margin-left:30px;}
+
+.top a{ color:#FF3; margin:auto 10px; font-size:14px; height:40px; line-height:40px;}
+.top a:hover{color: #00FF00}
+
+.header{background:url(../images/bg_1.jpg) 0 -90px; height:300px;}
+.baoming_header{background:url(../images/bg_1.jpg) 0 -90px; height:300px;}
+
+.header h1{margin:100px auto 0px; text-align:center;}
+.baoming_header h1{margin:100px auto 0px; text-align:center; height:auto; white-space:pre-line;	}
+.logo a{margin:0px; padding:0px;}
+
+.nav {background:url(../images/nav_bg.jpg) repeat-x}
+.nav ul li{display:block; float:left; margin:2px 15px;}
+.nav ul li a { font-family:"Microsoft Yahei" "新宋体"; font-size:18px; line-height:35px; color:#FFFFFF}
+.nav ul li a:hover {color:#FFFF00;}
+.nav ul li a.current {color:#FFFF00;}
+
+.current {color:#FF0000;}
+
+.main .logo{display:block;padding:10px; border:#666 solid 1px; background:#FFF; width:180px; height:180px;}
+.main .point{margin-left:10px;display:block; border:#666 solid 1px; background:#FFF; width:784px; overflow:hidden; height:200px;}
+
+.left_div{width:200px; background:#FFFFFF}
+.right_div{padding:0 2px; width:784px;}
+.left_side{width:200px;}
+
+
+.right_div .block{ background:#FFFFFF; border:#666 solid 1px; width:100%; display:block; height:auto; overflow:hidden; }
+
+
+
+.left_div { border:1px #666666 solid;}
+.div_menu { padding:10px; background:#FFF}
+.div_menu .div_menu_head { background:url(../images/new_index_r7_c4.jpg) no-repeat 0 50%; border-bottom:2px #0C3 solid; line-height:30px; height:30px;}
+.div_menu .div_menu_head h2{padding-left:15px;}
+
+.baoming_menu{width:180px; border:#666 solid 1px; overflow:hidden; background:#FFF; padding:10px;}
+.baoming_menu .baoming_head{background:url(../images/new_index_r7_c4.jpg) no-repeat 0 50%; border-bottom:2px #0C3 solid; line-height:30px; height:30px;}
+.baoming_head h2{ padding-left:15px;}
+
+
+.main .div_block{ margin-left:10px; padding-right:10px; width:372px; background:url(../images/sbbb.jpg) no-repeat right center;}
+.div_block .div_block_head{height:35px; line-height:35px; border-bottom:#00CC99 solid 1px; position:relative;}
+
+.div_block_body li span{float:right; }
+
+.div_block_body ul{margin-left:20px;}
+.div_block_body ul li{list-style:circle; height:28px; line-height:28px;}
+
+.div_block_body ul li a{ font-size:14px}
+
+.border-top{border-top:#333 1px dashed;}
+
+.baoming_body ul li{ width:100%; height:35px; line-height:35px; overflow:hidden; font-size:18px; padding-left:15px; }
+.baoming_body ul li a{color:#00C}
+.block_list {width:760px; padding:10px; position:relative;}
+.block_list h2{border-bottom:#0F0 solid 1px; height:40px; line-height:30px;}
+
+.article{padding:11px; width:97%;}
+.article .article_title{ height:55px; line-height:45px; width:100%; text-align:center;}
+.article .article_title h1{text-align:center}
+
+.article_menu{ border-top:#F60 solid 2px; width:100%; text-align:center;}
+.dashed {border-bottom:#00FF33 dashed 1px;}
+
+.article_body .article_content{text-indent:30px; line-height:35px; font-size:18px;}
+.article_body .register{text-indent:30px; line-height:40px; vertical-align:middle; font-size:18px;}
+.article_body .baoming{}
+.team_info{background:#EEE}
+.rg_data .rg_info{font-weight:bold;}
+.rg_data th{font-weight:normal;}
+
+.article_body .create_title{line-height:40px; font-size:18px; text-align:center;}
+.article_body .create_data{margin:0 auto; width:600px; line-height:30px; font-size:14px;}
+.create_data .create_teble th{font-weight:normal; font-size:14px; text-align:right;}
+.create_data .create_teble td{font-weight:normal; font-size:14px;}
+.create_data .create_teble .control td{text-align:center; font-weight:bold;}
+.create_data .create_teble em{color:#F00; vertical-align:middle;}
+.create_data .create_teble input{height:20px; line-height:20px; }
+
+
+.article_body .rg_title{text-align:center; font-size:16px; color:green; height:30px; line-height:30px;}
+
+.article_body .rg_data{width:500px; margin:0px auto; line-height:30px; font-size:14px;}
+.article_body .rg_data .text {height:20px; line-height:20px; font-size:13px; width:200px;}
+.article_body .rg_data th {text-align:right}
+.article_body .rg_data em{color:#F00; vertical-align:middle;}
+
+table.create_teble {border:#AEDEF2; border-collapse: collapse;}
+
+.w200{width:200px;}
+.w100{width:100px;}
+
+
+.create_teble input.number{width:40px; text-align:center;}
+
+.footer .version{ text-align:center; line-height:20px; height:80px; margin-top:20px; border-top: #999999 2px solid; }
+
+
+
