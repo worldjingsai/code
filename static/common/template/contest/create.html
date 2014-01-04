@@ -1,0 +1,69 @@
+<%include file="contest/contest_header.html"%>
+
+		<!--第一栏-->
+        <div class="right_div FR">
+		
+		  <div class="block fixed">
+          
+		  <div class="article FL">
+			<div class="article_title">
+              <h3 ><span class="current">1.竞赛基本信息</span> -> 2.竞赛简介 -> 3.竞赛通知 -> 4.赛题发布</h3> 
+            </div>
+            <div class="article_menu">
+            </div>
+            <div class="article_body">
+               <div class="register">
+			   <div class="create_title current">1.竞赛基本信息</div>
+			   <div class="create_data">
+			  
+			<form id="form-practice" action="/resume/practice/create" method="post" class="dialog-box">
+            <table width="100%" class="create_teble">
+        <colgroup>
+            <col width="100">
+            <col width="200">
+        </colgroup>
+        <tbody>
+        <tr>
+            <th><em>*</em>竞赛名称:</th>
+            <td class="input matchbox-wrap" >
+                <div class="clearfix"><input type="text" autocomplete="off" id="employer-input" class="text J_check" name="corpName" reg="^.{2,40}$" maxlength="40" value=""></div>
+            </td>
+            
+        </tr>
+        <tr>
+            <th><em>*</em>竞赛网址:</th>
+            <td id="jobCity-linkup" >
+                <input type="text" class="text J_check" name="corpName" maxlength="40" value=""/> <a class="button" href="#">点击检测</a>
+            </td>
+        </tr>
+        
+        <tr>
+            <th>报名时间:</th>
+            <td id="jobCity-linkup" >
+                <input type="text" class="text J_check" name="corpName" maxlength="40" value="2014-01-01 ~ 2014-09-10"/> 
+            </td>
+        </tr>
+        
+        <tr>
+            <th>比赛时间:</th>
+            <td id="jobCity-linkup" >
+                <input type="text" class="text J_check" name="corpName" maxlength="40" value="2014-09-21"/> 
+            </td>
+        </tr>
+        
+        <tr>
+            <th>&nbsp;</th>
+            <th id="next" >
+                <a href="#" class="button" >下一步</a>
+            </th>
+        </tr>
+             
+             </tbody>
+             </table>
+             </form>  
+            </div>
+          </div>
+		  </div>
+		</div>
+
+<%include file="univs/univs_footer.html"%>
