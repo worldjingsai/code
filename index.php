@@ -41,7 +41,7 @@ if (defined('ENVIRONMENT')){
             exit('The application environment is not set correctly.');
     }
 }
-include(",/smart/libs/smarty.php"); // 引入Smarty
+
 /*
  *---------------------------------------------------------------
  * 系统文件夹
