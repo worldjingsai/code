@@ -217,4 +217,3 @@ pip-log.txt
 #PHP
 data/*
 app/config/database.php
-!empty
