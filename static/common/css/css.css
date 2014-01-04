@@ -434,31 +434,37 @@ font-weight: bold;
 	background:url(../images/jingsai_index.jpg) no-repeat;
 }
 
-.index_img .register{
+.login_img {
 	position:relative;
-	left:720px;
-	width:205px;
-	top:40px;
+	width:960px;
+	height:400px;
+	clear:both;
+	overflow:hidden;
+	z-index:9;
+	background:url(../images/jingsai_denglu.jpg) no-repeat;
 }
+.login_in{padding:0 5px;}
+.login_in .input_type{width:190px; background-color:transparent;}
+.backside{z-index:-1; display:block; position:absolute; margin-top:3px; color:#999;}
 
-.index_img .register span{
-	float:right;
-	}
+.register{position:relative;left:720px;width:205px;top:40px;}
+
+.register span{	float:right;}
 	
-.index_img .register p {height:30px;}
+.register p {height:30px;}
 
-.index_img .register a{
+.register a{
 	height:20px; line-height:20px; font-size:18px; color:#FFF;}
 
-.index_img .register .datatitle {float:left; width:68px; text-align:right; vertical-align:middle; padding-top:3px; }
-.index_img .register .datainput {float:left; width:130px;}
+.register .datatitle {float:left; width:68px; text-align:right; vertical-align:middle; padding-top:3px; }
+.register .datainput {float:left; width:130px;}
 
 .datatitle label{ display:block ;line-height:20px; height:43px; font-size:14px; min-width:60px; }
-.index_img .register input{width:130px; height:20px; border:1px #666666 solid; margin-bottom:17px;}
-.index_img .register input:focus{border: #33FF00 1px solid;}
+.register input{width:130px; height:20px; border:1px #666666 solid; margin-bottom:17px;}
+.register input:focus{border: #33FF00 1px solid;}
 
-.index_img .register .button{float:left; margin-top:3px; width:100%; text-align:center;}
-.index_img .register .btn{background:none; border:none; line-height:15px; color:#FFF; font-size:18px; height:30px; width:100%; text-align:center; cursor:pointer;}
+.register .button{float:left; margin-top:3px; width:100%; text-align:center;}
+.register .btn{background:none; border:none; line-height:15px; color:#FFF; font-size:18px; height:30px; width:100%; text-align:center; cursor:pointer;}
 
 .movie_out {
 	margin-top:-3px;
