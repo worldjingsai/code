@@ -22,6 +22,6 @@ class Univs extends SB_Controller{
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
         $this->tplData = $data;
-        $this->display("univs/create.html");
+        $this->display("contest/create.html");
     }
 }
