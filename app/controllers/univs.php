@@ -2,7 +2,7 @@
 /**
  * 高校首页
  */
-class Unvs extends SB_Controller{
+class Univs extends SB_Controller{
     function __construct (){
         parent::__construct();
         $this->load->library('myclass');
