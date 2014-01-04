@@ -126,15 +126,15 @@ $(document).ready(function(){
 <DIV class=mnews_left>
 <DIV class="clearfix zoom">
 <div class="area">
-    <%foreach item=value key=key from=$tplData.provincs%>
-        <dl><dt><%$value.provs_name%></dt>
-	<dd>
-        <%foreach item=value2 from=$value.universities%>
-            <a href="univs/<%$value2.univs_id%>" ><%$value2.univs_name%></a>
-        <%/foreach%>
-        </dd>
-        </dl>
+<%foreach item=value key=key from=$tplData.provincs%>
+    <dl><dt><%$value.provs_name%></dt>
+    <dd>
+    <%foreach item=value2 from=$value.universities%>
+        <a href="univs/<%$value2.univs_id%>" ><%$value2.univs_name%></a>
     <%/foreach%>
+    </dd>
+    </dl>
+<%/foreach%>
 </div>
 </DIV><!--12版电影院-->
 </DIV>
