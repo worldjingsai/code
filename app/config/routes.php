@@ -9,4 +9,4 @@ $route['qq_callback'] = 'oauth/qqcallback';
 $route['forum/flist/(:num)'] = 'forum/flist/$1';
 $route['forum/view/(:num)'] = 'forum/view/$1';
 $route['tag/index/(:any)'] = 'tag/index/$1';
-$route['univs/(:any)'] = "univs/$1";
+$route['univs/(:num)'] = "univs/index/$1";
