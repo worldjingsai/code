@@ -9,8 +9,7 @@ class Univs extends SB_Controller{
     }
      
     public function index ($abc){
-		echo $abc;
-        
+
         $this->display("univs/index.html");
     }
 }
