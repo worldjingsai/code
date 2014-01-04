@@ -61,15 +61,15 @@ class User extends SB_Controller{
             );
             $check_reg = $this->user_m->check_reg($data['email']);
             $check_username = $this->user_m->check_username($data['username']);
-            $captcha = $this->input->post('captcha_code');
+            //$captcha = $this->input->post('captcha_code');
             if(!empty($check_reg)){
                 $this->myclass->notice('alert("邮箱已注册，请换一个邮箱！");history.back();');
             }elseif(!empty($check_username)){
                 $this->myclass->notice('alert("用户名已存在!!");history.back();');
             }elseif($this->input->post('password_c')!=$password){
                 $this->myclass->notice('alert("密码输入不一致!!");history.back();');
-            }elseif($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
-                $this->myclass->notice('alert("验证码不正确!!");history.back();');
+           // }elseif($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
+             //   $this->myclass->notice('alert("验证码不正确!!");history.back();');
             }else{
                 if($this->user_m->reg($data)){
                     $uid = $this->db->insert_id();
