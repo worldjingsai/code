@@ -67,7 +67,7 @@
         <dl><dt><%$value.provs_name%></dt>
 	<dd>
         <%foreach item=value2 from=$value.universities%>
-            <a href="unvs/$value2.univs_id" class="hot">$value2.univs_name</a>
+            <a href="unvs/<%$value2.univs_id%>" class="hot"><%$value2.univs_name%></a>
         <%/foreach%>
         </dd>
         </dl>
