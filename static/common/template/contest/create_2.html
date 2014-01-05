@@ -15,7 +15,7 @@
                <div class="create_data">
               
             <form  action="/univs/create/<%$tplData.university.univs_id%>?step=<%$tplData.step+1%>" method="post" class="dialog-box">
-            <label >标题：</label>&nbsp;<input type="text title" name="title" value=""/>
+            <label >标题：</label>&nbsp;<input type="text" class="title" name="title" value=""/>
             
             <textarea class="content" name="content"></textarea>
             <input type="hidden" name="contest_id" value="<%$tplData.contest_id%>" />

@@ -14,7 +14,13 @@ class Article_content_m extends SB_Model{
         parent::__construct();
     }
     function add($data){
-        return $this->db->insert($this->tb, $data);
+        if($this->db->insert($this->tb, $data))
+        {
+            return $this->db->insert_id;
+        } else
+        {
+            return false;
+        }
     }
 
     // article_id获取文章内容

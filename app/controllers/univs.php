@@ -50,7 +50,7 @@ class Univs extends SB_Controller{
             $data['create_user_id'] = 0;
             $contest_id = $this->contest_m->add($data);
             unset($data);
-        } else {
+        } elseif($step > 2) {
             if ($step == 3)
             {
                 $column_id = Contest_m::COLUM_ABOUT;
@@ -66,7 +66,8 @@ class Univs extends SB_Controller{
             $this->load->model('article_content_m');
             $data['article_type'] = Article_m::TYPE_CONTEST;
             $data['column_id'] = $column_id;
-            $data['type_id'] = intval($this->input->post('contest_id'));
+            $contest_id = intval($this->input->post('contest_id'))
+            $data['type_id'] = $contest_id;
             $data['title'] = $this->input->post('title', true);
             $contentdata['content'] = $this->input->post('content', true);
             $article_id = $this->article_m->add($data);

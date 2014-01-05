@@ -21,7 +21,13 @@ class Contest_m extends SB_Model{
         parent::__construct();
     }
     function add($data){
-        return $this->db->insert($this->tb, $data);
+        if($this->db->insert($this->tb, $data))
+        {
+            return $this->db->insert_id;
+        } else
+        {
+            return false;
+        }
     }
     function check_url($univs_id, $url){
         $query = $this->db->get_where($this->tb, array('univs_id'=>$univs_id, 'url'=>$url));
