@@ -7,8 +7,8 @@ class Article_m extends SB_Model{
 
     const TYPE_UNIVS = 1; // 学校类型
     const TYPE_CONTEST = 2; // 竞赛类型
-    
-    
+
+
     public $tb = 'article';
     function __construct(){
         parent::__construct();
@@ -16,13 +16,13 @@ class Article_m extends SB_Model{
     function add($data){
         if($this->db->insert($this->tb, $data))
         {
-            return $this->db->insert_id;
+            return $this->db->insert_id();
         } else
         {
             return false;
         }
     }
-    
+
     /*
      * 获取所有的文章
      */

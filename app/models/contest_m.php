@@ -15,7 +15,7 @@ class Contest_m extends SB_Model{
         self::COLUM_PROBLEM => '赛题发布',
         self::COLUM_WINNER => '获奖名单',
     );
-    
+
     public $tb = 'contest';
     function __construct(){
         parent::__construct();
@@ -23,7 +23,7 @@ class Contest_m extends SB_Model{
     function add($data){
         if($this->db->insert($this->tb, $data))
         {
-            return $this->db->insert_id;
+            return $this->db->insert_id();
         } else
         {
             return false;
@@ -33,7 +33,7 @@ class Contest_m extends SB_Model{
         $query = $this->db->get_where($this->tb, array('univs_id'=>$univs_id, 'url'=>$url));
         return $query->row_array();
     }
-    
+
     /*
      * 获取所有的竞赛明细
      */
