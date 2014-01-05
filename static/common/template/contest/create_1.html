@@ -25,36 +25,58 @@
         <tbody>
         <tr>
             <th><em>*</em>竞赛名称:</th>
-            <td class="input matchbox-wrap" >
-                <div class="clearfix"><input type="text" autocomplete="off" id="employer-input" class="text J_check" name="corpName" reg="^.{2,40}$" maxlength="40" value=""></div>
+            <td class="input" >
+                <div class="clearfix"><input type="text" autocomplete="off" class="text" name="contest_name" maxlength="255" value=""></div>
             </td>
             
         </tr>
         <tr>
             <th><em>*</em>竞赛网址:</th>
             <td id="jobCity-linkup" >
-                <input type="text" class="text J_check" name="corpName" maxlength="40" value=""/> <a class="button" href="#">点击检测</a>
+                <input type="text" class="text" name="contest_url" maxlength="40" value=""/> <a class="button" href="#">点击检测</a>
             </td>
         </tr>
         
         <tr>
-            <th>报名时间:</th>
-            <td id="jobCity-linkup" >
-                <input type="text" class="text J_check" name="corpName" maxlength="40" value="2014-01-01 ~ 2014-09-10"/> 
+            <th><em>*</em>竞赛类型:</th>
+            <td >
+                <label><input type="radio" name="contest_type"  value="1" checked="checked"/> 校内竞赛</label>&nbsp;&nbsp;&nbsp;
+                <label><input type="radio" name="contest_type"  value="2"/> 开放竞赛</label>
+            </td>
+        </tr>
+                
+        <tr>
+            <th>报名开始时间:</th>
+            <td >
+                <input type="text" class="text" name="regist_start_time"  value=""/>格式：2014-01-01 08:00:00
+            </td>
+        </tr>
+        <tr>
+            <th>报名结束时间:</th>
+            <td >
+                <input type="text" class="text" name="regist_end_time" value=""/> 格式：2014-01-01 08:00:00
+            </td>
+        </tr>
+        
+        
+        <tr>
+            <th>比赛开始时间:</th>
+            <td  >
+                <input type="text" class="text" name="contest_start_time" value=""/> 格式：2014-01-01 08:00:00
             </td>
         </tr>
         
         <tr>
-            <th>比赛时间:</th>
-            <td id="jobCity-linkup" >
-                <input type="text" class="text J_check" name="corpName" maxlength="40" value="2014-09-21"/> 
+            <th>比赛结束时间:</th>
+            <td  >
+                <input type="text" class="text" name="contest_start_time" value=""/> 格式：2014-01-01 08:00:00
             </td>
         </tr>
         
         <tr>
             <th>&nbsp;</th>
             <th id="next" >
-                <button type="submit" class="button" >下一步</a>
+                <button type="submit" class="button" >下一步</button>
             </th>
         </tr>
              

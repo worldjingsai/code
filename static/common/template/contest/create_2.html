@@ -14,8 +14,10 @@
                <div class="create_title current">2.竞赛简介</div>
                <div class="create_data">
               
-            <form id="form-practice" action="/univs/create/<%$tplData.university.univs_id%>?step=<%$tplData.step+1%>" method="post" class="dialog-box">
-            <textarea class="article"></textarea>
+            <form  action="/univs/create/<%$tplData.university.univs_id%>?step=<%$tplData.step+1%>" method="post" class="dialog-box">
+            <label >标题：</label><input type="text" name="title" value=""/>
+            <textarea class="article" name="content"></textarea>
+            <input type="hidden" value="<%$tplData.contest_id%>"
             <table width="100%" class="create_teble">
         <colgroup>
             <col width="100">
