@@ -30,6 +30,10 @@ class Univs extends SB_Controller{
      */
     public function clist($univs_id)
     {
+        $univs_id = intval($univs_id);
+        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        $data['university'] = $univs_info;
+
         $cat = 1;
         if ($this->input->get('cat') == 2)
         {
