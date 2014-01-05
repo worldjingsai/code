@@ -35,7 +35,7 @@ class Contest_m extends SB_Model{
         $this->db->select('*');
         $this->db->from($this->tb);
         $this->db->order_by('create_time','desc');
-        $this->db->where('univs_id',$univs_id)->where('status',1)
+        $this->db->where('univs_id',$univs_id)->where('status',1);
         $this->db->limit($limit,$page);
         $query = $this->db->get();
         if($query->num_rows() > 0){
