@@ -8,7 +8,7 @@ class Univs extends SB_Controller{
         $this->load->model('univs_m');
         $this->load->library('myclass');
     }
-     
+
     public function index($univs_id){
         $univs_id = intval($univs_id);
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
@@ -33,7 +33,7 @@ class Univs extends SB_Controller{
         {
             return false;
         }
-        
+
         if ($step == 2)
         {
             $data['contest_name'] = $this->input->post('contest_name', true);
@@ -43,9 +43,9 @@ class Univs extends SB_Controller{
             $data['regist_end_time'] = $this->input->post('regist_end_time', true);
             $data['contest_start_time'] = $this->input->post('contest_start_time', true);
             $data['contest_end_time'] = $this->input->post('contest_end_time', true);
-            
+
             $data['univs_id'] = $univs_id;
-            $data['create_time'] = date('Y-m-d H:i:s'); 
+            $data['create_time'] = date('Y-m-d H:i:s');
             // TODO
             $data['create_user_id'] = 0;
             $contest_id = $this->contest_m->add($data);
@@ -61,12 +61,12 @@ class Univs extends SB_Controller{
             {
                 $column_id = Contest_m::COLUM_PROBLEM;
             }
-            
+
             $this->load->model('article_m');
             $this->load->model('article_content_m');
             $data['article_type'] = Article_m::TYPE_CONTEST;
             $data['column_id'] = $column_id;
-            $contest_id = intval($this->input->post('contest_id'))
+            $contest_id = intval($this->input->post('contest_id'));
             $data['type_id'] = $contest_id;
             $data['title'] = $this->input->post('title', true);
             $contentdata['content'] = $this->input->post('content', true);
@@ -77,7 +77,7 @@ class Univs extends SB_Controller{
                 $this->article_content_m->add($contentdata);
             }
         }
-        
+
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $show_data['contest_id'] = $contest_id;
         $show_data['university'] = $univs_info;
