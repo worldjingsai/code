@@ -79,7 +79,7 @@ class Univs extends SB_Controller{
         {
             $article = $article[0];
             $content = $this->article_content_m->get($article['article_id']);
-            $article['content'] = isset($content[0]['content']) ? $content[0]['content'] : '';
+            $article['content'] = isset($content['content']) ? $content['content'] : '';
         }
         $data['article'] = $article;
 
