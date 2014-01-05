@@ -51,9 +51,30 @@ class Univs extends SB_Controller{
             $contest_id = $this->contest_m->add($data);
             unset($data);
         } else {
-            $data['contest_id'] = intval($this->input->post('contest_id'));
+            if ($step == 3)
+            {
+                $column_id = Contest_m::COLUM_ABOUT;
+            } elseif ($step == 4)
+            {
+                $column_id = Contest_m::COLUM_NOTICE;
+            } elseif ($step == 5)
+            {
+                $column_id = Contest_m::COLUM_PROBLEM;
+            }
+            
+            $this->load->model('article_m');
+            $this->load->model('article_content_m');
+            $data['article_type'] = Article_m::TYPE_CONTEST;
+            $data['column_id'] = $column_id;
+            $data['type_id'] = intval($this->input->post('contest_id'));
             $data['title'] = $this->input->post('title', true);
-            $data['content'] = $this->input->post('content', true);
+            $contentdata['content'] = $this->input->post('content', true);
+            $article_id = $this->article_m->add($data);
+            if($article_id)
+            {
+                $contentdata['article_id'] = $article_id;
+                $this->article_content_m->add($contentdata);
+            }
         }
         
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
