@@ -49,7 +49,6 @@ class Article_m extends SB_Model{
         $this->db->from($this->tb);
         $this->db->order_by('create_time','desc');
         $this->db->where('article_type',$article_type)->where('type_id', $type_id)->where('column_id', $column_id)->where('status',1);
-        $this->db->limit($limit,$page);
         $query = $this->db->get();
         if($query->num_rows() > 0){
             return $query->result_array();
