@@ -25,6 +25,39 @@ class Univs extends SB_Controller{
         $this->display("univs/index.html");
     }
 
+    /**
+     * 学校竞赛列表
+     */
+    public function clist($univs_id)
+    {
+        $cat = 1;
+        if ($this->input->get('cat') == 2)
+        {
+            $cat = 2;
+        }
+        if ($cat == 1)
+        {
+            $list = $this->_schoolcList($univs_id);
+            $subTitle = '校内竞赛';
+        } elseif ($cat == 2)
+        {
+            $list = $this->_cList();
+            $subTitle = '全部竞赛';
+        }
+        $data['subTitle'] = $subTitle;
+        $data['list'] = $list;
+        $this->tplData = $data;
+        $this->display("contest/univs_contest_list.html");
+    }
+
+    /**
+     * 所有竞赛列表
+     */
+    public function aclist($univs_id)
+    {
+
+    }
+
     public function create($univs_id){
         $step = 1;
         $contest_id = 0;
@@ -93,6 +126,10 @@ class Univs extends SB_Controller{
                 $contentdata['article_id'] = $article_id;
                 $this->article_content_m->add($contentdata);
             }
+            if ($step == 5)
+            {
+                return $this->index($univs_id);
+            }
         }
 
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
@@ -107,6 +144,7 @@ class Univs extends SB_Controller{
             $this->display("contest/create_2.html");
         }
     }
+
 
     /**
      * 显示学校的竞赛列表
@@ -124,7 +162,7 @@ class Univs extends SB_Controller{
         $limit = $this->input->get('limit');
         if (!$page)
         {
-            $page = 1;
+            $page = 0;
         }
         if (!$limit)
         {
@@ -156,7 +194,7 @@ class Univs extends SB_Controller{
         $limit = $this->input->get('limit');
         if (!$page)
         {
-            $page = 1;
+            $page = 0;
         }
         if (!$limit)
         {
