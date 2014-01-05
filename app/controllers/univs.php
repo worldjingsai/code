@@ -55,11 +55,36 @@ class Univs extends SB_Controller{
     }
 
     /**
-     * 所有竞赛列表
+     * 学校竞赛列表
      */
-    public function aclist($univs_id)
+    public function contest($univs_id)
     {
+        $univs_id = intval($univs_id);
+        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        $data['university'] = $univs_info;
 
+        $cid = $this->input->get('cid');
+        if (!$cid)
+        {
+            return show_error('不存在的竞赛');
+        }
+        $this->load->model('contest_m');
+        $cInfo = $this->contest_m->listByCid($cid);
+
+        $this->load->model('article_m');
+        $this->load->model('article_content_m');
+
+        $article = $this->article_m->getLast(Article_content_m::TYPE_CONTEST, $cid, Contest_m::COLUM_NOTICE);
+        if (!empty($article[0]))
+        {
+            $article = $article[0];
+            $content = $this->article_content_m->get($article['article_id']);
+            $article['content'] = isset($content[0]['content']) ? $content[0]['content'] : '';
+        }
+        $data['article'] = $article;
+
+        $this->tplData = $data;
+        $this->display("contest/univs_contest_index.html");
     }
 
     public function create($univs_id){
