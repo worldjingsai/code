@@ -7,11 +7,11 @@ class Univs_m extends SB_Model{
         parent::__construct();
         $this->load->library('myclass');
     }
-    
+
     // 根据高校ID获取高校基本信息
     public function get_univs_info_by_univs_id($univs_id){
         $this->db->select('*');
-    	$query = $this->db->where('univs_id',$univs_id)->where('status',1)->get('university');
-    	return $query->row_array();
+        $query = $this->db->where('univs_id',$univs_id)->where('status',1)->get('university');
+        return $query->row_array();
     }
 }

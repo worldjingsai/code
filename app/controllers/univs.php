@@ -3,6 +3,8 @@
  * 高校首页
  */
 class Univs extends SB_Controller{
+
+    public $limit = 15;
     function __construct (){
         parent::__construct();
         $this->load->model('univs_m');
@@ -13,7 +15,13 @@ class Univs extends SB_Controller{
         $univs_id = intval($univs_id);
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
+
+        $schooleContests = $this->_schoolcList($univs_id);
+        $publicContests = $this->_cList();
+        $data['schooleContests'] = $schooleContests;
+        $data['publicContests'] = $publicContests;
         $this->tplData = $data;
+
         $this->display("univs/index.html");
     }
 
@@ -49,6 +57,15 @@ class Univs extends SB_Controller{
             // TODO
             $data['create_user_id'] = 0;
             $contest_id = $this->contest_m->add($data);
+            if($contest_id)
+            {
+               $this->load->model('university_contest_m');
+               $addData = array(
+                       'univs_id' => $univs_id,
+                       'contest_id' => $contest_id,
+                       );
+               $this->university_contest_m->add($addData);
+            }
             unset($data);
         } elseif($step > 2) {
             if ($step == 3)
@@ -89,5 +106,65 @@ class Univs extends SB_Controller{
         } else {
             $this->display("contest/create_2.html");
         }
+    }
+
+    /**
+     * 显示学校的竞赛列表
+     */
+    protected function _schoolcList($univs_id)
+    {
+        if(!$univs_id)
+        {
+            return show_error('错误的学校ID');
+        }
+        $this->load->model('university_contest_m');
+        $this->load->model('contest_m');
+
+        $page = $this->input->get('page');
+        $limit = $this->input->get('limit');
+        if (!$page)
+        {
+            $page = 1;
+        }
+        if (!$limit)
+        {
+            $limit = $this->limit;
+        }
+        $cids = $this->university_contest_m->lists($univs_id, $page, $limit);
+        $cid = array();
+        $cList = array();
+        if ($cids)
+        {
+            foreach ($cids as $key=>$value)
+            {
+                $cid[$value['contest_id']] = $value['contest_id'];
+            }
+            $cList = $this->contest_m->listByCid($cid);
+        }
+        return $cList;
+    }
+
+
+    /**
+     * 显示所有的竞赛列表
+     */
+    protected function _cList()
+    {
+        $this->load->model('contest_m');
+
+        $page = $this->input->get('page');
+        $limit = $this->input->get('limit');
+        if (!$page)
+        {
+            $page = 1;
+        }
+        if (!$limit)
+        {
+            $limit = $this->limit;
+        }
+
+        $cList = array();
+        $cList = $this->contest_m->listPublic($page, $limit);
+        return $cList;
     }
 }

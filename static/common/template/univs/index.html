@@ -10,14 +10,11 @@
             </div>
             <div class="div_block_body">
               <ul >
-                <li ><a href="baoming.html">数学建模MCM竞赛</a> <span>2013-12-23</span></li>
-                <li ><a href="baoming.html">ACM竞赛2014年亚洲赛区晋级赛</a> <span>2013-12-23</span></li>
-                <li ><a href="baoming.html">电子设计大赛级赛</a> <span>2013-12-23</span></li>
-                <li ><a href="baoming.html">创业设计竞赛级赛</a> <span>2013-12-23</span></li>
-				<li ><a href="baoming.html">清华大学2014创业设计竞赛级赛</a> <span>2013-12-23</span></li>
-                <li ><a href="baoming.html">清华大学2014创业设计竞赛级赛</a> <span>2013-12-23</span></li>
-                <li ><a href="baoming.html">清华大学2014创业设计竞赛级赛</a> <span>2013-12-23</span></li>
-                <li ><a href="baoming.html">清华大学2014创业设计竞赛级赛</a> <span>2013-12-23</span></li>
+              <%if $tplData.schooleContests%>
+              <%foreach from=$tplData.schooleContests item item=value key=key%>
+                <li ><a href="baoming.html"><%$value.contest_name%></a> <span><%$value.create_time|truncate:10:''%></span></li>
+              <%/foreach%>
+              <%/if%>
               </ul>
             </div>
 		  </div>
