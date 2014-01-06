@@ -13,7 +13,7 @@
                <ul >
               <%if $tplData.list%>
               <%foreach from=$tplData.list item=value key=key%>
-                <li ><a href="baoming.html"><%$value.contest_name%></a> <span><%$value.create_time|truncate:10:''%></span></li>
+                <li ><a href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$value.contest_id%>"><%$value.contest_name%></a> <span><%$value.create_time|truncate:10:''%></span></li>
               <%/foreach%>
               <%/if%>
               </ul>
