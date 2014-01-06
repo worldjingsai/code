@@ -109,6 +109,7 @@ class Univs extends SB_Controller{
             $data['contest_name'] = $this->input->post('contest_name', true);
             $data['contest_url'] = $this->input->post('contest_url', true);
             $data['contest_type'] = intval($this->input->post('contest_type'));
+            $data['contest_level'] = intval($this->input->post('contest_level'));
             $data['regist_start_time'] = $this->input->post('regist_start_time', true);
             $data['regist_end_time'] = $this->input->post('regist_end_time', true);
             $data['contest_start_time'] = $this->input->post('contest_start_time', true);

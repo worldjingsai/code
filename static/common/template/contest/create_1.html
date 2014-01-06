@@ -38,13 +38,32 @@
         </tr>
         
         <tr>
-            <th><em>*</em>竞赛类型:</th>
+            <th><em>*</em>竞赛级别:</th>
             <td >
-                <label><input type="radio" name="contest_type"  value="1" checked="checked"/> 校内竞赛</label>&nbsp;&nbsp;&nbsp;
-                <label><input type="radio" name="contest_type"  value="2"/> 开放竞赛</label>
+            <select name="contest_type">
+                    <option value="1">校内竞赛</option>
+                    <option value="2">省市竞赛</option>
+                    <option value="3">全国竞赛</option>
+                    <option value="4">国际竞赛</option>
+                </select>
             </td>
         </tr>
-                
+        
+        <tr>
+            <th><em>*</em>竞赛类型:</th>
+            <td >
+                <select name="contest_level">
+                    <option value="1">数学建模</option>
+                    <option value="2">ACM程序设计</option>
+                    <option value="3">创新创业</option>
+                    <option value="4">工科类竞赛</option>
+                    <option value="5">理科类竞赛</option>
+                    <option value="6">文体类竞赛</option>
+                    <option value="7">艺术类竞赛</option>
+                </select>
+            </td>
+        </tr>
+        
         <tr>
             <th>报名开始时间:</th>
             <td >
