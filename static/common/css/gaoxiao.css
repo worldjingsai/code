@@ -301,7 +301,7 @@ a.red{color:red;}
 .rg_data th{font-weight:normal;}
 
 .article_body .create_title{line-height:40px; font-size:18px; text-align:center;}
-.article_body .create_data{margin:0 auto; width:600px; line-height:30px; font-size:14px;}
+.article_body .create_data{margin:0 auto; width:100%; line-height:30px; font-size:14px;}
 .create_data .create_teble th{font-weight:normal; font-size:14px; text-align:right;}
 .create_data .create_teble td{font-weight:normal; font-size:14px;}
 .create_data .create_teble .control td{text-align:center; font-weight:bold;}

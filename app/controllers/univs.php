@@ -20,6 +20,8 @@ class Univs extends SB_Controller{
         $publicContests = $this->_cList();
         $data['schooleContests'] = $schooleContests;
         $data['publicContests'] = $publicContests;
+        
+        $data['action'] = 'index';
         $this->tplData = $data;
 
         $this->display("univs/index.html");
@@ -42,9 +44,11 @@ class Univs extends SB_Controller{
         if ($cat == 1)
         {
             $list = $this->_schoolcList($univs_id);
+            $data['action'] = 'schoolContest';
             $subTitle = '校内竞赛';
         } elseif ($cat == 2)
         {
+            $data['action'] = 'allContest';
             $list = $this->_cList();
             $subTitle = '全部竞赛';
         }
@@ -55,7 +59,7 @@ class Univs extends SB_Controller{
     }
 
     /**
-     * 学校竞赛列表
+     * 显示一个竞赛
      */
     public function contest($univs_id)
     {
@@ -87,6 +91,11 @@ class Univs extends SB_Controller{
         $this->display("contest/univs_contest_index.html");
     }
 
+    /**
+     * 创建竞赛，一共四歩
+     * @param int $univs_id
+     * @return boolean
+     */
     public function create($univs_id){
         $step = 1;
         $contest_id = 0;
@@ -163,6 +172,7 @@ class Univs extends SB_Controller{
         }
 
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        $show_data['action'] = 'create';
         $show_data['contest_id'] = $contest_id;
         $show_data['university'] = $univs_info;
         $show_data['step'] = $step;

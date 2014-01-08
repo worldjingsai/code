@@ -1,5 +1,8 @@
 <%include file="contest/contest_header.html"%>
 <!--第一栏-->
+            <script type="text/javascript" src="/static/ueditor1_3_6_utf8/ueditor.config.js"></script>
+            <script type="text/javascript" src="/static/ueditor1_3_6_utf8/ueditor.all.min.js"></script>
+
         <div class="right_div FR">
         
           <div class="block fixed">
@@ -11,13 +14,20 @@
             <div class="article_menu">
             </div>
             <div class="article_body">
-               <div class="create_title current">2.竞赛简介</div>
+               <div class="create_title current">
+               <%if $tplData.step==2%>2.竞赛简介<%/if%>
+               <%if $tplData.step==3%>3.竞赛通知<%/if%>
+               <%if $tplData.step==4%>4.赛题发布<%/if%>
+               </div>
                <div class="create_data">
               
             <form  action="/univs/create/<%$tplData.university.univs_id%>?step=<%$tplData.step+1%>" method="post" class="dialog-box">
             <label >标题：</label>&nbsp;<input type="text" class="title" name="title" value=""/>
-            
-            <textarea class="content" name="content"></textarea>
+              <script type="text/plain" id="editor" name="content">
+    </script>
+            <script type="text/javascript">
+            UE.getEditor('editor');
+            </script>
             <input type="hidden" name="contest_id" value="<%$tplData.contest_id%>" />
             <table width="100%" class="create_teble">
         <colgroup>
