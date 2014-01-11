@@ -5,13 +5,13 @@
 
 class Contest_m extends SB_Model{
 
-    const COLUM_ABOUT = 1;
-    const COLUM_NOTICE = 2;
+    const COLUM_NOTICE = 1;
+    const COLUM_ABOUT = 2;
     const COLUM_PROBLEM = 3;
     const COLUM_WINNER =4;
     static $columNames = array(
-        self::COLUM_ABOUT => '竞赛简介',
         self::COLUM_NOTICE => '竞赛通知',
+        self::COLUM_ABOUT => '竞赛简介',
         self::COLUM_PROBLEM => '赛题发布',
         self::COLUM_WINNER => '获奖名单',
     );
@@ -34,6 +34,13 @@ class Contest_m extends SB_Model{
     }
     function check_url($univs_id, $url){
         $query = $this->db->get_where($this->tb, array('univs_id'=>$univs_id, 'url'=>$url));
+        return $query->row_array();
+    }
+
+    public function get($cid)
+    {
+        $this->db->select('*');
+        $query = $this->db->where('contest_id',$cid)->where('status',1)->get($this->tb);
         return $query->row_array();
     }
 

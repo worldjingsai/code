@@ -24,20 +24,18 @@
 	
 	<div class="container">
     
-	<h1 class="class_title"><%$tplData.university.univs_name%>竞赛联盟</h1>
-    <h2 class="class_sub_title">中国大学生竞赛联盟</h2>
+	<h1 class="class_title"><%$tplData.contest.contest_name%></h1>
 
 	</div>
 </div>
 <div class="nav">
 	<div class="container">
 	<ul>
-	<li   ><a href="#" >首页</a></li>
-    <li   ><a href="#" >高校首页</a></li>
-	<li><a href="#">竞赛简介</a></li>
-	<li><a href="#">竞赛通知</a></li>
-    <li><a href="#">赛题发布</a></li>
-    <li><a href="#" class="current">获奖名单</a></li>
+	<li   ><a href="/" >首页</a></li>
+    <li   ><a href="/univs/<%$tplData.university.univs_id%>" >高校首页</a></li>
+    <%foreach from=$tplData.colums item=value key=key%>
+	<li><a <%if $key==$tplData.col%> class="current" <%/if%>href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$tplData.contest.contest_id%>&col=<%$key%>"><%$value%></a></li>
+	<%/foreach%>
     <li><a href="#">论坛</a></li>
 	</ul>
 	</div>

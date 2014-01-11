@@ -20,7 +20,7 @@ class Univs extends SB_Controller{
         $publicContests = $this->_cList();
         $data['schooleContests'] = $schooleContests;
         $data['publicContests'] = $publicContests;
-        
+
         $data['action'] = 'index';
         $this->tplData = $data;
 
@@ -72,23 +72,45 @@ class Univs extends SB_Controller{
         {
             return show_error('不存在的竞赛');
         }
+        // 引入模型
         $this->load->model('contest_m');
-        $cInfo = $this->contest_m->listByCid($cid);
-
         $this->load->model('article_m');
         $this->load->model('article_content_m');
 
-        $article = $this->article_m->getLast(Article_content_m::TYPE_CONTEST, $cid, Contest_m::COLUM_NOTICE);
-        if (!empty($article[0]))
+        $cInfo = $this->contest_m->get($cid);
+        if (empty($cInfo))
         {
-            $article = $article[0];
-            $content = $this->article_content_m->get($article['article_id']);
-            $article['content'] = isset($content['content']) ? $content['content'] : '';
+            return show_error('不存在的竞赛');
         }
+        $page = $this->input->get('page');
+        $limit = $this->input->get('limit');
+        if (!$page)
+        {
+            $page = 0;
+        }
+        if (!$limit)
+        {
+            $limit = $this->limit;
+        }
+
+        $colums = Contest_m::$columNames;
+
+        $col = $this->input->get('col');
+        if (!$col || !isset($colums[$col]))
+        {
+            $col = Contest_m::COLUM_NOTICE;
+        }
+
+        $article = $this->article_m->get_all_contest(Article_content_m::TYPE_CONTEST, $cid, $col, $page, $limit);
+        $tpl = 'contest/univs_contest_col_list.html';
+
         $data['article'] = $article;
+        $data['contest'] = $cInfo;
+        $data['colums'] = $colums;
+        $data['col'] = $col;
 
         $this->tplData = $data;
-        $this->display("contest/univs_contest_index.html");
+        $this->display($tpl);
     }
 
     /**
