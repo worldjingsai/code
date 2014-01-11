@@ -11,19 +11,21 @@ class Univs extends SB_Controller{
         $this->load->library('myclass');
     }
 
-    public function index($univs_id){
-        $univs_id = intval($univs_id);
-        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+    /**
+     * 根据高校昵称获取高校信息
+     */
+    public function index($short_name){
+        $univs_info = $this->univs_m->get_univs_info_by_univs_short_name($short_name);
+        if(empty($univs_info)){
+            $this->myclass->notice('alert("该高校不存在");window.location.href="'.site_url('/').'";');
+        }
         $data['university'] = $univs_info;
-
-        $schooleContests = $this->_schoolcList($univs_id);
+        $schooleContests = $this->_schoolcList(intval($univs_info['univs_id']));
         $publicContests = $this->_cList();
         $data['schooleContests'] = $schooleContests;
         $data['publicContests'] = $publicContests;
-
         $data['action'] = 'index';
         $this->tplData = $data;
-
         $this->display("univs/index.html");
     }
 
@@ -112,6 +114,9 @@ class Univs extends SB_Controller{
         $this->tplData = $data;
         $this->display($tpl);
     }
+
+
+
 
     /**
      * 创建竞赛，一共四歩
