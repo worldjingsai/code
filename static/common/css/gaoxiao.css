@@ -219,7 +219,7 @@ a.red{color:red;}
 
 .button{border:#055A5A 1px solid; background:#42F3F3; border-radius:5px; padding:3px 15px; border-style:outset; cursor:pointer; font-size:13px;}
 
-.container{width:1000px; margin:0 auto; overflow:hidden;}
+.container{width:960px; margin:0 auto; overflow:hidden;}
 .class_title{height:90px; line-height:90px; color:#FFF; font-size:50px;letter-spacing:10px; font-family:"华文中宋", "Microsoft Yahei", "新宋体";}
 
 .class_sub_title{height:80px; line-height:80px; margin-top:30px; color: #FFF; font-size:30px;letter-spacing:10px; font-family:"华文新魏", "Microsoft Yahei", "新宋体"; text-align:right;}

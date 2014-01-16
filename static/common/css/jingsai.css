@@ -1,0 +1,106 @@
+body{color:#000;background:#08679C; font:12px/22px Verdana,Arial,sans-serif,"Times New Roman",宋体;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,tr{margin:0;padding:0;}
+
+li{list-style-type:none;}
+/*
+* 定义H系列标签
+* @overlay HN
+* @desc 覆盖H系列标签默认属性
+*/
+h1{ font-size:24px;}
+h2{ font-size:20px;}
+h3{ font-size:18px;}
+h4{ font-size:16px;}
+h5{ font-size:14px;}
+h6{ font-size:12px;}
+
+.info {width: 1000px; margin:0 auto;}
+
+.top{  width:100%; height:40px; background-color:#064466; color:#FFF;}
+.top_logo{font-family:"华文中宋","Microsoft Yahei", "新宋体"; font-size:20px; height:40px; line-height:40px;}
+.c_red {color:red;}
+.fs_italic{font-style:italic;}
+.ml_30 {margin-left:30px;}
+
+.top a{ color:#FF3; margin:auto 10px; font-size:14px; height:40px; line-height:40px;}
+.top a:hover{color: #00FF00}
+
+/* 浮动定义 */
+.FL{float:left;}
+.FR{float:right;}
+
+/* 定位关系 */
+.absolute{position:absolute;}
+.relative{position:relative;}
+
+.DivH5,.DivH10,.DivH15,.DivH20,.DivH25,.DivH30,DivH1,.DivH40{width:100%;overflow:hidden;}
+.DivH1{ height:1px;}
+.DivH5{height:5px;}
+.DivH10{height:10px;}
+
+.contest_header {
+	background-image: url(../images/bg_big.jpg);
+	background-repeat: no-repeat;
+	height:550px;
+}
+
+.fixed:after { content: "."; display: block; clear: both; height: 0; visibility: hidden; }
+.fixed { display: block; min-height: 1%; }
+
+
+.contest_h1{padding-top:190px;line-height:90px; color:#FFF; font-size:50px;letter-spacing:10px; font-family:"华文中宋", "Microsoft Yahei", "新宋体";}
+
+.contest_header .show_top{height:500px; position:relative;}
+
+.show_top .time{color: #FFFFFF; font-family: "微软雅黑"; font-size: 15px; position:absolute; left:600px; top:350px;}
+.show_top .time b {font-size: 35px;color: #FFFFFF;font-family: "Times New Roman", Times, serif;}
+.show_top .bm {position:absolute; left:700px; top:330px;}
+.show_top .bm em {font-size: 1px; visibility: hidden;}
+.show_top .bm a {background-image: url(../images/a1.png);height: 66px;width: 188px;display: block;text-decoration: none;}
+.show_top .bm a:hover {background-image: url(../images/a2.png);text-decoration: none;}
+
+.dhbox {}
+.dhbox b {display: block;font-weight: normal;color: #FFFFFF;font-size: 14px;float: left;line-height: 40px;height: 40px;}
+.dhbox a {display: block;font-family: "微软雅黑";font-size: 18px;color: #FFFFFF;text-decoration: none;float: left; line-height: 40px;}
+.dhbox a:hover {color: #fff200; }
+.dhbox ul li{display:block; float:left; margin:0px 15px;}
+.dhbox ul li a.current {color:#fff200;}
+
+.news_box {margin-top: 12px;}
+.left_div{width:200px; background:#FFFFFF}
+.right_div{padding:0 2px; width:784px;}
+.left_side{width:200px;}
+
+.right_div .block{ background:#FFFFFF; border:#666 solid 1px; width:100%; display:block; height:auto; overflow:hidden; }
+
+.left_div { border:1px #666666 solid;}
+.div_menu { padding:10px; background:#FFF}
+.div_menu .div_menu_head { background:url(../images/new_index_r7_c4.jpg) no-repeat 0 50%; border-bottom:2px #0C3 solid; line-height:30px; height:30px;}
+.div_menu .div_menu_head h2{padding-left:15px;}
+
+.div_menu { padding:10px; background:#FFF}
+.div_menu .div_menu_head { background:url(../images/new_index_r7_c4.jpg) no-repeat 0 50%; border-bottom:2px #0C3 solid; line-height:30px; height:30px;}
+.div_menu .div_menu_head h2{padding-left:15px;}
+
+.baoming_menu{width:180px; border:#666 solid 1px; overflow:hidden; background:#FFF; padding:10px;}
+.baoming_menu .baoming_head{background:url(../images/new_index_r7_c4.jpg) no-repeat 0 50%; border-bottom:2px #0C3 solid; line-height:30px; height:30px;}
+.baoming_head h2{ padding-left:15px;}
+
+.main .div_block{ margin-left:10px; padding-right:10px; width:372px; background:url(../images/sbbb.jpg) no-repeat right center;}
+.div_block .div_block_head{height:35px; line-height:35px; border-bottom:#00CC99 solid 1px; position:relative;}
+
+.block_list {width:760px; padding:10px; position:relative;}
+.block_list h2{border-bottom:#0F0 solid 1px; height:40px; line-height:30px;}
+
+.div_block_body li span{float:right; }
+
+.div_block_body ul{margin-left:20px;}
+.div_block_body ul li{list-style:circle; height:28px; line-height:28px;}
+
+.div_block_body ul li a{ font-size:14px}
+
+.border-top{border-top:#333 1px dashed;}
+
+.baoming_body ul li{ width:100%; height:35px; line-height:35px; overflow:hidden; font-size:18px; padding-left:15px; }
+.baoming_body ul li a{color:#00C}
+
