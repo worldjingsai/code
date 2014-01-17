@@ -1,6 +1,56 @@
 
 // JavaScript Document
 $(function(){
+	// 得到今天的日期
+	if($("span.mlr5") != undefined){
+	$("span.mlr5").html(function(){
+		var _date = new Date();
+		var _week = _date.getDay();
+		var weekArray = ['日', '一', '二', '三', '四', '五', '六'];
+		var datestr = (_date.getMonth() + 1) + '月' + _date.getDate() + '日  星期' + weekArray[_date.getDay()];
+		return datestr;
+	});
+	};
+	
+	$(".js_login").click(function(){
+	    $(".index_img").hide();
+		$(".login_img").show();
+	  });
+	$(".js_register").click(function(){
+	    $(".index_img").show();
+		$(".login_img").hide();
+	  });
+	  
+	$("#login_username").focus(function(){
+	    $("#username_hide").hide();
+	  });
+	  
+	$("#login_username").blur(function(){
+	  	var tes = $("#login_username").val();
+		if(tes == "")
+		{
+			$("#username_hide").show();
+		} else
+		{
+			$("#username_hide").hide();
+		}
+	  });
+	  
+	$("#login_password").focus(function(){
+	    $("#password_hide").hide();
+	  });
+	  
+	$("#login_password").blur(function(){
+	  	var tes = $("#login_password").val();
+		if(tes == "")
+		{
+			$("#password_hide").show();
+		} else
+		{
+			$("#password_hide").hide();
+		}
+	  });
+
 	//$('#reply_content').bind("blur focus keydown keypress keyup", function(){
 	//	recount();
 	//});

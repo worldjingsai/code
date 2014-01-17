@@ -36,6 +36,7 @@ class User extends SB_Controller{
 
     }
     public function reg(){
+        
         //加载form类，为调用错误函数,需view前加载
         $this->load->helper('form');
         $data['title'] = '注册新用户';
@@ -80,7 +81,7 @@ class User extends SB_Controller{
                 redirect();
             }
         }else{
-            $this->display("index/index.html");
+            $this->display("user/register.html");
         }
     }
 	
