@@ -37,40 +37,11 @@ input,select{font-size:12px;vertical-align:middle;}
 */
 body div{text-align:left;}
 
-/*
-* 标签属性
-* @overlay textarea,input
-* @desc 强制输入时内容超出时换行
-*/
 textarea,input{	word-wrap:break-word;word-break:break-all;padding:0px;}
-/*
-* 清除ul列表标记的样式
-* @overlay li
-* @desc	ul列表更多的用在不需要列表前置符号的样式里
-*/
 li{list-style-type:none;}
-/*
-* 定义图片边框
-* @overlay img
-* @desc	当图片作为链接内容被填充时，会有默认边框出现，重定义掉
-*/
 img{border:0 none;}
-/*
-* 定义默认的链接样式
-* @overlay a
-* @desc	仅仅是作为默认样式提供，可以在各自的实例中覆盖掉
-*/
-a:link, a:visited{
-color:#333;
-text-decoration: none;
-}
-a:hover{
-color:#F60;
-text-decoration: underline;
-}
-/* 去掉链接的虚线框 */
-/* a {outline: none; a {star:expression(this.onFocus=this.blur()); */  
-
+a:link, a:visited{color:#333;text-decoration: none;}
+a:hover{color:#F60;text-decoration: underline;}
 /*
 * 定义H系列标签
 * @overlay HN
@@ -83,11 +54,7 @@ h4{ font-size:16px;}
 h5{ font-size:14px;}
 h6{ font-size:12px;}
 
-/* @end */
 
-
-/* @group 通用属性定义 */
-/* 鼠标样式 */
 .pointer{cursor:pointer;}
 /* 取消边框 */
 .NoBorder{border:0 none;}
@@ -249,16 +216,13 @@ a.red{color:red;}
 .current {color:#FF0000;}
 
 .main .logo{display:block;padding:10px; border:#666 solid 1px; background:#FFF; width:180px; height:180px;}
-.main .point{margin-left:10px;display:block; border:#666 solid 1px; background:#FFF; width:784px; overflow:hidden; height:200px;}
+.main .point{margin-left:10px;display:block; border:#666 solid 1px; background:#FFF; width:744px; overflow:hidden; height:200px;}
 
 .left_div{width:200px; background:#FFFFFF}
-.right_div{padding:0 2px; width:784px;}
+.right_div{padding:0 2px; width:744px;}
 .left_side{width:200px;}
 
-
 .right_div .block{ background:#FFFFFF; border:#666 solid 1px; width:100%; display:block; height:auto; overflow:hidden; }
-
-
 
 .left_div { border:1px #666666 solid;}
 .div_menu { padding:10px; background:#FFF}
@@ -270,7 +234,8 @@ a.red{color:red;}
 .baoming_head h2{ padding-left:15px;}
 
 
-.main .div_block{ margin-left:10px; padding-right:10px; width:372px; background:url(../images/sbbb.jpg) no-repeat right center;}
+.main .div_block{ margin-left:10px; padding-right:10px; width:47%;}
+.main .flip{background:url(../images/sbbb.jpg) no-repeat right center;} 
 .div_block .div_block_head{height:35px; line-height:35px; border-bottom:#00CC99 solid 1px; position:relative;}
 
 .div_block_body li span{float:right; }
@@ -282,7 +247,7 @@ a.red{color:red;}
 
 .border-top{border-top:#333 1px dashed;}
 
-.baoming_body ul li{ width:100%; height:35px; line-height:35px; overflow:hidden; font-size:18px; padding-left:15px; }
+.baoming_body ul li{ width:100%; height:30px; line-height:30px; overflow:hidden; font-size:14px; padding-left:15px; }
 .baoming_body ul li a{color:#00C}
 .block_list {width:760px; padding:10px; position:relative;}
 .block_list h2{border-bottom:#0F0 solid 1px; height:40px; line-height:30px;}
@@ -334,6 +299,4 @@ table.create_teble {border:#AEDEF2; border-collapse: collapse;}
 .create_teble input.number{width:40px; text-align:center;}
 
 .footer .version{ text-align:center; line-height:20px; height:80px; margin-top:20px; border-top: #999999 2px solid; }
-
-
 

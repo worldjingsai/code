@@ -6,7 +6,7 @@
         <div class="right_div FR">
         <div class="DivH10"></div>
 		<div class="block fixed">
-          <div class="div_block FL">
+          <div class="div_block flip FL">
             <div class="div_block_head">
               <h2 >校内竞赛</h2>  <span class="More"><a href="/univs/clist/<%$tplData.university.univs_id%>?cat=1">更多&gt;&gt; </a></span>
             </div>
@@ -14,14 +14,14 @@
               <ul >
               <%if $tplData.schooleContests%>
               <%foreach from=$tplData.schooleContests item item=value key=key%>
-                <li ><a href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$value.contest_id%>"><%$value.contest_name%></a> <span><%$value.create_time|truncate:10:''%></span></li>
+                <li ><a target="_blank" href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$value.contest_id%>"><%$value.contest_name%></a> <span><%$value.create_time|truncate:10:''%></span></li>
               <%/foreach%>
               <%/if%>
               </ul>
             </div>
 		  </div>
 		  
-		  <div class="div_block FR">
+		  <div class="div_block FL">
 			<div class="div_block_head">
               <h2 >全部竞赛</h2> <span class="More"><a href="/univs/clist/<%$tplData.university.univs_id%>?cat=2">更多&gt;&gt; </a></span>
             </div>
@@ -29,7 +29,7 @@
                <ul >
               <%if $tplData.publicContests%>
               <%foreach from=$tplData.publicContests item item=value key=key%>
-                <li ><a href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$value.contest_id%>"><%$value.contest_name%></a> <span><%$value.create_time|truncate:10:''%></span></li>
+                <li ><a target="_blank" href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$value.contest_id%>"><%$value.contest_name%></a> <span><%$value.create_time|truncate:10:''%></span></li>
               <%/foreach%>
               <%/if%>
               </ul>
