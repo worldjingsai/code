@@ -80,7 +80,7 @@ class User extends SB_Controller{
                 redirect();
             }
         }else{
-            //$this->load->view('reg',$data);
+            $this->display("index/index.html");
         }
     }
 	
