@@ -32,11 +32,6 @@ class Contest_m extends SB_Model{
             return false;
         }
     }
-    
-    function check_url($univs_id, $url){
-        $query = $this->db->get_where($this->tb, array('univs_id'=>$univs_id, 'url'=>$url));
-        return $query->row_array();
-    }
 
     public function get($cid){
         $this->db->select('*');
@@ -94,5 +89,36 @@ class Contest_m extends SB_Model{
         } else {
             return false;
         }
+    }
+    
+    /**
+     * 检测某项竞赛在某个高校是否存在
+     * @param  string $uri 输入的竞赛的URI
+     * @param  int    $univs_id 高校ID
+     */
+    public function check_contest_exist_in_univs($uri, $univs_id){
+       $query = $this->db->get_where($this->tb, array('univs_id'=>$univs_id, 'contest_url'=>$uri, 'contest_level'=> 1));
+       $data  = $query->row_array();
+       if(!empty($data)){
+           return true;
+       }
+       return false;
+    }
+    
+    /**
+     * 检测某项竞赛在全国是否存在
+     * @param  string $uri 输入的竞赛的URI
+     * @param  int    $univs_id 高校ID
+     */
+    public function check_contest_exist_in_nation($uri){
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->where('contest_url',$uri)->where_i('contest_leve',array(2,3,4));
+        $query = $this->db->get();
+        $data  = $query->row_array();
+        if(!empty($data)){
+            return true;
+        }
+        return false;
     }
 }

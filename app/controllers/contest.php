@@ -14,4 +14,21 @@ class Contest extends SB_controller{
     public function index($cid, $page=1){
         
     }
+    
+    /**
+     * 检测竞赛的URL是否被占用
+     */
+    public function ajax_chkuri(){
+        $type = $this->input->post('contest_type');
+        $uri  = $this->input->post('contest_url');
+        if($type == 1){ // 校内级别
+            $univs_id = intval($this->input->post('univs_id'));
+            $bol      = $this->upload_m->check_contest_exist_in_univs($uri, $univs_id);
+        }elseif($type == 2 || $type == 3 || $type == 4){ // 全国级别
+            $bol = $this->upload_m->check_contest_exist_in_nation($uri);
+        }else{
+            $bol = false;
+        }
+        return $bol;
+    }
 }
