@@ -32,24 +32,14 @@ class Univs extends SB_Controller{
     /**
      * 学校竞赛列表
      */
-    public function clist($univs_id)
-    {
-        $univs_id = intval($univs_id);
-        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+    public function clist($univs_short_name, $type, $page){
+        $univs_info = $this->univs_m->get_univs_info_by_univs_short_name($univs_short_name);
         $data['university'] = $univs_info;
-
-        $cat = 1;
-        if ($this->input->get('cat') == 2)
-        {
-            $cat = 2;
-        }
-        if ($cat == 1)
-        {
+        if($type == 'inner'){
             $list = $this->_schoolcList($univs_id);
             $data['action'] = 'schoolContest';
             $subTitle = '校内竞赛';
-        } elseif ($cat == 2)
-        {
+        }elseif($type == 'outer'){
             $data['action'] = 'allContest';
             $list = $this->_cList();
             $subTitle = '全部竞赛';
@@ -216,19 +206,15 @@ class Univs extends SB_Controller{
     /**
      * 显示学校的竞赛列表
      */
-    protected function _schoolcList($univs_id)
-    {
-        if(!$univs_id)
-        {
+    protected function _schoolcList($univs_id){
+        if(!$univs_id){
             return show_error('错误的学校ID');
         }
         $this->load->model('university_contest_m');
         $this->load->model('contest_m');
-
         $page = $this->input->get('page');
         $limit = $this->input->get('limit');
-        if (!$page)
-        {
+        if (!$page){
             $page = 0;
         }
         if (!$limit)
@@ -253,22 +239,16 @@ class Univs extends SB_Controller{
     /**
      * 显示所有的竞赛列表
      */
-    protected function _cList()
-    {
+    protected function _cList(){
         $this->load->model('contest_m');
-
         $page = $this->input->get('page');
         $limit = $this->input->get('limit');
-        if (!$page)
-        {
+        if(!$page){
             $page = 0;
         }
-        if (!$limit)
-        {
+        if(!$limit){
             $limit = $this->limit;
         }
-
-        $cList = array();
         $cList = $this->contest_m->listPublic($page, $limit);
         return $cList;
     }
