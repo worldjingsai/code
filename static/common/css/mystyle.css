@@ -20,7 +20,6 @@ ul, ol {
 small {
     font-size: 12px;
 }
-.grid-gutter-width{10px}
 body{padding-top: 70px;background:#E0E0E0/* url(../images/bg.png) bottom left repeat*/;font-family:"Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB",STHeiti !important}
 #wrap{/*padding-top:60px*/}
 .container {max-width:980px;margin-left: auto; margin-right: auto; *zoom: 1;}
