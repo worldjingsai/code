@@ -32,7 +32,12 @@ class Univs extends SB_Controller{
     /**
      * 学校竞赛列表
      */
-    public function clist($univs_short_name, $type, $page){
+    public function clist($univs_short_name_type_page){
+        $params     = explode('_', $univs_short_name_type_page);
+        if(empty($params) || !is_array($params)){
+            $this->myclass->notice('alert("该高校不存在");window.location.href="'.site_url('/').'";');
+        }
+        $univs_short_name = $params[0];
         $univs_info = $this->univs_m->get_univs_info_by_univs_short_name($univs_short_name);
         $data['university'] = $univs_info;
         if($type == 'inner'){
