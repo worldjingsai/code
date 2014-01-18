@@ -240,7 +240,7 @@ class Univs extends SB_Controller{
         if(empty($offset)){
             $offset = 0;
         }
-        $cList = $this->contest_m->listPublic($page, $limit);
+        $cList = $this->contest_m->listPublic($offset, $limit);
         return $cList;
     }
 }
