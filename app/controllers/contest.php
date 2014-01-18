@@ -8,11 +8,11 @@ class Contest extends SB_controller{
         parent::__construct();
         $this->load->model('contest_m');
     }
-    
+
     public function index($cid, $page=1){
-        
+
     }
-    
+
     /**
      * 检测竞赛的URL是否被占用
      */
@@ -25,9 +25,14 @@ class Contest extends SB_controller{
         }elseif($type == 2 || $type == 3 || $type == 4){ // 全国级别
             $bol = $this->contest_m->check_contest_exist_in_nation($uri);
         }else{
-            $bol = false;
+            $bol = true;
         }
-        echo strval($bol);
+        if($bol)
+        {
+            echo "false";
+        } else {
+            echo "ture";
+        }
         return ;
     }
 }
