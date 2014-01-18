@@ -27,6 +27,7 @@ class Contest extends SB_controller{
         }else{
             $bol = false;
         }
-        return $bol;
+        echo strval($bol);
+        return ;
     }
 }
