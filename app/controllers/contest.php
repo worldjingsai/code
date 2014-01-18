@@ -6,9 +6,7 @@
 class Contest extends SB_controller{
     function __construct (){
         parent::__construct();
-        $this->load->model('forum_m');
-        $this->load->model('cate_m');
-        $this->load->library('myclass');
+        $this->load->model('contest_m');
     }
     
     public function index($cid, $page=1){
