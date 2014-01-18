@@ -33,10 +33,6 @@ class Contest extends SB_controller{
         } else {
             echo "ture";
         }
-<<<<<<< HEAD
-=======
-        echo $bol;
->>>>>>> f65b55277222e3d87cae6405f686bfd08e469ce1
         return ;
     }
 }
