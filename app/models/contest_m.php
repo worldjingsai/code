@@ -5,10 +5,10 @@
 
 class Contest_m extends SB_Model{
 
-    const COLUM_NOTICE = 1;
-    const COLUM_ABOUT = 2;
+    const COLUM_NOTICE  = 1;
+    const COLUM_ABOUT   = 2;
     const COLUM_PROBLEM = 3;
-    const COLUM_WINNER =4;
+    const COLUM_WINNER  = 4;
     static $columNames = array(
         self::COLUM_NOTICE => '竞赛通知',
         self::COLUM_ABOUT => '竞赛简介',
@@ -20,25 +20,25 @@ class Contest_m extends SB_Model{
     const TYPE_PUBLIC = 2;
 
     public $tb = 'contest';
+    
     function __construct(){
         parent::__construct();
     }
+    
     function add($data){
-        if($this->db->insert($this->tb, $data))
-        {
+        if($this->db->insert($this->tb, $data)){
             return $this->db->insert_id();
-        } else
-        {
+        }else{
             return false;
         }
     }
+    
     function check_url($univs_id, $url){
         $query = $this->db->get_where($this->tb, array('univs_id'=>$univs_id, 'url'=>$url));
         return $query->row_array();
     }
 
-    public function get($cid)
-    {
+    public function get($cid){
         $this->db->select('*');
         $query = $this->db->where('contest_id',$cid)->where('status',1)->get($this->tb);
         return $query->row_array();
@@ -47,8 +47,7 @@ class Contest_m extends SB_Model{
     /**
      * 根据contest_id获取竞赛明细
      */
-    public function listByCid($cid)
-    {
+    public function listByCid($cid){
         $this->db->select('*');
         $this->db->from($this->tb);
         $this->db->order_by('create_time','desc');
@@ -64,17 +63,17 @@ class Contest_m extends SB_Model{
     /**
      * 根据contest_id获取竞赛明细
      */
-    public function listPublic($page, $limit)
-    {
+    public function listPublic($offset, $limit){
         $this->db->select('*');
         $this->db->from($this->tb);
         $this->db->order_by('create_time','desc');
         $this->db->where('contest_type', self::TYPE_PUBLIC)->where('status',1);
-        $this->db->limit($limit,$page);
+        $this->db->offset($offset);
+        $this->db->limit($limit);
         $query = $this->db->get();
         if($query->num_rows() > 0){
             return $query->result_array();
-        } else {
+        }else{
             return false;
         }
     }
@@ -82,12 +81,13 @@ class Contest_m extends SB_Model{
     /*
      * 获取所有的竞赛明细
      */
-    public function get_all_contest($univs_id, $page, $limit){
+    public function get_all_contest($univs_id, $offset, $limit){
         $this->db->select('*');
         $this->db->from($this->tb);
         $this->db->order_by('create_time','desc');
         $this->db->where('univs_id',$univs_id)->where('status',1);
-        $this->db->limit($limit,$page);
+        $this->db->offset($offset);
+        $this->db->limit($limit);
         $query = $this->db->get();
         if($query->num_rows() > 0){
             return $query->result_array();

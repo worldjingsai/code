@@ -8,6 +8,7 @@ class Univs extends SB_Controller{
     function __construct (){
         parent::__construct();
         $this->load->model('univs_m');
+        $this->load->model('contest_m');
         $this->load->library('myclass');
     }
 
@@ -38,15 +39,18 @@ class Univs extends SB_Controller{
             $this->myclass->notice('alert("该高校不存在");window.location.href="'.site_url('/').'";');
         }
         $univs_short_name = $params[0];
+        $type             = $params[1];
+        $offset           = intval($params[2]);
         $univs_info = $this->univs_m->get_univs_info_by_univs_short_name($univs_short_name);
         $data['university'] = $univs_info;
+        $univs_id           = $univs_info['univs_id'];
         if($type == 'inner'){
-            $list = $this->_schoolcList($univs_id);
+            $list = $this->_schoolcList($univs_id,$offset);
             $data['action'] = 'schoolContest';
             $subTitle = '校内竞赛';
         }elseif($type == 'outer'){
             $data['action'] = 'allContest';
-            $list = $this->_cList();
+            $list = $this->_cList($offset);
             $subTitle = '全部竞赛';
         }
         $data['subTitle'] = $subTitle;
@@ -58,8 +62,7 @@ class Univs extends SB_Controller{
     /**
      * 显示一个竞赛
      */
-    public function contest($univs_id)
-    {
+    public function contest($univs_id){
         $univs_id = intval($univs_id);
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
@@ -70,7 +73,6 @@ class Univs extends SB_Controller{
             return show_error('不存在的竞赛');
         }
         // 引入模型
-        $this->load->model('contest_m');
         $this->load->model('article_m');
         $this->load->model('article_content_m');
 
@@ -126,7 +128,6 @@ class Univs extends SB_Controller{
         {
             $step = intval($this->input->get('step'));
         }
-        $this->load->model('contest_m');
         $this->load->model('univs_m');
 
         $data = array();
@@ -151,14 +152,12 @@ class Univs extends SB_Controller{
             // TODO
             $data['create_user_id'] = 0;
             $contest_id = $this->contest_m->add($data);
-            if($contest_id)
-            {
-               $this->load->model('university_contest_m');
+            if($contest_id){
                $addData = array(
                        'univs_id' => $univs_id,
                        'contest_id' => $contest_id,
                        );
-               $this->university_contest_m->add($addData);
+               $this->contest_m->add($addData);
             }
             unset($data);
         } elseif($step > 2) {
@@ -211,28 +210,20 @@ class Univs extends SB_Controller{
     /**
      * 显示学校的竞赛列表
      */
-    protected function _schoolcList($univs_id){
+    protected function _schoolcList($univs_id,$offset){
         if(!$univs_id){
             return show_error('错误的学校ID');
         }
-        $this->load->model('university_contest_m');
-        $this->load->model('contest_m');
-        $page = $this->input->get('page');
-        $limit = $this->input->get('limit');
-        if (!$page){
-            $page = 0;
+        $offset = $this->input->get('offset');
+        $limit = 20;
+        if(empty($offset)){
+            $offset = 0;
         }
-        if (!$limit)
-        {
-            $limit = $this->limit;
-        }
-        $cids = $this->university_contest_m->lists($univs_id, $page, $limit);
+        $cids = $this->contest_m->get_all_contest($univs_id, $offset, $limit);
         $cid = array();
         $cList = array();
-        if ($cids)
-        {
-            foreach ($cids as $key=>$value)
-            {
+        if($cids){
+            foreach ($cids as $key=>$value){
                 $cid[$value['contest_id']] = $value['contest_id'];
             }
             $cList = $this->contest_m->listByCid($cid);
@@ -240,19 +231,14 @@ class Univs extends SB_Controller{
         return $cList;
     }
 
-
     /**
      * 显示所有的竞赛列表
      */
-    protected function _cList(){
-        $this->load->model('contest_m');
-        $page = $this->input->get('page');
-        $limit = $this->input->get('limit');
-        if(!$page){
-            $page = 0;
-        }
-        if(!$limit){
-            $limit = $this->limit;
+    protected function _cList($offset){
+        $limit = 20;
+        $offset = $this->input->get('page');
+        if(empty($offset)){
+            $offset = 0;
         }
         $cList = $this->contest_m->listPublic($page, $limit);
         return $cList;
