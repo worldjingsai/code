@@ -1,5 +1,9 @@
 <%include file="univs/univs_header.html"%>
+<link  rel='stylesheet' type='text/css' href='/static/common/css/jquery-ui-1.10.4.custom.min.css' >
+<script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="/static/common/js/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="/static/common/js/jquery.validate.js"></script>
+<script type="text/javascript" src="/static/common/js/univs.js"></script>
         <!--第一栏-->
         <div class="right_div FR">
         
@@ -14,7 +18,8 @@
             <div class="article_body">
                <div class="register">
                <div class="create_data">
-            <form id="form-practice" action="/univs/create/<%$tplData.university.univs_id%>?step=<%$tplData.step+1%>" method="post" class="dialog-box">
+        <form id="form-practice" action="/univs/create/<%$tplData.university.univs_id%>?step=<%$tplData.step+1%>" method="post" class="dialog-box">
+            <input type="hidden" value="<%$tplData.university.univs_id%>" name="univs_id" id="univs_id"/>
             <table width="100%" class="create_teble">
         <colgroup>
             <col width="100">
@@ -24,21 +29,13 @@
         <tr>
             <th><em>*</em>竞赛名称:</th>
             <td class="input" >
-                <div class="clearfix"><input type="text" class="text" name="contest_name" maxlength="255" data-rule-required="true" data-msg-required="内容不能为空"></div>
-            </td>
-            
-        </tr>
-        <tr>
-            <th><em>*</em>竞赛网址:</th>
-            <td id="jobCity-linkup" >
-                <input type="text" class="text" name="contest_url" maxlength="40" value="" required data-msg-required="内容不能为空"/> <a class="button" href="#">点击检测</a>
+                <div class="clearfix"><input type="text" class="text" name="contest_name" id="contest_name" maxlength="255" data-rule-required="true" data-msg-required="内容不能为空"></div>
             </td>
         </tr>
-        
         <tr>
             <th><em>*</em>竞赛级别:</th>
             <td >
-            <select name="contest_type" class="select">
+            <select name="contest_type" class="select" id="contest_type">
                     <option value="1">校内竞赛</option>
                     <option value="2">省市竞赛</option>
                     <option value="3">全国竞赛</option>
@@ -46,11 +43,10 @@
                 </select>
             </td>
         </tr>
-        
         <tr>
             <th><em>*</em>竞赛类型:</th>
             <td >
-                <select name="contest_level" class="select">
+                <select name="contest_level" class="select" id="contest_level">
                     <option value="1">数学建模</option>
                     <option value="2">ACM程序设计</option>
                     <option value="3">创新创业</option>
@@ -63,15 +59,22 @@
         </tr>
         
         <tr>
+            <th><em>*</em>竞赛网址:</th>
+            <td >
+                www.worldjingsai.com/univs/<input type="text" class="text" id="contest_url" name="contest_url" maxlength="40" />
+            </td>
+        </tr>
+        
+        <tr>
             <th>报名开始时间:</th>
             <td >
-                <input type="text" class="text" name="regist_start_time"  value=""/>格式：2014-01-01 08:00:00
+                <input type="text" class="text timer" name="regist_start_time" value=""/>
             </td>
         </tr>
         <tr>
             <th>报名结束时间:</th>
             <td >
-                <input type="text" class="text" name="regist_end_time" value=""/> 格式：2014-01-01 08:00:00
+                <input type="text" class="text timer" name="regist_end_time" value=""/>
             </td>
         </tr>
         
@@ -79,20 +82,20 @@
         <tr>
             <th>比赛开始时间:</th>
             <td  >
-                <input type="text" class="text" name="contest_start_time" value=""/> 格式：2014-01-01 08:00:00
+                <input type="text" class="text timer" name="contest_start_time" value=""/>
             </td>
         </tr>
         
         <tr>
             <th>比赛结束时间:</th>
             <td  >
-                <input type="text" class="text" name="contest_start_time" value=""/> 格式：2014-01-01 08:00:00
+                <input type="text" class="text timer" name="contest_start_time" value=""/>
             </td>
         </tr>
         
         <tr class="center">
             <td colspan="2" >
-                <button type="submit" class="button" >下一步</button>
+                <button type="submit" class="button" >提交</button>
             </td>
         </tr>
              
@@ -103,14 +106,7 @@
           </div>
           </div>
           
-          
         </div>
        </div>
-
-<script type="text/javascript">
-$(document).ready(function() {
-    $("#form-practice").validate();
-});
-</script>
 
 <%include file="univs/univs_footer.html"%>
