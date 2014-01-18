@@ -146,7 +146,7 @@ class User extends SB_Controller{
                 $this->myclass->notice('alert("用户名或密码错误!!");history.back();');
             }
         }else{
-            $this->load->view('login',$data);
+            $this->display("user/register.html");
         }
     }
 
