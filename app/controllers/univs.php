@@ -21,8 +21,8 @@ class Univs extends SB_Controller{
             $this->myclass->notice('alert("该高校不存在");window.location.href="'.site_url('/').'";');
         }
         $data['university'] = $univs_info;
-        $schooleContests = $this->_schoolcList(intval($univs_info['univs_id']));
-        $publicContests = $this->_cList();
+        $schooleContests = $this->_schoolcList(intval($univs_info['univs_id']), 0);
+        $publicContests = $this->_cList(0);
         $data['schooleContests'] = $schooleContests;
         $data['publicContests'] = $publicContests;
         $data['action'] = 'index';
