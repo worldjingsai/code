@@ -5,7 +5,6 @@
 <title>环球竞赛网 - 中国大学生竞赛联盟</title>
 <meta name="keywords" content="数学建模竞赛,全国高校联盟,MCM,ICM">
 <meta name="description" content="全国大学生竞赛联盟">
-<meta name="Copyright" content="worldjingsai.com">
 <link rel="shortcut icon" href="/favicon.ico">
 
 <link  rel='stylesheet' type='text/css' href='/static/common/css/gaoxiao.css' >
@@ -30,9 +29,9 @@
 <div class="nav">
 	<div class="container">
 	<ul>
-	<li   ><a href="http://www.worldjingsai.com" >首页</a></li>
-    <li   ><a href="/<%$tplData.university.short_name%>" <%if $tplData.action == 'index'%>class="current"<%/if%> >高校首页</a></li>
-	<li><a href="/univs/clist/<%$tplData.university.univs_id%>?cat=2" <%if $tplData.action == 'allContest'%>class="current"<%/if%>>全部竞赛</a></li>
+	<li><a href="http://www.worldjingsai.com" >首页</a></li>
+    <li><a href="/<%$tplData.university.short_name%>" <%if $tplData.action == 'index'%>class="current"<%/if%> >高校首页</a></li>
+    <li><a href="/univs/clist/<%$tplData.university.univs_id%>?cat=2" <%if $tplData.action == 'allContest'%>class="current"<%/if%>>全部竞赛</a></li>
     <li><a href="/univs/clist/<%$tplData.university.univs_id%>?cat=1" <%if $tplData.action == 'schoolContest'%>class="current"<%/if%>>校内竞赛</a></li>
     <li><a href="/univs/create/<%$tplData.university.univs_id%>" <%if $tplData.action == 'create'%>class="current"<%/if%>>创建竞赛</a></li>
     <li><a href="#">论坛</a></li>
