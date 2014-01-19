@@ -95,6 +95,8 @@ class SB_Controller extends Base_Controller{
     public function show_json($data){
         if(!isset($data['error_code'])){
             $data['err_code'] = Constants::success;
+        }
+        if(!isset($data['err_msg'])){
             $data['err_msg']  = Constants::$err_message[$data['err_code']];
         }
         echo json_encode($data);
