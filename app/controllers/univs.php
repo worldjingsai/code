@@ -9,7 +9,7 @@ class Univs extends SB_Controller{
         parent::__construct();
         $this->load->model('univs_m');
         $this->load->model('contest_m');
-        $this->load->library('myclass');
+        $this->load->model('index_m');
     }
 
     /**
@@ -112,9 +112,6 @@ class Univs extends SB_Controller{
         $this->display($tpl);
     }
 
-
-
-
     /**
      * 创建竞赛，一共四歩
      * @param int $univs_id
@@ -124,20 +121,17 @@ class Univs extends SB_Controller{
         $step = 1;
         $contest_id = 0;
         $univs_id = intval($univs_id);
-        if(isset($_GET['step']))
-        {
+        if(isset($_GET['step'])){
             $step = intval($this->input->get('step'));
         }
         $this->load->model('univs_m');
 
         $data = array();
-        if ($step > 5)
-        {
+        if ($step > 5){
             return false;
         }
 
-        if ($step == 2)
-        {
+        if ($step == 2){
             $data['contest_name'] = $this->input->post('contest_name', true);
             $data['contest_url'] = $this->input->post('contest_url', true);
             $data['contest_type'] = intval($this->input->post('contest_type'));
@@ -160,18 +154,14 @@ class Univs extends SB_Controller{
                $this->contest_m->add($addData);
             }
             unset($data);
-        } elseif($step > 2) {
-            if ($step == 3)
-            {
+        }elseif($step > 2){
+            if ($step == 3){
                 $column_id = Contest_m::COLUM_ABOUT;
-            } elseif ($step == 4)
-            {
+            } elseif ($step == 4){
                 $column_id = Contest_m::COLUM_NOTICE;
-            } elseif ($step == 5)
-            {
+            } elseif ($step == 5){
                 $column_id = Contest_m::COLUM_PROBLEM;
             }
-
             $this->load->model('article_m');
             $this->load->model('article_content_m');
             $data['article_type'] = Article_m::TYPE_CONTEST;
@@ -181,13 +171,11 @@ class Univs extends SB_Controller{
             $data['title'] = $this->input->post('title', true);
             $contentdata['content'] = $this->input->post('content', true);
             $article_id = $this->article_m->add($data);
-            if($article_id)
-            {
+            if($article_id){
                 $contentdata['article_id'] = $article_id;
                 $this->article_content_m->add($contentdata);
             }
-            if ($step == 5)
-            {
+            if ($step == 5){
                 return $this->index($univs_id);
             }
         }
@@ -198,10 +186,9 @@ class Univs extends SB_Controller{
         $show_data['university'] = $univs_info;
         $show_data['step'] = $step;
         $this->tplData = $show_data;
-        if ($step == 1)
-        {
+        if ($step == 1){
             $this->display("contest/create_1.html");
-        } else {
+        }else{
             $this->display("contest/create_2.html");
         }
     }
@@ -242,5 +229,13 @@ class Univs extends SB_Controller{
         }
         $cList = $this->contest_m->listPublic($offset, $limit);
         return $cList;
+    }
+    
+    /**
+     * 异步获取所有高校
+     */
+    public function ajax_get_all(){
+        $provs = $this->index_m->get_all_province();
+        $univs = $this->univs_m->get_all_univs_info();
     }
 }

@@ -23,4 +23,12 @@ class Univs_m extends SB_Model{
         $query = $this->db->where('short_name',$short_name)->where('status',1)->get('university');
         return $query->row_array();
     }
+    
+    /**
+     * 获取所有高校
+     */
+    public function get_all_univs_info(){
+        $univs = $this->db->select('univs_id, univs_name,short_name,provs_id')->from('contest')->where('status', 1)->group_by('provs_id')->get()->row_array();
+        return $univs;
+    }
 }
