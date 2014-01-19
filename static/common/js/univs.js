@@ -31,7 +31,7 @@ $().ready(function() {
 			contest_url: {
 				required: "竞赛网站不能为空",
 				minlength: "竞赛网址不能超过40个字符",
-				remote:"此网站以存在请修改"
+				remote:"此网址已存在请修改"
 			}
 		}
 	});

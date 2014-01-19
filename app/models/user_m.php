@@ -1,4 +1,4 @@
-s<?php
+<?php
 /**
  * 用户相关操作的Model
  */
@@ -36,7 +36,7 @@ class User_m extends SB_Model{
 
     function update_user($uid, $data){
         $this->db->where('uid',$uid);
-        $this->db->update('users', $data); 
+        $this->db->update('users', $data);
         return ($this->db->affected_rows() > 0) ? TRUE : FALSE;
     }
     function update_pwd($data){
@@ -63,10 +63,10 @@ class User_m extends SB_Model{
         $this->db->select('uid,username,avatar');
         $this->db->from('users');
         if($ord=='new'){
-            $this->db->order_by('uid','desc');	
+            $this->db->order_by('uid','desc');
         }
         if($ord=='hot'){
-            $this->db->order_by('lastlogin','desc');	
+            $this->db->order_by('lastlogin','desc');
         }
         $this->db->limit($limit);
         $query = $this->db->get();
