@@ -28,5 +28,4 @@ class Constants{
         self::success    => '成功',
         self::failured   => '失败',
     );
-    
 }
