@@ -28,7 +28,7 @@ class Univs_m extends SB_Model{
      * 获取所有高校
      */
     public function get_all_univs_info(){
-        $univs = $this->db->select('univs_id, univs_name,short_name,provs_id')->from('contest')->where('status', 1)->group_by('provs_id')->get()->row_array();
+        $univs = $this->db->select('univs_id, univs_name,short_name,provs_id')->from('university')->where('status', 1)->group_by('provs_id')->get()->row_array();
         return $univs;
     }
 }
