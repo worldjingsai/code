@@ -87,6 +87,19 @@ class SB_Controller extends Base_Controller{
         $this->smarty->assign('tplData', $this->tplData);
         $this->smarty->display($template);
     }
+    
+    /**
+     * 已Json格式返回数据
+     * @param array  $data 要返回给前端的数据
+     */
+    public function show_json($data){
+        if(!isset($data['error_code'])){
+            $data['err_code'] = Constants::$success;
+            $data['err_msg']  = Constants::$err_message[$data['err_code']];
+        }
+        echo json_encode($data);
+        return ;
+    }
 }
 
 

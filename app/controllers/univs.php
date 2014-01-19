@@ -230,7 +230,16 @@ class Univs extends SB_Controller{
      * 异步获取所有高校
      */
     public function ajax_all_univs(){
-        $provs = $this->index_m->get_all_province();
-        $univs = $this->univs_m->get_all_univs_info();
+        $provinces = $this->index_m->get_all_province();
+        $universities = $this->index_m->get_all_university();
+        if(is_array($universities) && !empty($universities)){
+            foreach($universities as $university){
+                if(array_key_exists($university['provs_id'], $provinces)){
+                    $provinces[$university['provs_id']]['universities'][] = $university;
+                }
+            }
+        }
+        $data['provincs'] = $provinces;
+        $this->show_json($data);
     }
 }
