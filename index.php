@@ -141,6 +141,7 @@ if (realpath($system_path) !== FALSE){
 
 // ensure there's a trailing slash
 $system_path = rtrim($system_path, '/').'/';
+
 // Is the system path correct?
 if ( ! is_dir($system_path)){
     exit("Your system folder path does not appear to be set correctly. Please open the following file and correct this: ".pathinfo(__FILE__, PATHINFO_BASENAME));
@@ -185,7 +186,6 @@ if (is_dir($application_folder)){
  * And away we go...
  *
  */
-require_once(APPPATH.'config/constants.php');
 require_once BASEPATH.'core/CodeIgniter.php';
 date_default_timezone_set("Asia/Shanghai");
 
