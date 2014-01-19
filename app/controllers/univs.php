@@ -68,8 +68,7 @@ class Univs extends SB_Controller{
         $data['university'] = $univs_info;
 
         $cid = $this->input->get('cid');
-        if (!$cid)
-        {
+        if (!$cid){
             return show_error('不存在的竞赛');
         }
         // 引入模型
@@ -77,26 +76,22 @@ class Univs extends SB_Controller{
         $this->load->model('article_content_m');
 
         $cInfo = $this->contest_m->get($cid);
-        if (empty($cInfo))
-        {
+        if (empty($cInfo)){
             return show_error('不存在的竞赛');
         }
         $page = $this->input->get('page');
         $limit = $this->input->get('limit');
-        if (!$page)
-        {
+        if (!$page){
             $page = 0;
         }
-        if (!$limit)
-        {
+        if (!$limit){
             $limit = $this->limit;
         }
 
         $colums = Contest_m::$columNames;
 
         $col = $this->input->get('col');
-        if (!$col || !isset($colums[$col]))
-        {
+        if (!$col || !isset($colums[$col])){
             $col = Contest_m::COLUM_NOTICE;
         }
 
@@ -131,7 +126,7 @@ class Univs extends SB_Controller{
             return false;
         }
 
-        if ($step == 2){
+        if($step == 2){
             $data['contest_name'] = $this->input->post('contest_name', true);
             $data['contest_url'] = $this->input->post('contest_url', true);
             $data['contest_type'] = intval($this->input->post('contest_type'));
@@ -234,7 +229,7 @@ class Univs extends SB_Controller{
     /**
      * 异步获取所有高校
      */
-    public function ajax_get_all(){
+    public function ajax_all_univs(){
         $provs = $this->index_m->get_all_province();
         $univs = $this->univs_m->get_all_univs_info();
     }

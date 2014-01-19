@@ -12,4 +12,4 @@ $route['tag/index/(:any)'] = 'tag/index/$1';
 $route['([a-z]+)'] = 'univs/index/$1';
 $route['([a-z]+)/(outer|inner)']       = 'univs/clist/$1_$2_$3';
 $route['([a-z]+)/(outer|inner)/(\d+)'] = 'univs/clist/$1_$2_$3';
-$route['data/([a-z]+)/([a-z]+)'] = '$1/ajax_$2'; // E.M data/contest/chkuri => contest/ajax_chkuri
+$route['data/([a-z]+)/([a-z|_]+)'] = '$1/ajax_$2'; // E.M data/contest/chkuri => contest/ajax_chkuri
