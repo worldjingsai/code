@@ -21,8 +21,8 @@ define('FOPEN_WRITE_CREATE_STRICT',	      'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',      'x+b');
 
 class Constants{
-    public static $success  =   0;
-    public static $failured =   -1;
+    public $success  =   0;
+    public $failured =   -1;
     
     public static $err_message = array(
         self::success    => '成功',
