@@ -25,7 +25,7 @@ class Constants{
     public static $failured =   -1;
     
     public static $err_message = array(
-        self::success    => '成功',
-        self::failured   => '失败',
+        0    => '成功',
+        -1   => '失败',
     );
 }
