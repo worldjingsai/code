@@ -119,7 +119,6 @@ class Univs extends SB_Controller{
         if(isset($_GET['step'])){
             $step = intval($this->input->get('step'));
         }
-        $this->load->model('univs_m');
 
         $data = array();
         if ($step > 5){
@@ -141,12 +140,15 @@ class Univs extends SB_Controller{
             // TODO
             $data['create_user_id'] = 0;
             $contest_id = $this->contest_m->add($data);
+            
+            $this->load->model('univs_contest_m');
+            
             if($contest_id){
                $addData = array(
                        'univs_id' => $univs_id,
                        'contest_id' => $contest_id,
                        );
-               $this->contest_m->add($addData);
+               $this->univs_contest_m->add($addData);
             }
             unset($data);
         }elseif($step > 2){

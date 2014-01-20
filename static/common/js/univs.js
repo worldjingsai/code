@@ -5,7 +5,6 @@ $().ready(function() {
 			contest_name: "required",
 			contest_url: {
 				required: true,
-				maxlength: 40,
 				remote: {
 					url:"/data/contest/chkuri",
 					type:"post",
@@ -26,7 +25,6 @@ $().ready(function() {
 			contest_name: "请输入竞赛名称",
 			contest_url: {
 				required: "竞赛网站不能为空",
-				minlength: "竞赛网址不能超过40个字符",
 				remote:"此网址已存在请修改"
 			}
 		}

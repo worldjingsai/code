@@ -31,7 +31,7 @@ class Contest extends SB_controller{
         {
             echo "false";
         } else {
-            echo "ture";
+            echo "true";
         }
         return ;
     }
