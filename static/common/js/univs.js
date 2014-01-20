@@ -3,8 +3,6 @@ $().ready(function() {
 	$("#form-practice").validate({
 		rules: {
 			contest_name: "required",
-			contest_type: "required",
-			contest_level: "required",
 			contest_url: {
 				required: true,
 				maxlength: 40,
@@ -26,8 +24,6 @@ $().ready(function() {
 		},
 		messages: {
 			contest_name: "请输入竞赛名称",
-			contest_type: "竞赛类型不能为空",
-			contest_level: "竞赛级别不能为空",
 			contest_url: {
 				required: "竞赛网站不能为空",
 				minlength: "竞赛网址不能超过40个字符",
