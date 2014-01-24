@@ -21,7 +21,7 @@
 		<input id="email" class="input_type" type="text" name="email" value=""/>
 		<input id="password" class="input_type" type="password" name="password" value=""/>
 		<input id="password_c" class="input_type" type="password" name="password_c" value=""/>
-		<input id="univs_id" class="input_type" type="text" name="univs_id" value=""/>
+		<input id="school-name" class="input_type" type="text" name="univs_id" value=""/>
 		<input id="tel" class="input_type" type="text" name="tel" value=""/>
 		</div>
 		<div class="button"><button type="submit" class="btn">立即注册</button></div>
@@ -44,5 +44,18 @@
 </DIV>
 
 </DIV>
-
+<div id="choose-box-wrapper">
+	<div id="choose-box">
+		<div id="choose-box-title">
+			<span>选择学校</span>
+		</div>
+		<div id="choose-a-province"></div>
+		<div id="choose-a-school"></div>
+		<div id="choose-box-bottom">
+			<input type="button" id="closeSchoole" value="关闭" />
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="/static/common/js/school.js"></script>
+<script type="text/javascript" src="/static/common/js/selectSchool.js"></script>
 <%include file="index/index_footer.html"%>

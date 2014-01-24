@@ -360,7 +360,6 @@ img.img_box {
 	width:970px;
 	margin:0 auto;
 	position:relative;
-	overflow:hidden;
 }
 .c_out_h {
 	background:url(../images/shadow_bg.jpg) no-repeat 0 0;
