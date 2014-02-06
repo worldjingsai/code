@@ -55,4 +55,14 @@ $().ready(function() {
     $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
    
 	$('.timer').datetimepicker();
+	
+	$('#contest_type').on('change', function(){
+		var ct = $('#contest_type').val();
+		if(ct == 1) {
+			$('#pre_url').html($('#pre_url').attr('def'));
+		} else {
+			$('#pre_url').html('contest');
+		}
+		$('#contest_url').val('');
+	});
 });

@@ -29,4 +29,19 @@ class Article_content_m extends SB_Model{
         $query = $this->db->where('article_id',$article_id)->get($this->tb);
         return $query->row_array();
     }
+
+    /**
+     * 更新一个文章
+     * @param int $article_id
+     * @param array $data
+     */
+    public function update($article_id, $data){
+            $this->db->where('article_id',$article_id);
+            $this->db->update($this->tb, $data);
+            return $this->db->affected_rows();
+    }
+
+    public function del() {
+
+    }
 }

@@ -11,7 +11,7 @@ class Base_Controller extends CI_Controller{
     protected function loadSmarty(){
         $this->load->library('smarty');
     }
-	
+
 }
 
 class SB_Controller extends Base_Controller{
@@ -20,7 +20,7 @@ class SB_Controller extends Base_Controller{
         //判断关闭
         if($this->config->item('site_close')=='off'){
             show_error($this->config->item('site_close_msg'),500,'网站关闭');
-        }		
+        }
         //载入前台模板
         $this->load->set_front_theme($this->config->item('themes'));
         $this->load->database();
@@ -75,7 +75,7 @@ class SB_Controller extends Base_Controller{
         $this->load->model('page_m');
         $data['page_links'] = $this->page_m->get_page_menu(10,0);
     }
-    
+
     /**
      * 展示模板
      * @param string $template 模板的相对路径
@@ -87,7 +87,7 @@ class SB_Controller extends Base_Controller{
         $this->smarty->assign('tplData', $this->tplData);
         $this->smarty->display($template);
     }
-    
+
     /**
      * 已Json格式返回数据
      * @param array  $data 要返回给前端的数据
@@ -128,7 +128,7 @@ class Admin_Controller extends Base_Controller{
         $this->load->vars($data);
         /** 加载验证库 */
         $this->load->library('auth');
-        /** 检查登陆 */	
+        /** 检查登陆 */
         $group_type = $this->session->userdata('group_type');
         $this->load->library('myclass');
         if(!$this->auth->is_login()){

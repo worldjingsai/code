@@ -7,6 +7,7 @@ class Contest extends SB_controller{
     function __construct (){
         parent::__construct();
         $this->load->model('contest_m');
+        $this->load->model('univs_m');
     }
 
     public function index($cid, $page=1){
@@ -35,4 +36,68 @@ class Contest extends SB_controller{
         }
         return ;
     }
+
+    /**
+     * 显示一个文章
+     * @param int $article_id
+     */
+    public function show($article_id) {
+
+        $data = $this->_get($article_id);
+        $this->tplData = $data;
+        $this->display('contest/contest_article.html');
+    }
+
+    /**
+     * 显示编辑的文章界面
+     * @param int $article_id
+     */
+    public function update($article_id){
+        $data = $this->_get($article_id);
+        $this->tplData = $data;
+        $this->display('contest/create_2.html');
+    }
+
+    public function _get($article_id){
+        $aid = intval($article_id);
+
+        if (!$aid){
+            return show_error('不存在的文章');
+        }
+        // 引入模型
+        $this->load->model('article_m');
+        $this->load->model('article_content_m');
+        $this->load->model('contest_m');
+
+
+        $article = $this->article_m->get($aid);
+        $content = $this->article_content_m->get($aid);
+
+        if (!$article) {
+            return show_error('不存在的文章');
+        }
+        $article['content'] = $content['content'];
+
+        if ($article['article_type'] == article_m::TYPE_CONTEST)
+        {
+            $cInfo = $this->contest_m->get($article['type_id']);
+        }
+        if (empty($cInfo)){
+            return show_error('不存在的竞赛');
+        }
+
+        $univs_id = $cInfo['univs_id'];
+        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        $data['university'] = $univs_info;
+
+        $data['col'] = $article['column_id'];
+
+        $colums = Contest_m::$columNames;
+        $data['article'] =$article;
+        $data['contest'] = $cInfo;
+        $data['colums'] = $colums;
+
+        return $data;
+    }
+
 }

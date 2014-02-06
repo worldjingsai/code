@@ -23,6 +23,27 @@ class Article_m extends SB_Model{
         }
     }
 
+
+    /**
+     * 得到一个
+     * @param int $cid
+     */
+    public function get($aid){
+        $this->db->select('*');
+        $query = $this->db->where('article_id',$aid)->where('status',1)->get($this->tb);
+        return $query->row_array();
+    }
+
+    /**
+     *
+     * @param int $article_id
+     * @param array $data
+     */
+    public function update($article_id, $data){
+        $this->db->where('article_id',$article_id);
+        $this->db->update($this->tb, $data);
+        return $this->db->affected_rows();
+    }
     /*
      * 获取所有的文章
      */

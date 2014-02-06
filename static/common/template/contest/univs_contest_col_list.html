@@ -7,13 +7,17 @@
           
           <div class="block_list FL">
             <div class="div_block_head">
-              <h2 ><%$tplData.colums[$tplData.col]%></h2> 
+              <h2 ><%$tplData.colums[$tplData.col]%><span class="FR"><a href="/univs/content/<%$tplData.contest.contest_id%>?col=<%$tplData.col%>" class="edit btn">添加文章</a></span></h2> 
             </div>
             <div class="div_block_body">
                <ul >
               <%if $tplData.article%>
               <%foreach from=$tplData.article item=value key=key%>
-                <li ><a href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$tplData.contest.contest_id%>&article=<%$value.article_id%>"><%$value.title%></a> <span><%$value.create_time|truncate:10:''%></span></li>
+                <li >
+                <span class="control"> <a target="_blank" href="/contest/update/<%$value.article_id%>" class="js_edit" >编辑</a> <a href="javascript:;" class="js_del" >删除</a></span>
+                <a target="_blank" href="/contest/show/<%$value.article_id%>"><%$value.title%></a> 
+                <span><%$value.create_time|truncate:10:''%></span>
+                </li>
               <%/foreach%>
               <%/if%>
               </ul>

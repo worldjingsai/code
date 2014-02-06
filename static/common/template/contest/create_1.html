@@ -18,7 +18,7 @@
             <div class="article_body">
                <div class="register">
                <div class="create_data">
-        <form id="form-practice" action="/univs/create/<%$tplData.university.univs_id%>?step=<%$tplData.step+1%>" method="post" class="dialog-box">
+        <form id="form-practice" action="/univs/create/<%$tplData.university.univs_id%>" method="post" class="dialog-box">
             <input type="hidden" value="<%$tplData.university.univs_id%>" name="univs_id" id="univs_id"/>
             <table width="100%" class="create_teble">
         <colgroup>
@@ -29,7 +29,7 @@
         <tr>
             <th><em>*</em>竞赛名称:</th>
             <td class="input" >
-                <div class="clearfix"><input type="text" class="text" name="contest_name" id="contest_name" maxlength="255" data-rule-required="true" data-msg-required="内容不能为空"></div>
+                <div class="clearfix"><input type="text" class="text" name="contest_name" id="contest_name" maxlength="255" ></div>
             </td>
         </tr>
         <tr>
@@ -61,20 +61,20 @@
         <tr>
             <th><em>*</em>竞赛网址:</th>
             <td >
-                www.worldjingsai.com/univs/<input type="text" class="text" id="contest_url" name="contest_url" maxlength="40" />
+                www.worldjingsai.com/<span id='pre_url' def='<%$tplData.university.short_name%>' ><%$tplData.university.short_name%></span>/<input type="text" class="text" id="contest_url" name="contest_url" maxlength="40" />
             </td>
         </tr>
         
         <tr>
             <th>报名开始时间:</th>
             <td >
-                <input type="text" class="text timer" name="regist_start_time" value=""/>
+                <input type="text" class="text timer pointer" name="regist_start_time" value="" readonly/>
             </td>
         </tr>
         <tr>
             <th>报名结束时间:</th>
             <td >
-                <input type="text" class="text timer" name="regist_end_time" value=""/>
+                <input type="text" class="text timer pointer" name="regist_end_time" value="" readonly/>
             </td>
         </tr>
         
@@ -82,20 +82,20 @@
         <tr>
             <th>比赛开始时间:</th>
             <td  >
-                <input type="text" class="text timer" name="contest_start_time" value=""/>
+                <input type="text" class="text timer pointer" name="contest_start_time" value="" readonly/>
             </td>
         </tr>
         
         <tr>
             <th>比赛结束时间:</th>
             <td  >
-                <input type="text" class="text timer" name="contest_start_time" value=""/>
+                <input type="text" class="text timer pointer" name="contest_start_time" value="" readonly/>
             </td>
         </tr>
         
         <tr class="center">
             <td colspan="2" >
-                <button type="submit" class="button" >提交</button>
+                <button type="submit" class="button" >提  交</button>
             </td>
         </tr>
              
@@ -105,8 +105,6 @@
             </div>
           </div>
           </div>
-          
         </div>
        </div>
-
 <%include file="univs/univs_footer.html"%>

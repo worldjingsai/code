@@ -24,6 +24,20 @@ function lxfEndtime(){
 	});
 };
 $(document).ready(function(){
+
+	if($("#content") != undefined) {
+		// validate the comment form when it is submitted
+		$("#content").validate({
+			rules: {
+				title: "required",
+				editor: "required"
+			},
+			messages: {
+				title: "标题不能为空",
+				editor: "内容不能为空"
+			}
+		});
+	};
 	if ($("#lxftime") != undefined){
 		lxfEndtime();
 	};
