@@ -1,9 +1,11 @@
 <%include file="contest/contest_header.html"%>
 <!--第一栏-->
+
+            <script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
             <script type="text/javascript" src="/static/ueditor1_3_6_utf8/ueditor.config.js"></script>
             <script type="text/javascript" src="/static/ueditor1_3_6_utf8/ueditor.all.min.js"></script>
             <script type="text/javascript" src="/static/common/js/jquery.validate.js"></script>
-            
+            <script type="text/javascript" src="/static/common/js/jquery.form.js"></script>
 
         <div class="right_div FR">
         
@@ -18,7 +20,7 @@
             <div class="article_body">
                <div class="create_data">
               
-            <form id="content" action="/univs/content/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
+            <form id="content-form" action="/univs/content/<%$tplData.contest.contest_id%>" method="post">
             <div class="table_row">
             <label >发布栏目：</label>
             <select name="col" >
@@ -34,7 +36,7 @@
             
             <script type="text/plain" id="editor" name="content" >
             <%$tplData.article.content|default:''%>
-           </script>
+            </script>
             <script type="text/javascript">
             UE.getEditor('editor');
             </script>

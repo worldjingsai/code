@@ -217,3 +217,4 @@ pip-log.txt
 #PHP
 data/*
 app/config/database.php
+static/ueditor1_3_6_utf8/php/upload/*

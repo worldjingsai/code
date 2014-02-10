@@ -560,5 +560,23 @@ if ( ! function_exists('html_escape'))
 	}
 }
 
+// ------------------------------------------------------------------------
+
+/**
+ * Returns JSON data
+ *
+ * @access	public
+ * @param	mixed
+ * @return	mixed
+ */
+if ( ! function_exists('show_json'))
+{
+    function show_json($code = 0, $message = '', $data = array())
+    {
+        $res = array('code' => $code, 'message' => $message, 'data' => $data);
+        $resstr = json_encode($res);
+        echo $resstr;
+    }
+}
 /* End of file Common.php */
 /* Location: ./system/core/Common.php */

@@ -1,5 +1,6 @@
 <%include file="contest/contest_header.html"%>
 
+        <script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
         <!--第一栏-->
         <div class="right_div FR">
         
@@ -14,7 +15,7 @@
               <%if $tplData.article%>
               <%foreach from=$tplData.article item=value key=key%>
                 <li >
-                <span class="control"> <a target="_blank" href="/contest/update/<%$value.article_id%>" class="js_edit" >编辑</a> <a href="javascript:;" class="js_del" >删除</a></span>
+                <span class="control"> <a target="_blank" href="/contest/update/<%$value.article_id%>" class="js_edit" >编辑</a> <a href="javascript:;" url="/contest/del/<%$value.article_id%>" notice="<%$value.title%>" class="js_del" >删除</a></span>
                 <a target="_blank" href="/contest/show/<%$value.article_id%>"><%$value.title%></a> 
                 <span><%$value.create_time|truncate:10:''%></span>
                 </li>

@@ -57,6 +57,31 @@ class Contest extends SB_controller{
         $this->tplData = $data;
         $this->display('contest/create_2.html');
     }
+    
+    /**
+     * 删除一个文章
+     * @param int $article_id
+     */
+    public function del($article_id){
+        $aid = intval($article_id);
+
+        if (!$aid){
+            return show_json(404, '不存在的文章');
+        }
+        // 引入模型
+        $this->load->model('article_m');
+        $this->load->model('article_content_m');
+        
+        $article = $this->article_m->get($aid);
+        if (!$article) {
+            return show_json(404, '不存在的文章');
+        }
+        
+        $this->article_m->del($article_id);
+        $this->article_content_m->del($article_id);
+        
+        return show_json(0, '删除成功');
+    }
 
     public function _get($article_id){
         $aid = intval($article_id);

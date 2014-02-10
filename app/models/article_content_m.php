@@ -41,7 +41,13 @@ class Article_content_m extends SB_Model{
             return $this->db->affected_rows();
     }
 
-    public function del() {
-
+    /**
+     * 删除一个文章
+     * @param int $article_id
+     */
+    public function del($article_id) {
+        $this->db->where('article_id',$article_id);
+        $this->db->delete($this->tb);
+        return $this->db->affected_rows();
     }
 }

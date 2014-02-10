@@ -206,15 +206,17 @@ class Univs extends SB_Controller{
             // TODO
             $articleData['create_user_id'] = 0;
 
-            $contentdata['content'] = $this->input->post('content', true);
+            $contentdata['content'] = $this->input->post('content');
             // 如果是更新
             if ($article_id) {
                 $this->article_m->update($article_id, $articleData);
                 $this->article_content_m->update($article_id, $contentdata);
+                return show_json(0, '更新成功', array('return_url' => '/contest/show/'.$article_id));
             } else {
                 $article_id = $this->article_m->add($articleData);
                 $contentdata['article_id'] = $article_id;
                 $this->article_content_m->add($contentdata);
+                return show_json(0, '添加成功', array('return_url' => '/contest/show/'.$article_id));
             }
         }
 

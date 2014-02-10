@@ -44,7 +44,18 @@ class Article_m extends SB_Model{
         $this->db->update($this->tb, $data);
         return $this->db->affected_rows();
     }
-    /*
+    
+    /**
+     *
+     * @param int $article_id
+     */
+    public function del($article_id){
+        $this->db->where('article_id',$article_id);
+        $this->db->delete($this->tb);
+        return $this->db->affected_rows();
+    }
+    
+    /**
      * 获取所有的文章
      */
     public function get_all_contest($article_type, $type_id, $column_id, $page, $limit){

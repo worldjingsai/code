@@ -23,22 +23,126 @@ function lxfEndtime(){
 		}
 	});
 };
+
+// 提交表单开始
+function ajaxFormStart() {
+	ajax_message('提交中...');
+}
+
+// 提交表单成功
+function ajaxFormSuccess(responseText, statusText) {
+	if (statusText == 'success') {
+		if (responseText.code == 0) {
+			if (responseText.message != '') {
+				ajax_message(responseText.message);
+				if (responseText.data.return_url != undefined) {
+					setTimeout(function(){window.location.href=responseText.data.return_url}, 1000);
+				}
+			}
+		} else {
+			if (responseText.message != '') {
+				ajax_message(responseText.message);
+			} else {
+				ajax_message('程序错误，错误代码' + responseText.code);
+			}
+		}
+		setTimeout(function(){$('#ajaxMessage').dialog('close')}, 1000);
+	} else {
+		ajax_message('系统错误' + statusText);
+	}
+}
+
+// 
+function ajax_message($msg) {
+	if ($('#ajaxMessage').length == 0) {
+		var div = '<div class="" id="ajaxMessage" ></div>';
+		$(document.body).append(div); 
+		$('#ajaxMessage').dialog({
+		    autoOpen: true,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
+		    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
+		    width: 300,
+		    modal:true,//这个就是遮罩效果   
+		    resizable:false,
+		    dialogClass: 'alert'
+		});
+	}
+	$('#ajaxMessage').html($msg);
+}
+
 $(document).ready(function(){
 
-	if($("#content") != undefined) {
+	if($("#content-form").length > 0) {
 		// validate the comment form when it is submitted
-		$("#content").validate({
+		$("#content-form").validate({
 			rules: {
-				title: "required",
-				editor: "required"
+				title: "required"
 			},
 			messages: {
-				title: "标题不能为空",
-				editor: "内容不能为空"
+				title: "标题不能为空"
 			}
 		});
+		
+	    var options = {
+	    		beforeSubmit: ajaxFormStart,  // pre-submit callback
+	            success:      ajaxFormSuccess, // post-submit callback 
+	            dataType:     'json'
+	    }; 
+
+	    // bind form using 'ajaxForm' 
+	    $('#content-form').ajaxForm(options); 
 	};
-	if ($("#lxftime") != undefined){
+	if ($("#lxftime").length > 0){
 		lxfEndtime();
 	};
+	
+	if ($(".js_del").length > 0) {
+		$(".js_del").on('click', function(){
+			
+			var hideLi = $(this).parent().parent();
+			var url = $(this).attr('url') || '';
+			var notice = $(this).attr('notice') || ''
+			
+			if ($('#promptMessage').length == 0) {
+				var div = '<div class="" id="promptMessage" ></div>';
+				$(document.body).append(div); 
+			} else {
+				$('#promptMessage').dialog('open');
+			}
+			$('#promptMessage').html("确定要删除“" + notice + "”吗");
+			$('#promptMessage').dialog({
+			    autoOpen: true,
+			    bgiframe: true, 
+			    width: 400,
+			    modal:true,
+			    resizable:false,
+			    dialogClass: 'prompt',
+			    title:'提示信息',
+			    buttons : {
+			    	"确定" : function(){
+			    		$.ajax({
+							url: url,
+							type: "POST",
+							dataType:"json",
+							success: function(responseText){
+								if (responseText.code == 0) {
+									if (responseText.message != '') {
+										$('#promptMessage').html(responseText.message);
+										$('#promptMessage').dialog("close");
+										hideLi.hide('slow');
+									}
+								} else {
+									$('#promptMessage').html('返回错误' + responseText.message);
+								}
+						    },
+						    error : function() {
+						    	$('#promptMessage').html('系统错误，请重试!');
+						    }
+						});
+			    		},
+			    	"取消" : function(){$( this ).dialog( "close" );return false;}
+			    }
+			});
+			
+		})
+	}
 });
