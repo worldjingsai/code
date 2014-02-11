@@ -249,7 +249,7 @@ a.red{color:red;}
 
 .baoming_body ul li{ width:100%; height:30px; line-height:30px; overflow:hidden; font-size:14px; padding-left:15px; }
 .baoming_body ul li a{color:#00C}
-.block_list {width:760px; padding:10px; position:relative;}
+.block_list {width:97%; padding:10px; position:relative;}
 .block_list h2{border-bottom:#0F0 solid 1px; height:40px; line-height:30px;}
 
 .article{padding:11px; width:97%;}

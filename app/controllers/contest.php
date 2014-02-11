@@ -18,8 +18,18 @@ class Contest extends SB_controller{
      * 检测竞赛的URL是否被占用
      */
     public function ajax_chkuri(){
-        $type = $this->input->post('contest_type');
+        $type = $this->input->post('contest_level');
         $uri  = $this->input->post('contest_url');
+        $contest_id = intval($this->input->post('contest_id'));
+        
+        // 如果是更新竞赛，并且都没有变化就返回成功
+        if ($contest_id) {
+            $cInfo = $this->contest_m->get($contest_id);
+            if (($cInfo['contest_url'] === $uri) && ($type == $cInfo['contest_level'])) {
+                echo "true";
+                return ;
+            }
+        }
         if($type == 1){ // 校内级别
             $univs_id = intval($this->input->post('univs_id'));
             $bol      = $this->contest_m->check_contest_exist_in_univs($uri, $univs_id);
@@ -48,6 +58,37 @@ class Contest extends SB_controller{
         $this->display('contest/contest_article.html');
     }
 
+
+    /**
+     * 更新一个竞赛
+     * @param intval $contest_id
+     */
+    public function upContest($contest_id) {
+        if (!$contest_id) {
+            return show_error('竞赛不存在');
+        }
+    
+        $cInfo = $this->contest_m->get($contest_id);
+        if (empty($cInfo)){
+            return show_error('不存在的竞赛');
+        }
+        
+        $univs_id = $cInfo["univs_id"];
+    
+        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        $data['university'] = $univs_info;
+        $data['contest'] = $cInfo;
+        
+        $colums = Contest_m::$columNames;
+        $data['colums'] = $colums;
+        $data['col'] = 0;
+        
+        $this->tplData = $data;
+        $this->display('contest/create_contest.html');
+    
+    }
+    
+    
     /**
      * 显示编辑的文章界面
      * @param int $article_id

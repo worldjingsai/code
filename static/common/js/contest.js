@@ -11,7 +11,10 @@ function lxfEndtime(){
 		var CHour= hours % 24;
 		var CMinute= minutes % 60;
 		var CSecond= Math.floor(seconds%60); //"%"是取余运算，可以理解为60进一后取余数，然后只要余数。
-		if(endtime <= nowtime){
+
+		if(isNaN(days)) {
+			$(this).html("竞赛时间未知");
+		}else if(endtime <= nowtime){
 			$(this).html("竞赛已开始") //如果结束日期小于当前日期就提示过期啦
 		}else{
 			if($(this).attr("showdetailtime")=="no"){

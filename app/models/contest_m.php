@@ -38,6 +38,17 @@ class Contest_m extends SB_Model{
         $query = $this->db->where('contest_id',$cid)->where('status',1)->get($this->tb);
         return $query->row_array();
     }
+    
+    /**
+     * 更新一个竞赛
+     * @param int $contest_id
+     * @param array $data
+     */
+    public function update($contest_id, $data) {
+        $this->db->where('contest_id',$contest_id);
+        $this->db->update($this->tb, $data);
+        return $this->db->affected_rows();
+    }
 
     /**
      * 根据contest_id获取竞赛明细

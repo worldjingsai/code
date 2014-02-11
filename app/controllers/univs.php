@@ -107,8 +107,9 @@ class Univs extends SB_Controller{
         $this->display($tpl);
     }
 
+
     /**
-     * 创建竞赛，一共四歩
+     * 创建竞赛
      * @param int $univs_id
      * @return boolean
      */
@@ -128,20 +129,26 @@ class Univs extends SB_Controller{
 
             $data['univs_id'] = $univs_id;
             $data['create_time'] = date('Y-m-d H:i:s');
+
             // TODO
             $data['create_user_id'] = 0;
-            $contest_id = $this->contest_m->add($data);
-
-            $this->load->model('univs_contest_m');
-
-            if($contest_id){
-               $addData = array(
-                       'univs_id' => $univs_id,
-                       'contest_id' => $contest_id,
-                       );
-               $this->univs_contest_m->add($addData);
-               redirect('/univs/contest/' . $univs_id .'?cid='.$contest_id);
+            
+            $contest_id = $this->input->post('contest_id', true);
+            if ($contest_id) {
+                $this->contest_m->update($contest_id, $data);
+            } else {
+                $contest_id = $this->contest_m->add($data);
+                $this->load->model('univs_contest_m');
+                
+                if($contest_id){
+                    $addData = array(
+                            'univs_id' => $univs_id,
+                            'contest_id' => $contest_id,
+                    );
+                    $this->univs_contest_m->add($addData);
+                }
             }
+            redirect('/univs/contest/' . $univs_id .'?cid='.$contest_id);
         }
 
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);

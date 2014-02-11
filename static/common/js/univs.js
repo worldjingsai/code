@@ -8,14 +8,19 @@ $().ready(function() {
 				remote: {
 					url:"/data/contest/chkuri",
 					type:"post",
-					data:{"contest_type":function() { 
-						return $("#contest_type").val(); 
+					data:{"contest_level":function() { 
+						return $("#contest_level").val(); 
 					},
 					"contest_url":function() {
 						return $("#contest_url").val();
 					},
 					"univs_id":function() { 
 						return $("#univs_id").val();
+					},
+					"contest_id":function() {
+						if ($("#contest_id").length > 0) {
+							return $("#contest_id").val();
+						} else {return 0;}
 					}
 					}
 				}
@@ -55,9 +60,8 @@ $().ready(function() {
     $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
    
 	$('.timer').datetimepicker();
-	
-	$('#contest_type').on('change', function(){
-		var ct = $('#contest_type').val();
+	$('#contest_level').on('change', function(){
+		var ct = $('#contest_level').val();
 		if(ct == 1) {
 			$('#pre_url').html($('#pre_url').attr('def'));
 		} else {
