@@ -62,7 +62,7 @@
         <tr>
             <th><em>*</em>竞赛网址:</th>
             <td >
-                www.worldjingsai.com/<span id='pre_url' def='<%$tplData.university.short_name%>' ><%$tplData.university.short_name%></span>/<input type="text" class="text" id="contest_url" name="contest_url" maxlength="40" value="<%$tplData.contest.contest_url|default:''%>" />
+                www.worldjingsai.com/<span id='pre_url' def='<%$tplData.university.short_name%>' ><%if $tplData.contest.contest_level == 1%><%$tplData.university.short_name%><%else%>contest<%/if%></span>/<input type="text" class="text" id="contest_url" name="contest_url" maxlength="40" value="<%$tplData.contest.contest_url|default:''%>" />
             </td>
         </tr>
         

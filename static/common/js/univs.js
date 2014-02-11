@@ -60,6 +60,7 @@ $().ready(function() {
     $.datepicker.setDefaults($.datepicker.regional['zh-CN']);
    
 	$('.timer').datetimepicker();
+	
 	$('#contest_level').on('change', function(){
 		var ct = $('#contest_level').val();
 		if(ct == 1) {

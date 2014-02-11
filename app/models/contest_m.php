@@ -124,7 +124,7 @@ class Contest_m extends SB_Model{
     public function check_contest_exist_in_nation($uri){
         $this->db->select('*');
         $this->db->from($this->tb);
-        $this->db->where('contest_url',$uri)->where_i('contest_leve',array(2,3,4));
+        $this->db->where('contest_url',$uri)->where_in('contest_level',array(2,3,4));
         $query = $this->db->get();
         $data  = $query->row_array();
         if(!empty($data)){
