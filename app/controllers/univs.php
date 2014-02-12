@@ -29,7 +29,6 @@ class Univs extends SB_Controller{
         $data['schooleContests'] = $schooleContests;
         $data['publicContests'] = $publicContests;
         $data['action'] = 'index';
-        print_r($data);exit;
         $this->tplData = $data;
         $this->display("univs/index.html");
     }
