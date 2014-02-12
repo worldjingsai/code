@@ -15,12 +15,16 @@ $(function(){
 	$(".js_login").click(function(){
 	    $(".index_img").hide();
 		$(".login_img").show();
+		$("#js_login").show("fast");
+		$("#js_register").hide("fast");
 	  });
 	$(".js_register").click(function(){
 	    $(".index_img").show();
 		$(".login_img").hide();
+		$("#js_login").hide("fast");
+		$("#js_register").show("fast");
 	  });
-	  
+	
 	$("#login_username").focus(function(){
 	    $("#username_hide").hide();
 	  });
