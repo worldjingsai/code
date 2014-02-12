@@ -16,6 +16,9 @@ class Univs extends SB_Controller{
      * 根据高校昵称获取高校信息
      */
     public function index($short_name){
+        if($this->auth->is_login()){
+            $data['is_login'] = true;
+        }
         $univs_info = $this->univs_m->get_univs_info_by_univs_short_name($short_name);
         if(empty($univs_info)){
             $this->myclass->notice('alert("该高校不存在");window.location.href="'.site_url('/').'";');
@@ -26,6 +29,7 @@ class Univs extends SB_Controller{
         $data['schooleContests'] = $schooleContests;
         $data['publicContests'] = $publicContests;
         $data['action'] = 'index';
+        print_r($data);exit;
         $this->tplData = $data;
         $this->display("univs/index.html");
     }
@@ -139,18 +143,16 @@ class Univs extends SB_Controller{
             } else {
                 $contest_id = $this->contest_m->add($data);
                 $this->load->model('univs_contest_m');
-                
                 if($contest_id){
                     $addData = array(
-                            'univs_id' => $univs_id,
-                            'contest_id' => $contest_id,
+                        'univs_id' => $univs_id,
+                        'contest_id' => $contest_id,
                     );
                     $this->univs_contest_m->add($addData);
                 }
             }
             redirect('/univs/contest/' . $univs_id .'?cid='.$contest_id);
         }
-
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $show_data['action'] = 'create';
         $show_data['university'] = $univs_info;
@@ -159,7 +161,6 @@ class Univs extends SB_Controller{
         $this->display("contest/create_1.html");
     }
 
-
     /**
      * 添加文章和编辑文章
      * @param int $contest_id
@@ -167,7 +168,7 @@ class Univs extends SB_Controller{
     public function content($contest_id){
         $cid = intval($contest_id);
 
-        if (!$cid){
+        if(!$cid){
             return show_error('不存在的竞赛');
         }
         // 引入模型
@@ -182,13 +183,9 @@ class Univs extends SB_Controller{
         $univs_id = $cInfo['univs_id'];
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
-
         $colums = Contest_m::$columNames;
-
         $data['contest'] = $cInfo;
         $data['colums'] = $colums;
-
-
         if ($_POST) {
             $col = intval($this->input->post('col'));
             if ($col == 1){
@@ -236,7 +233,6 @@ class Univs extends SB_Controller{
         $this->tplData = $data;
         $this->display('contest/create_2.html');
     }
-
 
     /**
      * 显示学校的竞赛列表
