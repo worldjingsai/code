@@ -30,6 +30,7 @@ class Univs extends SB_Controller{
         $data['publicContests'] = $publicContests;
         $data['action'] = 'index';
         $this->tplData = $data;
+        print_r($this->user_info);exit;
         $this->display("univs/index.html");
     }
 

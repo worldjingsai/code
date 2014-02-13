@@ -39,9 +39,10 @@ class SB_Controller extends Base_Controller{
             'per_page_num'=>$data['items'][9]['value'],
             'logo'=>$this->config->item('logo')
          );
-
-         //取一个用户信息
-        $data['user']=$this->db->select('uid,username,avatar')->where('uid',$this->session->userdata('uid'))->get('users')->row_array();
+         if($this->auth->is_login()){
+            $this->is_login = true;
+            $this->user_info = $this->db->select('uid,username,avatar')->where('uid',$this->session->userdata('uid'))->get('users')->row_array();
+        }
         //一个用户的用户组
         $data['group'] = $this->db->select('group_name')->get_where('user_groups',array('gid'=>$this->session->userdata('gid')))->row_array();
         $data['group']['group_name']=($data['group'])?$data['group']['group_name']:'普通会员';
@@ -58,10 +59,10 @@ class SB_Controller extends Base_Controller{
         $data['catelist'] =$this->cate_m->get_all_cates();
 
         //右侧登录调用收藏贴子数
-                $favorites=$this->db->select('favorites')->where('uid',$this->session->userdata('uid'))->get('favorites')->row_array();
-                if(!@$favorites['favorites']){
-                        @$favorites['favorites'] =0;
-                }
+        $favorites=$this->db->select('favorites')->where('uid',$this->session->userdata('uid'))->get('favorites')->row_array();
+        if(!@$favorites['favorites']){
+                @$favorites['favorites'] =0;
+        }
 
         //右侧登录处调用提醒数
         $notices= $this->db->select('notices')->where('uid',$this->session->userdata('uid'))->get('users')->row_array();
@@ -81,9 +82,10 @@ class SB_Controller extends Base_Controller{
      * @param string $template 模板的相对路径
      */
     public function display($template){
-        if(empty($this->tplData)){
-            $this->tplData = array();
+        if(!empty($this->user_info)){
+            $this->tplData['user_info'] = $this->user_info;
         }
+        $this->tplData['is_login'] = $this->is_login;
         $this->smarty->assign('tplData', $this->tplData);
         $this->smarty->display($template);
     }
