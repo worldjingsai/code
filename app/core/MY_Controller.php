@@ -85,7 +85,9 @@ class SB_Controller extends Base_Controller{
         if(!empty($this->user_info)){
             $this->tplData['user_info'] = $this->user_info;
         }
-        $this->tplData['is_login'] = $this->is_login;
+        if(isset($this->is_login)){
+            $this->tplData['is_login'] = $this->is_login;
+        }
         $this->smarty->assign('tplData', $this->tplData);
         $this->smarty->display($template);
     }
