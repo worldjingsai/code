@@ -1,0 +1,192 @@
+<%include file="contest/contest_header.html"%>
+<link  rel='stylesheet' type='text/css' href='/static/common/css/jquery-ui-1.10.4.custom.min.css' >
+<script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="/static/common/js/jquery-ui-timepicker-addon.js"></script>
+<script type="text/javascript" src="/static/common/js/jquery.validate.js"></script>
+<script type="text/javascript" src="/static/common/js/univs.js"></script>
+        <!--第一栏-->
+        <div class="right_div FR">
+        
+          <div class="block fixed">
+          
+          <div class="article FL">
+            <div class="article_title">
+              <h3 ><span class="current">创建报名系统</span></h3> 
+            </div>
+            <div class="article_menu">
+            </div>
+            <div class="article_body">
+               <div class="register">
+               <div class="create_data">
+               <div class="DivH10"></div>
+        <form id="form-practice" action="/contest/create_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
+            <input type="hidden" value="<%$tplData.contest.contest_id|default:''%>" name="contest_id" id="contest_id"/>
+            <table width="100%" class="apply_teble" border=1 >
+        <tbody>
+        <tr>
+            <td class="current t-c" colspan="4" >团队基本信息</td>
+        </tr>
+        <tr>
+            <th><em>*</em>参赛人数:</th>
+            <td class="input matchbox-wrap" colspan="3" >
+                <div class="clearfix"><input type="text" class="number" value="1"/>~<input type="text" class="number"/></div>
+            </td>
+        <tr class="control">
+            <td >字段名称</td>
+            <td >字段类型 </td>
+            <td >是否必填 </td>
+            <td >操作</td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" value="团队名称"></td>
+            <td>
+                <select name="">
+                <option value="text">文本框</option>
+                <option value="radio">单选框</option>
+                <option value="checkbox">复选框</option>
+                <option value="text">文本框</option>
+                </select>
+            </td>
+            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
+            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" value="指导老师"></td>
+            <td>
+                <select name="">
+                <option value="text">文本框</option>
+                <option value="radio">单选框</option>
+                <option value="checkbox">复选框</option>
+                <option value="text">文本框</option>
+                </select>
+            </td>
+            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
+            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" value="学生类型"></td>
+            <td >
+                <select name="">
+                <option value="text">文本框</option>
+                <option value="radio" selected>单选框</option>
+                <option value="checkbox">复选框</option>
+                <option value="text">文本框</option>
+                </select>
+                <p>选项一：<input type="text" class="w100" value="高中生"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
+                <p>选项二：<input type="text" class="w100" value="大专"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
+                <p>选项一：<input type="text" class="w100" value="大学本科"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
+                <p>选项二：<input type="text" class="w100" value="研究生及以上"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
+            </td>
+            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
+            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+        </tr>
+        
+        </tbody>
+        <tbody>
+        <tr>
+            <td class="current t-c" colspan="4" >报名填写信息</td>
+        </tr>
+        
+        <tr class="control">
+            <td >字段名称</td>
+            <td >字段类型 </td>
+            <td >是否必填 </td>
+            <td >操作</td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" value="姓名"></td>
+            <td id="jobCity-linkup" >
+                <select name="">
+                <option value="text">文本框</option>
+                <option value="radio">单选框</option>
+                <option value="checkbox">复选框</option>
+                <option value="text">文本框</option>
+                </select>
+            </td>
+            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
+            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" value="性别"></td>
+            <td >
+                <select name="">
+                <option value="text">文本框</option>
+                <option value="radio" selected >单选框</option>
+                <option value="checkbox">复选框</option>
+                <option value="text">文本框</option>
+                </select>
+                <div >
+                <p>选项一：<input type="text" class="w100" value="男"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
+                <p>选项二：<input type="text" class="w100" value="女"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
+                </div>
+            </td>
+            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
+            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" value="学校"></td>
+            <td >
+                <select name="">
+                <option value="text" selected>文本框</option>
+                <option value="radio" >单选框</option>
+                <option value="checkbox">复选框</option>
+                <option value="text">文本框</option>
+                </select>
+                
+            </td>
+            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
+            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" value="专业"></td>
+            <td >
+                <select name="">
+                <option value="text" selected>文本框</option>
+                <option value="radio"  >单选框</option>
+                <option value="checkbox">复选框</option>
+                <option value="text">文本框</option>
+                </select>
+                
+            </td>
+            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
+            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" value="年龄"></td>
+            <td >
+                <select name="">
+                <option value="text" selected>文本框</option>
+                <option value="radio"  >单选框</option>
+                <option value="checkbox">复选框</option>
+                <option value="text">文本框</option>
+                </select>
+                
+            </td>
+            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
+            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+        </tr>
+        
+        
+        <tr>
+            <td class="current t-c" colspan="4" ><button type="submit">提交</button></td>
+           
+        </tr>
+             
+             </tbody>
+             </table>
+             </form>  
+            </div>
+          </div>
+          </div>
+        </div>
+       </div>
+       </div>
+<%include file="contest/contest_footer.html"%>

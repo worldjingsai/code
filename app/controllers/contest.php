@@ -88,6 +88,59 @@ class Contest extends SB_controller{
     
     }
     
+    /**
+     * 创建报名系统
+     */
+    public function create_apply($contest_id) {
+        if (!$contest_id) {
+            return show_error('竞赛不存在');
+        }
+        
+        $cInfo = $this->contest_m->get($contest_id);
+        if (empty($cInfo)){
+            return show_error('不存在的竞赛');
+        }
+        
+        $univs_id = $cInfo["univs_id"];
+        
+        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        $data['university'] = $univs_info;
+        $data['contest'] = $cInfo;
+        
+        $colums = Contest_m::$columNames;
+        $data['colums'] = $colums;
+        $data['col'] = 0;
+        
+        $this->tplData = $data;
+        $this->display('contest/create_apply.html');
+    }
+    
+    /**
+     * 创建报名系统
+     */
+    public function user_apply($contest_id) {
+        if (!$contest_id) {
+            return show_error('竞赛不存在');
+        }
+    
+        $cInfo = $this->contest_m->get($contest_id);
+        if (empty($cInfo)){
+            return show_error('不存在的竞赛');
+        }
+    
+        $univs_id = $cInfo["univs_id"];
+    
+        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        $data['university'] = $univs_info;
+        $data['contest'] = $cInfo;
+    
+        $colums = Contest_m::$columNames;
+        $data['colums'] = $colums;
+        $data['col'] = 0;
+    
+        $this->tplData = $data;
+        $this->display('contest/user_apply.html');
+    }
     
     /**
      * 显示编辑的文章界面
