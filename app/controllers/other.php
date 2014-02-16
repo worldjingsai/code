@@ -5,6 +5,6 @@
 class Other extends SB_Controller{
     
     public function about(){
-       $this->display("user/register.html");
+       $this->display("other/about.html");
     }
 }
