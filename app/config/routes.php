@@ -9,6 +9,7 @@ $route['qq_callback'] = 'oauth/qqcallback';
 $route['forum/flist/(:num)'] = 'forum/flist/$1';
 $route['forum/view/(:num)'] = 'forum/view/$1';
 $route['tag/index/(:any)'] = 'tag/index/$1';
+$route['about'] = 'other/about';
 $route['([a-z]+)'] = 'univs/index/$1';
 $route['([a-z]+)/(outer|inner)']       = 'univs/clist/$1_$2_$3';
 $route['([a-z]+)/(outer|inner)/(\d+)'] = 'univs/clist/$1_$2_$3';
