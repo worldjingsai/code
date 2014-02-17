@@ -25,35 +25,6 @@ $(function(){
 		$("#js_register").show("fast");
 	  });
 	
-	$("#login_username").focus(function(){
-	    $("#username_hide").hide();
-	  });
-	  
-	$("#login_username").blur(function(){
-	  	var tes = $("#login_username").val();
-		if(tes == "")
-		{
-			$("#username_hide").show();
-		} else
-		{
-			$("#username_hide").hide();
-		}
-	  });
-	  
-	$("#login_password").focus(function(){
-	    $("#password_hide").hide();
-	  });
-	  
-	$("#login_password").blur(function(){
-	  	var tes = $("#login_password").val();
-		if(tes == "")
-		{
-			$("#password_hide").show();
-		} else
-		{
-			$("#password_hide").hide();
-		}
-	  });
 
 	//$('#reply_content').bind("blur focus keydown keypress keyup", function(){
 	//	recount();

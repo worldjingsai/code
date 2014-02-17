@@ -188,6 +188,7 @@ button.btn.btn-large,input[type="submit"].btn.btn-large{*padding-top:7px;*paddin
 .btn-info:active,.btn-info.active{background-color:#24748c \9;}
 
 span.w_60 {width:60px;}
+label.w_60 {width:60px;}
 .DivH10{height:10px;}
 
 #head,.head_common {
@@ -448,7 +449,7 @@ font-weight: bold;
 	clear:both;
 	overflow:hidden;
 	z-index:9;
-	background:url(../images/jingsai_index.jpg) no-repeat;
+	background:url(../images/earth.jpg) 50% 50% no-repeat;
 }
 
 .login_img {
@@ -458,7 +459,7 @@ font-weight: bold;
 	clear:both;
 	overflow:hidden;
 	z-index:9;
-	background:url(../images/jingsai_denglu.jpg) no-repeat;
+	background:url(../images/earth.jpg) 50% 50% no-repeat;
 }
 
 .register_img {
@@ -471,20 +472,24 @@ font-weight: bold;
 	background:url(../images/earth.jpg) -200px 50%;
 }
 
-
+.w_220{width:220px;}
 
 .login_in{padding:0 5px;}
 .login_in .input_type{width:190px; background-color:transparent;}
 .backside{z-index:-1; display:block; position:absolute; margin-top:3px; color:#999;}
 
+.earch_slogan{position:absolute;left:50px;width:400px;top:20px;}
+.earch_slogan p {display:block; color:#FFF; margin-top:50px; font-family:"华文中宋","Microsoft Yahei", "新宋体"; font-size:26px;line-height:40px;}
+
 .register_area{position:relative;width:300px; margin-left:450px;}
 .register_control{width:100%; margin:90px 0 10px;}
 
 .register_area .current{color:#E9F118;}
+.register .current{color:#E9F118;}
 
-.register{position:relative;left:720px;width:205px;top:40px;}
+.register{position:relative;left:640px;width:245px;top:20px;z-index:2;}
 
-.register p {height:30px;}
+.register p {display:block; height:30px; clear:both; }
 
 .register_area a, .register a{
 	height:20px; line-height:20px; font-size:18px; color:#FFF;}
@@ -493,11 +498,11 @@ font-weight: bold;
 .register .datainput {float:left; width:130px;}
 
 .datatitle label{ display:block ;line-height:20px; height:43px; font-size:14px; min-width:60px; }
-.register input{width:130px; height:20px; border:1px #666666 solid; margin-bottom:17px;}
+.register input{ height:20px; }
 .register input:focus{border: #33FF00 1px solid;}
 
 .register .button{float:left; margin-top:3px; width:100%; text-align:center;}
-.register .btn{background:none; border:none; line-height:15px; color:#FFF; font-size:18px; height:30px; width:100%; text-align:center; cursor:pointer;}
+.register .btn{width:100%;}
 
 .movie_out {
 	margin-top:-3px;

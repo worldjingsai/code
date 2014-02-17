@@ -2,27 +2,51 @@
 <DIV class=c_out>
 <DIV class=c_out_h><!--首屏头图-->
 <DIV class="index_img" >
+    <div class="earch_slogan">
+    <p>中国大学生竞赛联盟</p>
+    <p>中国教育网(www.edu.cn)<br/>独家合作竞赛发布平台</p>
+    </div>
     <div class="register">
-        <p><span class="fr"><a href="javascript:" class="js_login">登录</a></span><a href="javascript:" class="js_register">注册账号</a></p>
+        <p><span class="fr"><a href="javascript:" class="js_login">登录</a></span><a href="javascript:" class="js_register current">注册账号</a></p>
+        
         <form action="/user/reg" method="post">
-        <div class="datatitle">
-        <label for="username">用户名:</label>
-        <label for="email">邮箱:</label>
-        <label for="password">密码:</label>
-        <label for="password_c">确认密码:</label>
-        <label for="univs_id">学校:</label>
-        <label for="tel">手机:</label>
+        <div class="w_220">
+        <div class="input-group">
+        <label for="username" class="input-group-addon w_60">用户名</label>
+        <input id="username" class="form-control" type="text" name="username" value=""/>
         </div>
-        <div class="datainput">
-        <input id="username" class="input_type" type="text" name="username" value=""/><br/>
-        <input id="email" class="input_type" type="text" name="email" value=""/>
-        <input id="password" class="input_type" type="password" name="password" value=""/>
-        <input id="password_c" class="input_type" type="password" name="password_c" value=""/>
-        <input id="school-name" class="input_type" type="text" name="univs_id" value=""/>
-        <input id="tel" class="input_type" type="text" name="tel" value=""/>
+        <div class="DivH10"></div>
+        <div class="input-group">
+        <label for="email"  class="input-group-addon w_60">邮箱</label>
+        <input id="email" class="form-control" type="text" name="email" value=""/>
         </div>
-        <div class="button"><button type="submit" class="btn">立即注册</button></div>
+        <div class="DivH10"></div>
+        <div class="input-group">
+        <label for="password"  class="input-group-addon w_60">密码</label>
+        <input id="password" class="form-control" type="password" name="password" value=""/>
+        </div>
+        <div class="DivH10"></div>
+        <div class="input-group">
+        <label for="password_c" class="input-group-addon w_60">确认密码</label>
+        <input id="password_c" class="form-control" type="password" name="password_c" value=""/>
+        </div>
+        <div class="DivH10"></div>
+        <div class="input-group">
+        <label for="school-name" class="input-group-addon w_60">学校</label>
+        <input id="school-name" class="form-control" type="text" name="univs_id" value=""/>
+        </div>
+        <div class="DivH10"></div>
+        <div class="input-group">
+        <label for="tel" class="input-group-addon w_60">手机</label>
+        <input id="tel" class="form-control" type="text" name="tel" value=""/>
+        </div>
+        <div class="DivH10"></div>
+        </div>
+
+        <div class="button"><button type="submit" class="btn btn-large btn-info">立即注册</button></div>
+        
         </form>
+
     </div>
 </DIV>
 <div id="choose-box-wrapper">
@@ -38,16 +62,30 @@
 	</div>
 </div>
 <DIV class="login_img " style="display:none;" >
+    <div class="earch_slogan">
+    <p>中国大学生竞赛联盟</p>
+    <p>中国教育网(www.edu.cn)<br/>独家合作竞赛发布平台</p>
+    </div>
+    
     <div class="register">
-        <p><span class="fr"><a href="javascript:" class="js_login">登录</a></span><a href="javascript:" class="js_register">注册账号</a></p>
+        <p><span class="fr"><a href="javascript:" class="js_login current">登录</a></span><a href="javascript:" class="js_register">注册账号</a></p>
+        
         <form action="/user/login" method="post">
-        <div class="login_in">
-    <label class="backside" id="username_hide">邮箱/手机号/用户名</label>
-            <input id="login_username" class="input_type" type="text" name="username" value=""/><br/>
-    <label class="backside" id="password_hide">密码</label>
-        <input id="login_password" class="input_type" type="text" name="email" value=""/>
+        <div class="w_220">
+
+        <div class="input-group">
+        <label class="input-group-addon w_60" for="login_username">邮箱/手机/账号</label>
+        <input id="login_username" class="form-control" type="text" name="username" />
         </div>
-        <div class="button"><button type="submit" class="btn">立即登录</button></div>
+        <div class="DivH10"></div>
+        <div class="input-group">
+        <label class="input-group-addon w_60" for="login_password">密码</label>
+        <input id="login_password" class="form-control" type="password" name="email"/>
+        </div>
+        
+        </div>
+        <div class="DivH10"></div>
+        <div class="button"><button type="submit" class="btn btn-large btn-info">立即登录</button></div>
         </form>
     </div>
 </DIV>
