@@ -434,6 +434,8 @@ font-size: 13px;
 font-weight: bold;
 
 }
+.input-group input.error {border: 1px dotted red;}
+.input-group label.error {color: red;font-style: italic;}
 
 #footer {
 	background:url(../images/shadow_bg.jpg) no-repeat -1940px -310px;

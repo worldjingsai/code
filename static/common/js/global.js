@@ -25,6 +25,68 @@ $(function(){
 		$("#js_register").show("fast");
 	  });
 	
+	if($("#register_form").length > 0) {
+		// validate the comment form when it is submitted
+		$("#register_form").validate({
+			rules: {
+				username: {
+					required:true
+				},
+				email:{
+					required:true,
+					email:true
+				},
+				password:{
+					required:true,
+					regexPassword:true
+				},
+				password_c:{
+					equalTo:'#password'
+				},
+				school_name:"required",
+				tel:{
+					required:true,
+					digits:true,
+					rangelength:[11,11]
+				}
+			},
+			messages: {
+				username: "用户名不能为空",
+				email:{
+					required:"邮箱不能为空",
+					email:"邮箱格式不正确"
+				},
+				password:{
+					required:"密码不能为空",
+					regexPassword:"密码至少包一个字母，一个数字，长度至少6位"
+				},
+				password_c:{
+					equalTo:'两次输入的密码不一样请重新输入'
+				},
+				school_name:"学校不能为空",
+				tel:{
+					required:"手机号不能为空",
+					digits:"手机号格式不正确",
+					rangelength:"手机号格式不正确"
+				}
+			}
+		});
+		
+		jQuery.validator.addMethod("regexPassword", function(value, element) {  
+		    return this.optional(element) || /^(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?=.*[A-Za-z]).*$/.test(value);  
+		}, "一个字母，一个数字");
+		
+
+	    // bind form using 'ajaxForm' 
+	    if($('#content-form').length > 0) {
+		    var options = {
+		    		beforeSubmit: "ajaxFormStart",  // pre-submit callback
+		            success:      "ajaxFormSuccess", // post-submit callback 
+		            dataType:     'json'
+		    }; 
+	        $('#content-form').ajaxForm(options);
+	    }
+	};
 
 	//$('#reply_content').bind("blur focus keydown keypress keyup", function(){
 	//	recount();

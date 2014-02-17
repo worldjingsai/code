@@ -52,7 +52,7 @@ var selectSchool = function(){
 			var school = item.attr('school-id');
 
 			//更新选择大学文本框中的值
-			$('#school-name').val(item.text());
+			$('#school_name').val(item.text());
 
 			//关闭弹窗
 			hide();
@@ -73,16 +73,16 @@ var selectSchool = function(){
 }
 
 $(document).ready(function(){
-	$("#school-name").on("blur", function(){
+	$("#school_name").on("blur", function(){
 		if(this.value==''){this.value='请选择大学'}
 	});
 	
-	$("#school-name").on("focus", function(){
+	$("#school_name").on("focus", function(){
 		if(this.value=='请选择大学'){this.value=''};
 	});
 
 	var se = new selectSchool();
-	$("#school-name").on("click",function(){se.pop()});
+	$("#school_name").on("click",function(){se.pop()});
 	
 	//隐藏窗口
 	$('#closeSchoole').on("click",function(){
