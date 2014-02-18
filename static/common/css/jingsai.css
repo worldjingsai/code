@@ -216,7 +216,18 @@ a.edit { font-size:13px; color:#0119C9;}
 .article_body .rg_data th {text-align:right}
 .article_body .rg_data em{color:#F00; vertical-align:middle;}
 
-.post_box{width:100%; background:#ccc;}
+.comment_list{background:#FFF; border: solid 1px #CCC;}
+.comment_list .show_comment{background:#CCC; border-bottom: solid 1px #CCC;padding-left:10px;}
+.comment_list .comment_box{border-bottom: 1px dotted #CCC; padding:2px 10px;}
+.comment_box .info{width:auto;}
+.comment_box .info a{color:#666;}
+.comment_box .info a:hover{color:#C00;}
+
+.comment_box .content{}
+.comment_box .toolbar{clear: both;height: 24px;margin: 10px 0 5px 0;vertical-align: middle;text-align: right;}
+
+.post_box{width: 100%; display: block; overflow:hidden;background:#ccc; border: #666 solid 1px;}
+
 .post_box .post_notice{padding-top:5px;}
 .post_box .post_area{width:96%; margin:0 auto;}
 .post_box .post_area .comment_content{width: 97%;height: 72px;line-height: 24px;float: left;border-radius: 4px;box-shadow: 0 1px 1px #C6C6C6 inset;

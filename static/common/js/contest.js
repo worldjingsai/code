@@ -147,5 +147,14 @@ $(document).ready(function(){
 			});
 			
 		})
-	}
+	};
+	
+	$('.js_reply').click(function(){
+		if($(this).parents(".toolbar").next(".post_box").length>0) {
+			$(this).parents(".toolbar").next(".post_box").remove();
+		}else {
+			$(this).parents(".comment_box").append($("#post_box").html());
+		}
+	});
+
 });
