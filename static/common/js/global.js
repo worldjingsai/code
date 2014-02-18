@@ -25,7 +25,35 @@ $(function(){
 		$("#js_register").show("fast");
 	  });
 	
+	if(jQuery.validator.length > 0) {
+		jQuery.validator.addMethod("regexPassword", function(value, element) {  
+		    return this.optional(element) || /^(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?=.*[A-Za-z]).*$/.test(value);  
+		}, "一个字母，一个数字");
+		
+		jQuery.validator.setDefaults({
+			showErrors: function(map, list) {
+				// there's probably a way to simplify this
+				var focussed = document.activeElement;
+				if (focussed && $(focussed).is("input, textarea")) {
+					$(this.currentForm).tooltip("close", { currentTarget: focussed }, true)
+				}
+				this.currentElements.removeAttr("title").removeClass("ui-state-highlight");
+				$.each(list, function(index, error) {
+					$(error.element).attr("title", error.message).addClass("ui-state-highlight");
+				});
+				if (focussed && $(focussed).is("input, textarea")) {
+					$(this.currentForm).tooltip("open", { target: focussed });
+				}
+			}
+		});
+	}
+	
 	if($("#register_form").length > 0) {
+		
+		$("#register_form").tooltip({
+			show: false
+		});
+		
 		// validate the comment form when it is submitted
 		$("#register_form").validate({
 			rules: {
@@ -71,22 +99,34 @@ $(function(){
 				}
 			}
 		});
-		
-		jQuery.validator.addMethod("regexPassword", function(value, element) {  
-		    return this.optional(element) || /^(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?=.*[A-Za-z]).*$/.test(value);  
-		}, "一个字母，一个数字");
-		
-
-	    // bind form using 'ajaxForm' 
-	    if($('#content-form').length > 0) {
-		    var options = {
-		    		beforeSubmit: "ajaxFormStart",  // pre-submit callback
-		            success:      "ajaxFormSuccess", // post-submit callback 
-		            dataType:     'json'
-		    }; 
-	        $('#content-form').ajaxForm(options);
-	    }
 	};
+	
+	if($("#login_form").length > 0) {
+		
+		$("#login_form").tooltip({
+			show: false
+		});
+		$("#login_form").validate({
+			rules: {
+				username:"required",
+				password:"required"
+			},
+			messages: {
+				username: "用户名不能为空",
+				password:"密码不能为空"
+			}
+		});
+	};
+
+    // bind form using 'ajaxForm' 
+    if($('#content-form').length > 0) {
+	    var options = {
+	    		beforeSubmit: "ajaxFormStart",  // pre-submit callback
+	            success:      "ajaxFormSuccess", // post-submit callback 
+	            dataType:     'json'
+	    }; 
+        $('#content-form').ajaxForm(options);
+    }
 
 	//$('#reply_content').bind("blur focus keydown keypress keyup", function(){
 	//	recount();
