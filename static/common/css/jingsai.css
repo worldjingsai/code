@@ -216,6 +216,13 @@ a.edit { font-size:13px; color:#0119C9;}
 .article_body .rg_data th {text-align:right}
 .article_body .rg_data em{color:#F00; vertical-align:middle;}
 
+.post_box{width:100%; background:#ccc;}
+.post_box .post_notice{padding-top:5px;}
+.post_box .post_area{width:96%; margin:0 auto;}
+.post_box .post_area .comment_content{width: 97%;height: 72px;line-height: 24px;float: left;border-radius: 4px;box-shadow: 0 1px 1px #C6C6C6 inset;
+box-shadow: inset 2px 2px 2px rgba(0,0,0,.1);overflow: auto;padding: 4px 10px;background: #fff;font-size: 14px;}
+.post_box .post_bottom{padding-bottom:5px;}
+
 .team_info{background:#EEE}
 .rg_data .rg_info{font-weight:bold;}
 .rg_data th{font-weight:normal;}
