@@ -24,7 +24,8 @@
         <div class="post_box fixed" >
             <div class="post_area fixed" >
 	        <div class="post_notice">发表评论：</div>
-	        <form action="/comment/add_comment" method="post"> 
+	        <form action="/comment/add_comment" method="post">
+                    <input type="hidden" name ="fid" value="<%$tplData.article.article_id%>">
 	        <div class="post_comment">
 	            <textarea class="comment_content" name="comment"></textarea>
 	        </div>

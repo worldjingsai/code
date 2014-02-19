@@ -52,7 +52,6 @@ class Contest extends SB_controller{
      * @param int $article_id
      */
     public function show($article_id) {
-
         $data = $this->_get($article_id);
         $this->tplData = $data;
         $this->display('contest/contest_article.html');
