@@ -1,15 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-#doc
-#	Classname:	Comment
-#	Scope:		PUBLIC
-#	StartBBS起点轻量开源社区系统
-#	author :doudou QQ:858292510 startbbs@126.com
-#	Copyright (c) 2013 http://www.startbbs.com All rights reserved.
-#/doc
+/**
+ * 评论
+ */
 
-class Comment extends SB_Controller
-{
-
+class Comment extends SB_Controller{
 	function __construct ()
 	{
 		parent::__construct();
