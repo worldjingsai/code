@@ -75,13 +75,13 @@ class Comment extends SB_Controller{
             $this->db->set('replies','replies+1',FALSE)->where('uid',$this->uid)->update('users');
 
             //回复提醒作者
-            $user = $this->db->select('uid')->where('fid',$data['fid'])->get('forums')->row_array();
+            /*$user = $this->db->select('uid')->where('fid',$data['fid'])->get('forums')->row_array();
             if($this->uid!=$user['uid']){
                 $this->load->model('notifications_m');
                 $this->notifications_m->notice_insert($data['fid'],$this->uid,$user['uid'],0);
                 //更新作者的提醒数
                 $this->db->set('notices','notices+1',FALSE)->where('uid', $user['uid'])->update('users');
-            }
+            }*/
             //更新数据库缓存
             $this->db->cache_delete('/default', 'index');
         }
