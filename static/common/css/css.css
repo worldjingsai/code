@@ -454,6 +454,21 @@ font-weight: bold;
 	background:url(../images/earth.jpg) 50% 50% no-repeat;
 }
 
+.index_user{
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 15px;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+}
+
 .login_img {
 	position:relative;
 	width:960px;
@@ -495,6 +510,14 @@ font-weight: bold;
 
 .register_area a, .register a{
 	height:20px; line-height:20px; font-size:18px; color:#FFF;}
+
+.register .index_user a.logout{height:20px; line-height:20px; font-size:18px; color:#222; border-bottom:2px #0F22F3 solid}
+
+.index_user .user_name{margin:0 auto; text-align:center;}
+.index_user .user_name a{ font-size:16px; color:blue; }
+.register .index_user .my_item{width:40%; margin:10px auto; }
+.register .index_user .my_item a{color:#E23A2B}
+.register .index_user .my_item a:hover{color:#333}
 
 .register .datatitle {float:left; width:68px; text-align:right; vertical-align:middle; padding-top:3px; }
 .register .datainput {float:left; width:130px;}

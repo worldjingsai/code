@@ -41,7 +41,11 @@ class SB_Controller extends Base_Controller{
          );
          if($this->auth->is_login()){
             $this->is_login = true;
-            $this->user_info = $this->db->select('uid,username,avatar')->where('uid',$this->session->userdata('uid'))->get('users')->row_array();
+            $this->user_info = $this->db->select('uid,username,avatar,univs_id')->where('uid',$this->session->userdata('uid'))->get('users')->row_array();
+            $univs = $this->db->select('short_name')->get_where('university',array('univs_id'=>$this->user_info['univs_id']))->row_array();
+            if (!empty($univs['short_name'])) {
+                $this->user_info['univs_name'] = $univs['short_name'];
+            }
         }else{
             $this->is_login = false;
         }

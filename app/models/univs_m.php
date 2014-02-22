@@ -11,7 +11,7 @@ class Univs_m extends SB_Model{
     // 根据高校ID获取高校基本信息
     public function get_univs_info_by_univs_id($univs_id){
         $this->db->select('*');
-        $query = $this->db->where('univs_id',$univs_id)->where('status',1)->get('university');
+        $query = $this->db->where('univs_id',$univs_id)->get('university');
         return $query->row_array();
     }
 
@@ -20,10 +20,10 @@ class Univs_m extends SB_Model{
      */
     public function get_univs_info_by_univs_short_name($short_name){
         $this->db->select('*');
-        $query = $this->db->where('short_name',$short_name)->where('status',1)->get('university');
+        $query = $this->db->where('short_name',$short_name)->get('university');
         return $query->row_array();
     }
-    
+
     /**
      * 获取所有高校
      */

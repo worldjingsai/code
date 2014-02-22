@@ -53,6 +53,7 @@ var selectSchool = function(){
 
 			//更新选择大学文本框中的值
 			$('#school_name').val(item.text());
+			$('#univs_id').val(school);
 
 			//关闭弹窗
 			hide();

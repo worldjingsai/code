@@ -7,6 +7,16 @@
     <p>中国教育网(www.edu.cn)<br/>独家合作竞赛发布平台</p>
     </div>
     <div class="register">
+    <%if $tplData.is_login eq 1 %>
+        <div class="index_user">
+        <p><span class="fr"><a href="/user/logout" class="js_login  logout">退出</a></span></p>
+        <p>欢迎回来：</p>
+        <p class="user_name"><a href=""><%$tplData.user_info.username|default:''%></a></p>
+        <p class="my_item"><a class="btn " href="<%$tplData.user_info.univs_name|default:''%>">我的学校</a></p>
+        <p class="my_item"><a class="btn " href="">我的竞赛</a></p>
+        </div>
+    <%else%> 
+        <div id="js_register" >
         <p><span class="fr"><a href="javascript:" class="js_login">登录</a></span><a href="javascript:" class="js_register current">注册账号</a></p>
         
         <form action="/user/reg" method="post" id="register_form">
@@ -34,6 +44,7 @@
         <div class="input-group">
         <label for="school_name" class="input-group-addon w_60">学校</label>
         <input id="school_name" class="form-control" type="text" name="school_name" value=""/>
+        <input type="hidden" value="" id="univs_id" name="univs_id"></input>
         </div>
         <div class="DivH10"></div>
         <div class="input-group">
@@ -46,28 +57,9 @@
         <div class="button"><button type="submit" class="btn btn-large btn-info">立即注册</button></div>
         
         </form>
-
-    </div>
-</DIV>
-<div id="choose-box-wrapper">
-	<div id="choose-box">
-		<div id="choose-box-title">
-			<span>选择学校</span>
-		</div>
-		<div id="choose-a-province"></div>
-		<div id="choose-a-school"></div>
-		<div id="choose-box-bottom">
-			<input type="button" id="closeSchoole" value="关闭" />
-		</div>
-	</div>
-</div>
-<DIV class="login_img " style="display:none;" >
-    <div class="earch_slogan">
-    <p>中国大学生竞赛联盟</p>
-    <p>中国教育网(www.edu.cn)<br/>独家合作竞赛发布平台</p>
-    </div>
-    
-    <div class="register">
+        </div>
+        
+      <div id="js_login" style="display:none">
         <p><span class="fr"><a href="javascript:" class="js_login current">登录</a></span><a href="javascript:" class="js_register">注册账号</a></p>
         
         <form action="/user/login" method="post" id="login_form">
@@ -88,7 +80,23 @@
         <div class="button"><button type="submit" class="btn btn-large btn-info">立即登录</button></div>
         </form>
     </div>
-</DIV> 
+    <%/if%>
+    </div>
+</DIV>
+<div id="choose-box-wrapper">
+	<div id="choose-box">
+		<div id="choose-box-title">
+			<span>选择学校</span>
+		</div>
+		<div id="choose-a-province"></div>
+		<div id="choose-a-school"></div>
+		<div id="choose-box-bottom">
+			<input type="button" id="closeSchoole" value="关闭" />
+		</div>
+	</div>
+</div>
+
+
 <!--高校联盟-->
 <DIV class=movie_out>
 <H1 class=index_mtit>中国大学生联盟</H1>
