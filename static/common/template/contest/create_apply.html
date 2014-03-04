@@ -24,168 +24,229 @@
             <table width="100%" class="apply_teble" border=1 >
         <tbody>
         <tr>
-            <td class="current t-c" colspan="4" >团队基本信息</td>
+            <td class="current t-c" colspan="3" >报名系统配置信息</td>
         </tr>
+        
         <tr>
-            <th><em>*</em>参赛人数:</th>
-            <td class="input matchbox-wrap" colspan="3" >
-                <div class="clearfix"><input type="text" class="number" value="1"/>~<input type="text" class="number"/></div>
+            <th><em>*</em>第几届竞赛:</th>
+            <td class="t-l" colspan="2" >
+                <div class=""><input title="区分队伍是报名的哪一届竞赛" type="text" class="number" value="1"/></div>
             </td>
+        </tr>
+        
+        <tr>
+            <th><em>*</em>报名队号生成基数:</th>
+            <td class="t-l" colspan="2" >
+                <div class=""><input type="text" title="根据这个基数每增加一个队，队号加1，可以不修改" class="number" value="10000"/></div>
+            </td>
+        </tr>
+        
+        <tr>
+            <th><em>*</em>竞赛容许参赛人数:</th>
+            <td class="t-l" colspan="2" >
+                <div class=""><input type="text" class="number" value="1"/>~<input type="text" class="number"/></div>
+            </td>
+        </tr>
+        
+        
+        <tr>
+            <td class="current t-c" colspan="3" >报名时需要填写的队伍信息</td>
+        </tr>
         <tr class="control">
             <td >字段名称</td>
-            <td >字段类型 </td>
-            <td >是否必填 </td>
-            <td >操作</td>
+            <td title="提示信息显示在输入框的后面，提示报名者需要填写的内容">提示信息</td>
+            <td >是否启用</td>
+        </tr>
+        <tr>
+            <td><input type="text" name="t[]" value="团队名称"></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="t-c"><input type="checkbox" name="c[]" checked value="1"></td>
         </tr>
         
         <tr>
-            <td><input type="text" value="团队名称"></td>
-            <td>
-                <select name="">
-                <option value="text">文本框</option>
-                <option value="radio">单选框</option>
-                <option value="checkbox">复选框</option>
-                <option value="text">文本框</option>
-                </select>
-            </td>
-            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
-            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+            <td><input type="text" name="t[]" value="指导老师"></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="center"><input type="checkbox" name="c[]" checked value="1"></td>
         </tr>
         
         <tr>
-            <td><input type="text" value="指导老师"></td>
-            <td>
-                <select name="">
-                <option value="text">文本框</option>
-                <option value="radio">单选框</option>
-                <option value="checkbox">复选框</option>
-                <option value="text">文本框</option>
-                </select>
-            </td>
-            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
-            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+            <td><input type="text" name="t[]" value="队长姓名"></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="center"><input type="checkbox" name="c[]" checked value="1"></td>
         </tr>
         
         <tr>
-            <td><input type="text" value="学生类型"></td>
-            <td >
-                <select name="">
-                <option value="text">文本框</option>
-                <option value="radio" selected>单选框</option>
-                <option value="checkbox">复选框</option>
-                <option value="text">文本框</option>
-                </select>
-                <p>选项一：<input type="text" class="w100" value="高中生"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
-                <p>选项二：<input type="text" class="w100" value="大专"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
-                <p>选项一：<input type="text" class="w100" value="大学本科"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
-                <p>选项二：<input type="text" class="w100" value="研究生及以上"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
-            </td>
-            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
-            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+            <td><input type="text" name="t[]" value="队长联系电话"></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="center"><input type="checkbox" name="c[]" checked value="1"></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" name="t[]" value="团队级别"></td>
+            <td><input type="text" name="b[]" value="请填写：专科组、本科组、研究生组"></td>
+            <td class="center"><input type="checkbox" name="c[]" checked value="1"></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" name="t[]" value=""></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="t[]" value=""></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="t[]" value=""></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="t[]" value=""></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="t[]" value=""></td>
+            <td><input type="text" name="b[]" value=""></td>
+            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
         </tr>
         
         </tbody>
         <tbody>
+
+        
         <tr>
-            <td class="current t-c" colspan="4" >报名填写信息</td>
+            <td class="current t-c" colspan="3" >报名时需要填写的参赛者信息</td>
         </tr>
         
         <tr class="control">
             <td >字段名称</td>
-            <td >字段类型 </td>
-            <td >是否必填 </td>
-            <td >操作</td>
+            <td title="提示信息显示在输入框的后面，提示报名者需要填写的内容">提示信息</td>
+            <td >是否启用</td>
         </tr>
         
         <tr>
-            <td><input type="text" value="姓名"></td>
-            <td id="jobCity-linkup" >
-                <select name="">
-                <option value="text">文本框</option>
-                <option value="radio">单选框</option>
-                <option value="checkbox">复选框</option>
-                <option value="text">文本框</option>
-                </select>
-            </td>
-            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
-            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+            <td><input type="text" name="u[]" value="姓名"></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
         </tr>
         
         <tr>
-            <td><input type="text" value="性别"></td>
-            <td >
-                <select name="">
-                <option value="text">文本框</option>
-                <option value="radio" selected >单选框</option>
-                <option value="checkbox">复选框</option>
-                <option value="text">文本框</option>
-                </select>
-                <div >
-                <p>选项一：<input type="text" class="w100" value="男"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
-                <p>选项二：<input type="text" class="w100" value="女"/><a href="#" class="green">+加</a>&nbsp;&nbsp;<a href="#" class="red">-删</a></p>
-                </div>
-            </td>
-            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
-            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+            <td><input type="text" name="u[]" value="性别"></td>
+            <td><input type="text" name="d[]" value="填写：男、女"></td>
+            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
         </tr>
         
         <tr>
-            <td><input type="text" value="学校"></td>
-            <td >
-                <select name="">
-                <option value="text" selected>文本框</option>
-                <option value="radio" >单选框</option>
-                <option value="checkbox">复选框</option>
-                <option value="text">文本框</option>
-                </select>
-                
-            </td>
-            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
-            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+            <td><input type="text" name="u[]" value="学校名称"></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
         </tr>
         
         <tr>
-            <td><input type="text" value="专业"></td>
-            <td >
-                <select name="">
-                <option value="text" selected>文本框</option>
-                <option value="radio"  >单选框</option>
-                <option value="checkbox">复选框</option>
-                <option value="text">文本框</option>
-                </select>
-                
-            </td>
-            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
-            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+            <td><input type="text" name="u[]" value="专业"></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
         </tr>
         
         <tr>
-            <td><input type="text" value="年龄"></td>
-            <td >
-                <select name="">
-                <option value="text" selected>文本框</option>
-                <option value="radio"  >单选框</option>
-                <option value="checkbox">复选框</option>
-                <option value="text">文本框</option>
-                </select>
-                
-            </td>
-            <td><input class="checkbox" type="checkbox" value="1" checked/></td>
-            <td><a href="#" class="green">+增加</a>&nbsp;&nbsp;<a href="#" class="red">-删除</a></td>
+            <td><input type="text" name="u[]" value="年龄"></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
         </tr>
-        
         
         <tr>
-            <td class="current t-c" colspan="4" ><button type="submit">提交</button></td>
-           
+            <td><input type="text" name="u[]" value="联系电话"></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
         </tr>
-             
+        
+        <tr>
+            <td><input type="text" name="u[]" value="电子邮件"></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        <tr>
+            <td><input type="text" name="u[]" value=""></td>
+            <td><input type="text" name="d[]" value=""></td>
+            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
+        </tr>
+        
              </tbody>
              </table>
+             <div class="DivH10"></div>
+             <div class="t-c">
+             <button class=" btn btn-primary" type="submit" >提交</button>
+             </div>
              </form>  
             </div>
           </div>
           </div>
+          
         </div>
        </div>
        </div>
