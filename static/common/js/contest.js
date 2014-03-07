@@ -157,4 +157,15 @@ $(document).ready(function(){
 		}
 	});
 
+	$(".js_table  tr:nth-child(even)").css({"background-color":"#E4F5FF"});
+	$(".js_table tr").mouseover(function(){  
+        $(this).css({"background-color":"#87CEEB"});  
+     }).mouseout(function(event){  
+        var $index=$(this).index();  
+        if($index%2==0){  
+            $(this).css({"background-color":"#fff"});  
+        }else{  
+            $(this).css({"background-color":"#E4F5FF"});  
+        }  
+     }); 
 });

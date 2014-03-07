@@ -201,7 +201,7 @@ a.edit { font-size:13px; color:#0119C9;}
 .create_data .create_teble  input.error {border: 1px dotted red;}
 .create_data .create_teble  label.error {color: red;font-style: italic;}
 
-.create_data .apply_teble{border:#AEDEF2; border-collapse: collapse; vertical-align: middle;}
+.create_data .apply_teble{border:#AEDEF2; border-collapse: collapse; vertical-align: middle; width:100%}
 .create_data .apply_teble th{font-weight:normal; font-size:14px; text-align:right;}
 .create_data .apply_teble td{font-weight:normal; font-size:14px; text-align:center;}
 .create_data .apply_teble td.t-l{ text-align:left;}

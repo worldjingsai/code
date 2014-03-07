@@ -1,8 +1,5 @@
 <%include file="contest/contest_header.html"%>
 <link  rel='stylesheet' type='text/css' href='/static/common/css/jquery-ui-1.10.4.custom.min.css' >
-<script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
-<script type="text/javascript" src="/static/common/js/jquery-ui-timepicker-addon.js"></script>
-<script type="text/javascript" src="/static/common/js/jquery.validate.js"></script>
 <script type="text/javascript" src="/static/common/js/univs.js"></script>
         <!--第一栏-->
         <div class="right_div FR">
@@ -21,8 +18,7 @@
                <div class="DivH10"></div>
         <form id="form-practice" action="/contest/create_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
             <input type="hidden" value="<%$tplData.contest.contest_id|default:''%>" name="contest_id" id="contest_id"/>
-            <table width="100%" class="apply_teble" border=1 >
-        <tbody>
+            <table class="apply_teble js_table" border=1 >
         <tr>
             <td class="current t-c" colspan="3" >报名系统配置信息</td>
         </tr>
@@ -47,8 +43,9 @@
                 <div class=""><input type="text" class="number" value="1"/>~<input type="text" class="number"/></div>
             </td>
         </tr>
-        
-        
+        </table>
+        <div class="DivH10"></div>
+        <table class="apply_teble js_table" border=1 >
         <tr>
             <td class="current t-c" colspan="3" >报名时需要填写的队伍信息</td>
         </tr>
@@ -112,11 +109,10 @@
             <td><input type="text" name="b[]" value=""></td>
             <td class="center"><input type="checkbox" name="c[]" value="1"></td>
         </tr>
-        
-        </tbody>
-        <tbody>
+        </table>
 
-        
+        <div class="DivH10"></div>
+        <table class="apply_teble js_table" border=1 >
         <tr>
             <td class="current t-c" colspan="3" >报名时需要填写的参赛者信息</td>
         </tr>
@@ -236,8 +232,7 @@
             <td class="center"><input type="checkbox" name="s[]" value="1"></td>
         </tr>
         
-             </tbody>
-             </table>
+        </table>
              <div class="DivH10"></div>
              <div class="t-c">
              <button class=" btn btn-primary" type="submit" >提交</button>
