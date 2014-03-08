@@ -1,6 +1,5 @@
 <%include file="contest/contest_header.html"%>
-<link  rel='stylesheet' type='text/css' href='/static/common/css/jquery-ui-1.10.4.custom.min.css' >
-<script type="text/javascript" src="/static/common/js/univs.js"></script>
+
         <!--第一栏-->
         <div class="right_div FR">
         
@@ -16,38 +15,38 @@
                <div class="register">
                <div class="create_data">
                <div class="DivH10"></div>
-        <form id="form-practice" action="/contest/create_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
+        <form id="create_apply" action="/contest/create_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
             <input type="hidden" value="<%$tplData.contest.contest_id|default:''%>" name="contest_id" id="contest_id"/>
             <table class="apply_teble js_table" border=1 >
         <tr>
-            <td class="current t-c" colspan="3" >报名系统配置信息</td>
+            <td class="current t-c" colspan="3" >第一部分：报名系统配置信息</td>
         </tr>
         
         <tr>
             <th><em>*</em>第几届竞赛:</th>
             <td class="t-l" colspan="2" >
-                <div class=""><input title="区分队伍是报名的哪一届竞赛" type="text" class="number" value="1"/></div>
+                <div class=""><input title="区分队伍是报名的哪一届竞赛" type="text" class="number" value="1" name="session" id="session"/></div>
             </td>
         </tr>
         
         <tr>
             <th><em>*</em>报名队号生成基数:</th>
             <td class="t-l" colspan="2" >
-                <div class=""><input type="text" title="根据这个基数每增加一个队，队号加1，可以不修改" class="number" value="10000"/></div>
+                <div class=""><input type="text" title="根据这个基数每增加一个队，队号加1，可以不修改" class="number" value="10000" name="base_number" id="base_number"/></div>
             </td>
         </tr>
         
         <tr>
             <th><em>*</em>竞赛容许参赛人数:</th>
             <td class="t-l" colspan="2" >
-                <div class=""><input type="text" class="number" value="1"/>~<input type="text" class="number"/></div>
+                <div class=""><input type="text" class="number" value="1" name="min_member" id="min_member"/>~<input type="text" class="number" value="3" name="max_member" id="max_member"/></div>
             </td>
         </tr>
         </table>
         <div class="DivH10"></div>
         <table class="apply_teble js_table" border=1 >
         <tr>
-            <td class="current t-c" colspan="3" >报名时需要填写的队伍信息</td>
+            <td class="current t-c" colspan="3" >第二部分：报名时需要填写的队伍信息</td>
         </tr>
         <tr class="control">
             <td >字段名称</td>
@@ -114,7 +113,7 @@
         <div class="DivH10"></div>
         <table class="apply_teble js_table" border=1 >
         <tr>
-            <td class="current t-c" colspan="3" >报名时需要填写的参赛者信息</td>
+            <td class="current t-c" colspan="3" >第三部分：报名时需要填写的参赛者信息</td>
         </tr>
         
         <tr class="control">

@@ -149,6 +149,47 @@ $(document).ready(function(){
 		})
 	};
 	
+	if ($("#create_apply").length > 0) {
+		$("#create_apply").validate({
+			rules: {
+				session: {
+					required:true,
+					digits:true
+				},
+				base_number: {
+					required: true,
+					digits:true
+				},
+				min_member: {
+					required: true,
+					digits:true
+				},
+				max_member: {
+					required: true,
+					digits:true
+				}
+			},
+			messages: {
+				session: {
+					required:'届数不能为空',
+					digits:'请填写数字'
+				},
+				base_number: {
+					required: '基数不能为空',
+					digits:'请填写数字'
+				},
+				min_member: {
+					required: '最少参赛人数不能为空',
+					digits:'请填写数字'
+				},
+				max_member: {
+					required: '最多参赛人数不能为空',
+					digits:'请填写数字'
+				}
+			}
+		});
+	};
+	
 	$('.js_reply').click(function(){
 		if($(this).parents(".toolbar").next(".post_box").length>0) {
 			$(this).parents(".toolbar").next(".post_box").remove();
