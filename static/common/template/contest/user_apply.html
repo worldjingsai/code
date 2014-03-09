@@ -1,9 +1,6 @@
 <%include file="contest/contest_header.html"%>
-<link  rel='stylesheet' type='text/css' href='/static/common/css/jquery-ui-1.10.4.custom.min.css' >
 <script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
-<script type="text/javascript" src="/static/common/js/jquery-ui-timepicker-addon.js"></script>
 <script type="text/javascript" src="/static/common/js/jquery.validate.js"></script>
-<script type="text/javascript" src="/static/common/js/univs.js"></script>
         <!--第一栏-->
                <div class="right_div FR">
 		
@@ -20,159 +17,96 @@
 			   <div class="rg_title">报名竞赛-报名人员限制1~3人</div>
 			   <div class="rg_data">
 			  
-			<form id="form-practice" action="/resume/practice/create" method="post" class="dialog-box">
+			<form id="form-practice" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
 
 	<div class="team_info">
 	<p class="rg_info">团队信息</p>
-   <table width="100%" class="dj-form-smart th-left">
+	<input type="hidden" name="team_id" value="<%$tplData.team_id|default:''%>"/>
+   <table class="">
         <colgroup>
             <col width="150">
             <col width="350">
         </colgroup>
         <tbody>
+        <%foreach from=$tplData.reconf.t item=item key=key%>
+        <%if !empty($item.2)%>
         <tr>
-            <th><em>*</em>团队名称:</th>
+            <th><%$item.0%>:</th>
             <td  >
-                <div class="clearfix"><input type="text" autocomplete="off" id="employer-input" class="text J_check" name="corpName" reg="^.{2,40}$" maxlength="40" value=""></div>
-            </td>
-            
-        </tr>
-		<tr>
-            <th>指导老师:</th>
-            <td  >
-                <input type="text" class="text"/>
+                <div class="clearfix"><input type="text" class="js_request text " name="t[<%$key%>]" value=""></div>
             </td>
         </tr>
-		
-        <tr>
-            <th>证书邮寄地址:</th>
-            <td  >
-                <input type="text" class="text"/>
-            </td>
-        </tr>
+        <%/if%>
+		<%/foreach%>
 		</tbody>
 		</table>
 	</div>
 	
 	<div class="team_member">
-    <p class="rg_info">队员1信息：</p>
-    <table width="100%" class="dj-form-smart th-left">
+	<%for $i=1 to $tplData.reconf.min_member%>
+	<div class="js_mem_info">
+    <p class="rg_info">队员<%$i%>信息：</p>
+    <table  class="">
         <colgroup>
             <col width="150">
             <col width="350">
         </colgroup>
         <tbody>
+    <%foreach from=$tplData.reconf.m item=item key=key%>
+        <%if !empty($item.2)%>
         <tr>
-            <th><em>*</em>姓名:</th>
+            <th><%$item.0%>:</th>
             <td  >
-                <div class="clearfix"><input type="text" autocomplete="off" id="employer-input" class="text J_check" name="corpName" reg="^.{2,40}$" maxlength="40" value=""></div>
-            </td>
-            
-        </tr>
-		<tr>
-            <th>学校:</th>
-            <td  >
-                <input type="text" class="text"/>
+                <div class="clearfix"><input type="text" class="js_request text " name="m[<%$i%>][<%$key%>]" value=""></div>
             </td>
         </tr>
-		
-        <tr>
-            <th>院系:</th>
-            <td  >
-                <input type="text" class="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th>专业:</th>
-            <td ><input type="text" name="department" value="" class="text J_check" blanksubmit="true" reg="^.{0,15}$" maxlength="15"></td>
-        </tr>
-        <tr>
-            <th><em>*</em>年级:</th>
-            <td  >
-                <input type="text" name="position" value="" class="text J_check" id="position-input" reg="^.{2,15}$" maxlength="15">
-                
-            </td>
-        </tr>
-        <tr>
-            <th><em>*</em>邮箱:</th>
-            <td  >
-                <input type="text" name="position" value="" class="text J_check" id="position-input" reg="^.{2,15}$" maxlength="15">
-                
-            </td>
-        </tr>
-		 <tr>
-            <th><em>*</em>手机号:</th>
-            <td  >
-                <input type="text" name="position" value="" class="text J_check" id="position-input" reg="^.{2,15}$" maxlength="15">
-                
-            </td>
-        </tr>
-		        <tr>
-            <th><em>*</em>性别:</th>
-            <td  >
-                <label><input type="radio" name="sex" value="男" >男</label>
-				<label><input type="radio" name="sex" value="女" >女</label> 
-            </td>
-        </tr>
-		        <tr>
-            <th><em>*</em>年级:</th>
-            <td  >
-                <input type="text" name="position" value="" class="text J_check" id="position-input" reg="^.{2,15}$" maxlength="15">
-                
-            </td>
-        </tr>
+        <%/if%>
+    <%/foreach%>
         </tbody>
     </table>
-	<div class="DivH10 dashed"></div>
-	
-	<p class="rg_info">队员2信息：</p>
-	    <table width="100%" class="dj-form-smart th-left">
-        <colgroup>
-            <col width="150">
-            <col width="350">
-        </colgroup>
-        <tbody>
-        <tr>
-            <th><em>*</em>姓名:</th>
-            <td  >
-                <div class="clearfix"><input type="text" autocomplete="off" id="employer-input" class="text J_check" name="corpName" reg="^.{2,40}$" maxlength="40" value=""></div>
-            </td>
-            
-        </tr>
-        <tr>
-            <th>院系:</th>
-            <td  >
-                <input type="text" class="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th>专业:</th>
-            <td ><input type="text" name="department" value="" class="text J_check" blanksubmit="true" reg="^.{0,15}$" maxlength="15"></td>
-        </tr>
-        <tr>
-            <th><em>*</em>年级:</th>
-            <td  >
-                <input type="text" name="position" value="" class="text J_check" id="position-input" reg="^.{2,15}$" maxlength="15">
-                
-            </td>
-        </tr>
-        
-        </tbody>
-    </table>
-	
-	<div class="DivH10 dashed"></div>
-	        <div class="t-c">
-                <button type="submit" class="button" >完成</button>  
-            </div>
+    <div class="DivH10 dashed"></div>
+    </div>
+	<%/for%>
 	</div>
+	<div class="member_control">
+	<a href="#nogo" class="btn btn-small btn-success js_add_data" ><span class="ui-icon ui-icon-circle-plus FL add-icon "></span><span class="FL">增加</span></a>
+    <a href="#nogo" class="btn btn-small btn-danger js_del_data" ><span class="ui-icon ui-icon-circle-minus FL add-icon "></span><span class="FL">删除</span></a>
+	        <div class="t-c">
+                <button type="submit" class="btn btn-primary" >完成</button>  
+            </div>
+    </div>
 	</form>
 	
+    <input type="hidden" id="max_member" value="<%$tplData.reconf.max_member%>"/>
+    <input type="hidden" id="min_member" value="<%$tplData.reconf.min_member%>"/>
+    <div id="js_add_data" style="display:none">
+    <div class="js_mem_info">
+    <p class="rg_info">队员{i}信息：</p>
+    <table  class="">
+        <colgroup>
+            <col width="150">
+            <col width="350">
+        </colgroup>
+        <tbody>
+    <%foreach from=$tplData.reconf.m item=item key=key%>
+        <%if !empty($item.2)%>
+        <tr>
+            <th><%$item.0%>:</th>
+            <td  >
+                <div class="clearfix"><input type="text" class="js_request text " name="m[{i}][<%$key%>]" value=""></div>
+            </td>
+        </tr>
+        <%/if%>
+    <%/foreach%>
+        </tbody>
+    </table>
+    <div class="DivH10 dashed"></div>
+    </div>
+    </div>
+    
 			   </div>
-			   
-			   
 			</div>
               
-               
             </div>
 		  </div>
 		</div>

@@ -239,6 +239,7 @@ box-shadow: inset 2px 2px 2px rgba(0,0,0,.1);overflow: auto;padding: 4px 10px;ba
 .rg_data .rg_info{font-weight:bold;}
 .rg_data th{font-weight:normal;}
 
+.member_control .add-icon {margin-top:2px;}
 .apply_teble .number{width:40px; text-align:center;}
 
 .footer .version{ text-align:center; line-height:20px; height:80px; margin-top:20px; border-top: #999999 2px solid; }

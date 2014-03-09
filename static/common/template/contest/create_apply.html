@@ -1,5 +1,6 @@
 <%include file="contest/contest_header.html"%>
-
+        <script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
+        <script type="text/javascript" src="/static/common/js/jquery.form.js"></script>
         <!--第一栏-->
         <div class="right_div FR">
         
@@ -17,6 +18,7 @@
                <div class="DivH10"></div>
         <form id="create_apply" action="/contest/create_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
             <input type="hidden" value="<%$tplData.contest.contest_id|default:''%>" name="contest_id" id="contest_id"/>
+            <input type="hidden" value="<%$tplData.reconf.id|default:''%>" name="id" />
             <table class="apply_teble js_table" border=1 >
         <tr>
             <td class="current t-c" colspan="3" >第一部分：报名系统配置信息</td>
@@ -25,21 +27,21 @@
         <tr>
             <th><em>*</em>第几届竞赛:</th>
             <td class="t-l" colspan="2" >
-                <div class=""><input title="区分队伍是报名的哪一届竞赛" type="text" class="number" value="1" name="session" id="session"/></div>
+                <div class=""><input title="区分队伍是报名的哪一届竞赛" type="text" class="number" value="<%$tplData.reconf.session|default:1%>" name="session" id="session"/></div>
             </td>
         </tr>
         
         <tr>
             <th><em>*</em>报名队号生成基数:</th>
             <td class="t-l" colspan="2" >
-                <div class=""><input type="text" title="根据这个基数每增加一个队，队号加1，可以不修改" class="number" value="10000" name="base_number" id="base_number"/></div>
+                <div class=""><input type="text" title="根据这个基数每增加一个队，队号加1，可以不修改" class="number" value="<%$tplData.reconf.base_number|default:1000%>" name="base_number" id="base_number"/></div>
             </td>
         </tr>
         
         <tr>
             <th><em>*</em>竞赛容许参赛人数:</th>
             <td class="t-l" colspan="2" >
-                <div class=""><input type="text" class="number" value="1" name="min_member" id="min_member"/>~<input type="text" class="number" value="3" name="max_member" id="max_member"/></div>
+                <div class=""><input type="text" class="number" value="<%$tplData.reconf.min_member|default:1%>" name="min_member" id="min_member"/>~<input type="text" class="number" value="<%$tplData.reconf.max_member|default:3%>" name="max_member" id="max_member"/></div>
             </td>
         </tr>
         </table>
@@ -53,61 +55,13 @@
             <td title="提示信息显示在输入框的后面，提示报名者需要填写的内容">提示信息</td>
             <td >是否启用</td>
         </tr>
+        <%foreach from=$tplData.reconf.t item=item name=foo%>
         <tr>
-            <td><input type="text" name="t[]" value="团队名称"></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="t-c"><input type="checkbox" name="c[]" checked value="1"></td>
+            <td><input type="text" name="t[]" value="<%$item.0|default:''%>"></td>
+            <td><input type="text" name="b[]" value="<%$item.1|default:''%>"></td>
+            <td class="t-c"><input type="checkbox" name="c[]" <%if !empty($item.2)%>checked <%/if%> value="1"></td>
         </tr>
-        
-        <tr>
-            <td><input type="text" name="t[]" value="指导老师"></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="center"><input type="checkbox" name="c[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="t[]" value="队长姓名"></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="center"><input type="checkbox" name="c[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="t[]" value="队长联系电话"></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="center"><input type="checkbox" name="c[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="t[]" value="团队级别"></td>
-            <td><input type="text" name="b[]" value="请填写：专科组、本科组、研究生组"></td>
-            <td class="center"><input type="checkbox" name="c[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="t[]" value=""></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="t[]" value=""></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="t[]" value=""></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="t[]" value=""></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="t[]" value=""></td>
-            <td><input type="text" name="b[]" value=""></td>
-            <td class="center"><input type="checkbox" name="c[]" value="1"></td>
-        </tr>
+        <%/foreach%>
         </table>
 
         <div class="DivH10"></div>
@@ -121,115 +75,13 @@
             <td title="提示信息显示在输入框的后面，提示报名者需要填写的内容">提示信息</td>
             <td >是否启用</td>
         </tr>
-        
+        <%foreach from=$tplData.reconf.m item=item name=foo%>
         <tr>
-            <td><input type="text" name="u[]" value="姓名"></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
+            <td><input type="text" name="u[]" value="<%$item.0|default:''%>"></td>
+            <td><input type="text" name="d[]" value="<%$item.1|default:''%>"></td>
+            <td class="t-c"><input type="checkbox" name="s[]" <%if !empty($item.2)%>checked <%/if%> value="1"></td>
         </tr>
-        
-        <tr>
-            <td><input type="text" name="u[]" value="性别"></td>
-            <td><input type="text" name="d[]" value="填写：男、女"></td>
-            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="u[]" value="学校名称"></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="u[]" value="专业"></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="u[]" value="年龄"></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="u[]" value="联系电话"></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="u[]" value="电子邮件"></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" checked value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
-        <tr>
-            <td><input type="text" name="u[]" value=""></td>
-            <td><input type="text" name="d[]" value=""></td>
-            <td class="center"><input type="checkbox" name="s[]" value="1"></td>
-        </tr>
+        <%/foreach%>
         
         </table>
              <div class="DivH10"></div>

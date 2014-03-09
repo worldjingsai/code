@@ -14,7 +14,7 @@ class User extends SB_Controller{
     public function index(){
         $data['title'] = '用户';
         $data['new_users'] = $this->user_m->get_users(33,'new');
-        $data['hot_users'] = $this->user_m->get_users(33,'hot');		
+        $data['hot_users'] = $this->user_m->get_users(33,'hot');
         $this->load->view('user',$data);
     }
     public function info ($uid){
@@ -36,7 +36,7 @@ class User extends SB_Controller{
 
     }
     public function reg(){
-        
+
         //加载form类，为调用错误函数,需view前加载
         $this->load->helper('form');
         $data['title'] = '注册新用户';
@@ -49,7 +49,7 @@ class User extends SB_Controller{
             $ip = $this->myclass->get_ip();
             $data = array(
                 'username' => strip_tags($this->input->post('username')),
-                'password' => md5($password),				
+                'password' => md5($password),
                 'openid' => strip_tags($this->input->post('openid')),
                 'univs_id' => intval($this->input->post('univs_id')),
                 'email' => $this->input->post('email',true),
@@ -81,11 +81,13 @@ class User extends SB_Controller{
                 redirect();
             }
         }else{
+            $data['register'] = true;
+            $this->tplData = $data;
             $this->display("user/register.html");
         }
     }
-	
-    public function username_check($username){  
+
+    public function username_check($username){
         if(!preg_match('/^(?!_|\s\')(?!.*?_$)[A-Za-z0-9_\x{4e00}-\x{9fa5}\s\']+$/u', $username)){
             $this->form_validation->set_message('username_check', '%s 只能含有汉字、数字、字母、下划线（不能开头或结尾)');
             return false;
@@ -93,7 +95,7 @@ class User extends SB_Controller{
             return true;
         }
     }
-	
+
     private function validate_reg_form(){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('email', 'Email' , 'trim|required|min_length[3]|max_length[50]|valid_email');
@@ -112,23 +114,24 @@ class User extends SB_Controller{
             return TRUE;
         }
     }
-	
+
     public function login (){
         $data['title'] = '用户登录';
-        $data['referer']=$this->input->get('referer',true);
-        $data['referer']=$data['referer']?$data['referer']: $this->input->server('HTTP_REFERER');
+        $data['referer']=$this->input->get_post('referer',true);
+        $data['referer']=$data['referer']?$data['referer']: $this->input->server('HTTP_REFERER', true);
         if($this->auth->is_login()){
-            redirect();
-            //$this->myclass->notice('alert("此用户已登录");window.location.href="/";');
+            // redirect();
+            $this->myclass->notice('alert("此用户已登录");window.location.href="'.$data['referer'].'";');
         }
         if($_POST){
             $username = $this->input->post('username',true);
             $password = $this->input->post('password',true);
             $user = $this->user_m->check_login($username, $password);
+
             $captcha = $this->input->post('captcha_code');
             if($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
                 $this->myclass->notice('alert("验证码不正确!!");history.go(-1);');
-            }elseif(count($user)){
+            }elseif($user && count($user)){
                 //更新session
                 $this->session->set_userdata(array ('uid' => $user['uid'], 'username' => $user['username'], 'password' =>$user['password'], 'group_type' => $user['group_type'], 'gid' => $user['gid']) );
                 //设置cookie(已去除)
@@ -142,9 +145,12 @@ class User extends SB_Controller{
                 //redirect($data['referer']);
                 exit;
             }else{
+
                 $this->myclass->notice('alert("用户名或密码错误!!");history.back();');
             }
         }else{
+            $data['login'] = true;
+            $this->tplData = $data;
             $this->display("user/register.html");
         }
     }

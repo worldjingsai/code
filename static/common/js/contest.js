@@ -188,6 +188,16 @@ $(document).ready(function(){
 				}
 			}
 		});
+		
+		var options = {
+	    		beforeSubmit: ajaxFormStart,  // pre-submit callback
+	            success:      ajaxFormSuccess, // post-submit callback 
+	            dataType:     'json'
+	    }; 
+
+	    // bind form using 'ajaxForm' 
+	    $('#create_apply').ajaxForm(options); 
+	    
 	};
 	
 	$('.js_reply').click(function(){
@@ -209,4 +219,27 @@ $(document).ready(function(){
             $(this).css({"background-color":"#E4F5FF"});  
         }  
      }); 
+	
+	$('.js_add_data').click(function(){
+		var max = $("#max_member").val();
+		var num = $(".team_member > .js_mem_info").length;
+
+		if (num >=max) {
+			alert('已达到最多会员数量不能添加了');
+		} else {
+			var htm = $("#js_add_data").html().replace(/{i}/g, num+1)
+			$(".team_member").append(htm);
+		}
+	});
+	
+	$('.js_del_data').click(function(){
+		var min = $("#min_member").val();
+		var num = $(".team_member > .js_mem_info").length;
+
+		if (num <= min) {
+			alert('已达到最少会员数量不能删除了');
+		} else {
+			 $(".team_member > .js_mem_info:last").remove();
+		}
+	});
 });
