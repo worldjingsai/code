@@ -45,6 +45,20 @@ class Team_m extends SB_Model{
     }
 
     /**
+     * 根据用户得到参赛信息
+     * @param int $uid
+     * @param int $cid
+     * @param int $session
+     */
+    public function get_by_user_contest_session($uid, $cid, $session)
+    {
+        $this->db->select('*');
+        $query = $this->db->where('contest_id', $cid)->where('session', $session)->where('create_user_id', $uid)->where('status', 1)->get($this->tb);
+        return $query->row_array();
+    }
+    
+    
+    /**
      * 根据contest_id获取竞赛和届数获取列表
      */
     public function listByCidAndSession($cid, $session){

@@ -29,7 +29,7 @@ class Team_column_m extends SB_Model{
 
     public function get($id){
         $this->db->select('*');
-        $query = $this->db->where('team_id',$id)->where('status',1)->get($this->tb);
+        $query = $this->db->where('team_id',$id)->get($this->tb);
         return $query->row_array();
     }
 

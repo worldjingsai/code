@@ -1,6 +1,6 @@
 <%include file="contest/contest_header.html"%>
 <script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
-<script type="text/javascript" src="/static/common/js/jquery.validate.js"></script>
+<script type="text/javascript" src="/static/common/js/jquery.form.js"></script>
         <!--第一栏-->
                <div class="right_div FR">
 		
@@ -8,16 +8,16 @@
           
 		  <div class="article FL">
 			<div class="article_title">
-              <h1 >全国大学生数学建模竞赛</h1> 
+              <h1 ><%$tplData.contest.contest_name%></h1> 
             </div>
             <div class="article_menu">
             </div>
             <div class="article_body">
                
-			   <div class="rg_title">报名竞赛-报名人员限制1~3人</div>
+			   <div class="rg_title">报名竞赛-报名人员限制<%$tplData.reconf.min_member%>~<%$tplData.reconf.max_member%>人</div>
 			   <div class="rg_data">
 			  
-			<form id="form-practice" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
+			<form id="js_user_apply" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
 
 	<div class="team_info">
 	<p class="rg_info">团队信息</p>
@@ -32,8 +32,10 @@
         <%if !empty($item.2)%>
         <tr>
             <th><%$item.0%>:</th>
-            <td  >
-                <div class="clearfix"><input type="text" class="js_request text " name="t[<%$key%>]" value=""></div>
+            <td>
+                <div class="clearfix"><input type="text" class="text " name="t[<%$key%>]" data-rule-required="true" data-msg-required="内容不能为空" value="<%$tplData.teamColumn.$key|default:''%>">
+                <%if !empty($item.1)%><br/><span class="notice"> <%$item.1|default:''%></span><%/if%>
+                </div>
             </td>
         </tr>
         <%/if%>
@@ -43,7 +45,8 @@
 	</div>
 	
 	<div class="team_member">
-	<%for $i=1 to $tplData.reconf.min_member%>
+	<%for $i=1 to $tplData.mem_num%>
+	<%assign var=j value=$i-1 %>
 	<div class="js_mem_info">
     <p class="rg_info">队员<%$i%>信息：</p>
     <table  class="">
@@ -57,7 +60,8 @@
         <tr>
             <th><%$item.0%>:</th>
             <td  >
-                <div class="clearfix"><input type="text" class="js_request text " name="m[<%$i%>][<%$key%>]" value=""></div>
+                <div class="clearfix"><input type="text" class="text " name="m[<%$i%>][<%$key%>]" data-rule-required="true" data-msg-required="内容不能为空" value="<%$tplData.memberColumn.$j.$key|default:''%>">
+                <%if !empty($item.1)%><br/><span class="notice"> <%$item.1|default:''%></span><%/if%></div>
             </td>
         </tr>
         <%/if%>
@@ -92,8 +96,9 @@
         <%if !empty($item.2)%>
         <tr>
             <th><%$item.0%>:</th>
-            <td  >
-                <div class="clearfix"><input type="text" class="js_request text " name="m[{i}][<%$key%>]" value=""></div>
+            <td>
+                <div class="clearfix"><input type="text" class="text " name="m[{i}][<%$key%>]" data-rule-required="true" data-msg-required="内容不能为空" value="">
+                <%if !empty($item.1)%><br/><span class="notice"> <%$item.1|default:''%></span><%/if%></div>
             </td>
         </tr>
         <%/if%>

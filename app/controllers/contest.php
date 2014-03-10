@@ -251,35 +251,63 @@ class Contest extends SB_controller{
             return $this->myclass->notice('alert("竞赛没有报名系统");window.location.href="history.back();";');
         }
         $data['reconf'] = $configs;
+        
+        // 本人是否有报名信息
+        $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $configs['session']);
 
+        $team_id = 0;
+        $teamColumn = $memberColumn = array();
+        if ($teamInfo) {
+            $team_id = $teamInfo['team_id'];
+            $teamColumn = $this->team_column_m->get($team_id);
+            $memberColumn = $this->member_column_m->list_by_team_id($team_id);
+        }
+        
         if ($_POST) {
             $team = $this->input->post('t', true);
             $member = $this->input->post('m', true);
-
-            $team_number = $this->contest_regist_config_m->get_team_number($contest_id);
+            
             $teamData = array(
-                    'contest_id' => $contest_id,
-                    'session' => $configs['session'],
-                    'team_number' => $team_number,
                     'create_time' => date('Y-m-d H:i:s'),
                     'create_user_id' =>$this->user_info['uid'],
                     'status' => Team_m::STATUS_NORMAL,
-                    );
-            $team_id = $this->team_m->add($teamData);
-            if ($team_id) {
-                $teamColumn = $team;
-                $teamColumn['team_id'] = $team_id;
+            );
+            $teamColumn = $team;
+            $teamColumn['team_id'] = $team_id;
+            
+            // 如果存在则更新
+            if ($team_id && $teamInfo['team_number']) {
+                $this->team_m->update($team_id, $teamData);
+                $this->team_column_m->update($team_id, $teamColumn);
+            } else {
+                $team_number = $this->contest_regist_config_m->get_team_number($contest_id);
+                $teamData['contest_id'] = $contest_id;
+                $teamData['session'] = $configs['session'];
+                $teamData['team_number'] = $team_number;
+
+                $team_id = $this->team_m->add($teamData);
                 $this->team_column_m->add($teamColumn);
-
+            }
+            
+            if ($team_id) {
+                $this->member_column_m->delete_ty_team_id($team_id);
                 foreach ($member as $memColumn) {
-                    $memberColum = $memColumn;
-                    $memberColum['team_id'] = $team_id;
-
-                    $this->member_column_m->add($memberColum);
+                    $memberColumn = $memColumn;
+                    $memberColumn['team_id'] = $team_id;
+                    $this->member_column_m->add($memberColumn);
                 }
             }
+            
+            return show_json(0, '更新成功', array('return_url' => '/contest/user_apply/'.$contest_id));
         }
+        $data['teamColumn'] = $teamColumn;
+        $data['memberColumn'] = $memberColumn;
 
+        // 模板中生成会员的个数
+        $data['mem_num'] = $configs['min_member'];
+        if ($memberColumn && (count($memberColumn) > $configs['min_member'])) {
+            $data['mem_num'] = count($memberColumn);
+        }
         $univs_id = $cInfo["univs_id"];
 
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);

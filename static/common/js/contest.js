@@ -242,4 +242,19 @@ $(document).ready(function(){
 			 $(".team_member > .js_mem_info:last").remove();
 		}
 	});
+	
+	if ($("#js_user_apply").length > 0) {
+		$("#js_user_apply").validate({
+		});
+		
+		var options = {
+	    		beforeSubmit: ajaxFormStart,  // pre-submit callback
+	            success:      ajaxFormSuccess, // post-submit callback 
+	            dataType:     'json'
+	    }; 
+
+	    // bind form using 'ajaxForm' 
+	    $('#js_user_apply').ajaxForm(options); 
+	    
+	};
 });
