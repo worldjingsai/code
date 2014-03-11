@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta content='<?php echo $username?> - <?php echo $settings['site_name']?>' name='description'>
+<meta content='<?php echo $username?> - <?php echo isset($settings['site_name'])?$settings['site_name']:'';?>' name='description'>
 <meta charset='UTF-8'>
 <meta content='True' name='HandheldFriendly'>
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
-<title><?php echo $username?> - <?php echo $settings['site_name']?></title>
+<title><?php echo $username?> - <?php echo isset($settings['site_name'])?$settings['site_name']:'';?></title>
 <?php echo $this->load->view('header-meta')?>
 </head>
 <body id="startbbs">

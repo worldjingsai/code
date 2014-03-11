@@ -8,6 +8,7 @@
 #/doc
 
 class Settings extends SB_Controller {
+    public $data = array();
 
 	function __construct(){
 		parent::__construct();
@@ -29,6 +30,7 @@ class Settings extends SB_Controller {
 
 		$uid = $this->session->userdata ('uid');
 		$data = $this->user_m->get_user_by_id($uid);
+		$data = array_merge($this->data, $data);
 		if($_POST){
 			$data = array(
 				'uid' => $uid,
@@ -50,6 +52,7 @@ class Settings extends SB_Controller {
 	}
 	
 	public function avatar() {
+	    $data = $this->data;
 		$data['title'] = '头像设置';
 		$uid=$this->session->userdata('uid');
 		$data['my_avatar'] = $this->upload_m->get_avatar_url($uid, 'middle');
@@ -74,6 +77,7 @@ class Settings extends SB_Controller {
 	
 	public function password() 
 	{
+	    $data = $this->data;
 		$data ['title'] = '修改密码';
 		$this->auth->is_login( $this->session->userdata ( 'uid' ), $this->session->userdata ( 'password' ) );
 		if ($_POST) {

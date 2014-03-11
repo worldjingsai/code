@@ -38,14 +38,16 @@ class SB_Controller extends Base_Controller{
             'money_title'=>$data['items'][8]['value'],
             'per_page_num'=>$data['items'][9]['value'],
             'logo'=>$this->config->item('logo')
-         );
-         if($this->auth->is_login()){
+        );
+        $this->settings = $data['settings'];
+        if($this->auth->is_login()){
             $this->is_login = true;
             $this->user_info = $this->db->select('uid,username,avatar,univs_id')->where('uid',$this->session->userdata('uid'))->get('users')->row_array();
             $univs = $this->db->select('short_name')->get_where('university',array('univs_id'=>$this->user_info['univs_id']))->row_array();
             if (!empty($univs['short_name'])) {
                 $this->user_info['univs_name'] = $univs['short_name'];
             }
+            $data['user'] = $this->user_info;
         }else{
             $this->is_login = false;
         }
@@ -81,6 +83,7 @@ class SB_Controller extends Base_Controller{
         //底部菜单(单页面)
         $this->load->model('page_m');
         $data['page_links'] = $this->page_m->get_page_menu(10,0);
+        $this->data = $data;
     }
 
     /**
