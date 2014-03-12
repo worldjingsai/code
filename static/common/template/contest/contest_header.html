@@ -33,7 +33,7 @@
   	<div class="show_top">
   	<h1 class="contest_h1"><%$tplData.contest.contest_name%></h1>
   	<div class="time" id="lxftime" endtime="<%$tplData.contest.contest_start_time%>" showdetailtime="no"></div>
-  	<div class="bm"><%if !empty($tplData.reconf) && $tplData.reconf.type==2%><a href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a><%/if%></div>
+  	<div class="bm"><%if !empty($tplData.reconf.type) && $tplData.reconf.type==2%><a href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a><%/if%></div>
   	<div style="clear:both;"></div>
   	</div>
   	<div class="dhbox">
@@ -63,7 +63,7 @@
             </div>
             <div class="baoming_body">
               <ul >
-                <%if !empty($tplData.reconf) && $tplData.reconf.type==2%><li><a href="/contest/user_apply/<%$tplData.contest.contest_id%>">立即报名</a></li><%/if%>
+                <%if !empty($tplData.reconf.type) && $tplData.reconf.type==2%><li><a href="/contest/user_apply/<%$tplData.contest.contest_id%>">立即报名</a></li><%/if%>
                 <%foreach from=$tplData.colums item=value key=key%>
 				<li><a <%if $key==$tplData.col%> class="current" <%/if%> href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$tplData.contest.contest_id%>&col=<%$key%>"><%$value%></a></li>
 				<%/foreach%>

@@ -235,7 +235,7 @@ class Contest extends SB_controller{
             return $this->myclass->notice('alert("竞赛没有报名系统");window.location.href="history.back();";');
         }
         $data['reconf'] = $configs;
-        
+
         // 本人是否有报名信息
         $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $configs['session']);
 
@@ -246,11 +246,11 @@ class Contest extends SB_controller{
             $teamColumn = $this->team_column_m->get($team_id);
             $memberColumn = $this->member_column_m->list_by_team_id($team_id);
         }
-        
+
         if ($_POST) {
             $team = $this->input->post('t', true);
             $member = $this->input->post('m', true);
-            
+
             $teamData = array(
                     'create_time' => date('Y-m-d H:i:s'),
                     'create_user_id' =>$this->user_info['uid'],
@@ -258,7 +258,7 @@ class Contest extends SB_controller{
             );
             $teamColumn = $team;
             $teamColumn['team_id'] = $team_id;
-            
+
             // 如果存在则更新
             if ($team_id && $teamInfo['team_number']) {
                 $this->team_m->update($team_id, $teamData);
@@ -270,9 +270,10 @@ class Contest extends SB_controller{
                 $teamData['team_number'] = $team_number;
 
                 $team_id = $this->team_m->add($teamData);
+                $teamColumn['team_id'] = $team_id;
                 $this->team_column_m->add($teamColumn);
             }
-            
+
             if ($team_id) {
                 $this->member_column_m->delete_ty_team_id($team_id);
                 foreach ($member as $memColumn) {
@@ -281,7 +282,7 @@ class Contest extends SB_controller{
                     $this->member_column_m->add($memberColumn);
                 }
             }
-            
+
             return show_json(0, '更新成功', array('return_url' => '/contest/user_apply/'.$contest_id));
         }
         $data['teamColumn'] = $teamColumn;
@@ -292,7 +293,7 @@ class Contest extends SB_controller{
         if ($memberColumn && (count($memberColumn) > $configs['min_member'])) {
             $data['mem_num'] = count($memberColumn);
         }
-        
+
         $data['col'] = 0;
 
         $this->tplData = $data;
@@ -373,13 +374,13 @@ class Contest extends SB_controller{
      */
     public function _get($contest_id){
         $cid = intval($contest_id);
-    
+
         if (!$cid){
             return show_error('不存在的竞赛');
         }
         // 引入模型
         $this->load->model('contest_regist_config_m');
-    
+
         $cInfo = $this->contest_m->get($cid);
 
         if (empty($cInfo)){
@@ -387,15 +388,15 @@ class Contest extends SB_controller{
         }
         $config = $this->contest_regist_config_m->get_normal($cid);
         $data['reconf'] = $config;
-    
+
         $univs_id = $cInfo['univs_id'];
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
-    
+
         $colums = Contest_m::$columNames;
         $data['contest'] = $cInfo;
         $data['colums'] = $colums;
-    
+
         return $data;
     }
 }
