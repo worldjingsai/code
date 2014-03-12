@@ -82,6 +82,10 @@ class Univs extends SB_Controller{
         if (empty($cInfo)){
             return show_error('不存在的竞赛');
         }
+        $this->load->model('contest_regist_config_m');
+        $config = $this->contest_regist_config_m->get_normal($cid);
+        $data['reconf'] = $config;
+        
         $page = $this->input->get('page');
         $limit = $this->input->get('limit');
         if (!$page){
@@ -178,7 +182,10 @@ class Univs extends SB_Controller{
         if (empty($cInfo)){
             return show_error('不存在的竞赛');
         }
-
+        $this->load->model('contest_regist_config_m');
+        $config = $this->contest_regist_config_m->get_normal($cid);
+        $data['reconf'] = $config;
+        
         $univs_id = $cInfo['univs_id'];
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
