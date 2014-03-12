@@ -11,7 +11,8 @@
         <div class="index_user">
         <p><span class="fr"><a href="/user/logout" class="js_login  logout">退出</a></span></p>
         <p>欢迎回来：</p>
-        <p class="user_name"><a href=""><%$tplData.user_info.username|default:''%></a></p>
+        <p class="user_name"><a href="/user/info/<%$tplData.user_info.uid%>"><%$tplData.user_info.username|default:''%></a></p>
+        <p class="my_item"><a href="/settings/index" class="btn">个人设置</a></p>
         <p class="my_item"><a class="btn " href="<%$tplData.user_info.univs_name|default:''%>">我的学校</a></p>
         <p class="my_item"><a class="btn " href="">我的竞赛</a></p>
         </div>

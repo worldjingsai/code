@@ -227,6 +227,9 @@ class CI_Config {
 	 */
 	function slash_item($item)
 	{
+	    if ($item == 'index_page') {
+	        return '';
+	    }
 		if ( ! isset($this->config[$item]))
 		{
 			return FALSE;

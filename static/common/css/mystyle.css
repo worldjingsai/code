@@ -20,7 +20,7 @@ ul, ol {
 small {
     font-size: 12px;
 }
-body{padding-top: 70px;background:#E0E0E0/* url(../images/bg.png) bottom left repeat*/;font-family:"Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB",STHeiti !important}
+body{padding-top: 70px;background:#08679C/* url(../images/bg.png) bottom left repeat*/;font-family:"Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB",STHeiti !important}
 #wrap{/*padding-top:60px*/}
 .container {max-width:980px;margin-left: auto; margin-right: auto; *zoom: 1;}
 #page-main{padding-bottom:20px}
@@ -39,8 +39,8 @@ border-bottom:1px solid #E2E2E9;margin-bottom:20px;background-color:#fff;}
 .sep5{height:5px}
 .sep10{height:10px}
 td.avatar{text-align:center;vertical-align:top;width:48px}
-#footer{color:#999999;font-size:12px}
-#footer{background:#fff;border-top:1px solid #CCC}
+#footer{color:#111;font-size:12px}
+#footer{background:#08679C;border-top:1px solid #CCC}
 #footer #footer-main{line-height:150%;padding:10px}
 #footer ul.page-links{margin:10px 0;font-weight:bold}
 #footer .copywrite{margin-bottom:15px}
@@ -143,6 +143,9 @@ img.small_avatar,img.mini_avatar {
 text-shadow:0 2px #fff;margin-bottom:10px
 }
 
+.blure .navbar{color:#FFF; background-color:#064466}
+
+a.write{color:#FFF}
 
 .tags a{line-height:26px;color:white; padding:4px 6px;background-color:#BFBFBF;border-radius:3px;-moz-border-radius:3px}
 .tags a:hover{text-decoration:none;background-color:#AAA}

@@ -1,4 +1,4 @@
-<div id="navbar-wrapper">
+<div id="navbar-wrapper" class="blure">
 <div  id="navigation" class="navbar <?php if($this->config->item('static')=='default'){?>navbar-inverse<?php } else{?>navbar-default<?php }?> navbar-fixed-top">
 <div class="container">
 
@@ -8,16 +8,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-		<a class="navbar-brand" href="<?php echo site_url()?>"><?php echo $settings['logo'];?></a>
+		<a class="navbar-brand write" href="<?php echo site_url()?>"><?php echo $settings['logo'];?></a>
 <!--<a class=".btn .btn-default navbar-btn collapsed" data-target=".navbar-collapse" data-toggle="collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="<?php echo site_url()?>" class="brand">Start<span class="green">BBS</span></a>-->
 	</div>
 
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="<?php echo site_url()?>">首页</a></li>
-            <li><a href="<?php echo site_url('section/index')?>">节点</a></li>
-            <li><a href="<?php echo site_url('user/index')?>">会员</a></li>
-            <li><a href="<?php echo site_url('forum/add')?>">发表</a></li>
+            <li ><a class="write" href="<?php echo site_url()?>">首页</a></li>
+            <li><a class="write" href="<?php echo site_url('section/index')?>">板块</a></li>
+            <li><a class="write" href="<?php echo site_url('user/index')?>">会员</a></li>
+            <li><a class="write" href="<?php echo site_url('forum/add')?>">发表</a></li>
             <!--<li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
               <ul class="dropdown-menu">

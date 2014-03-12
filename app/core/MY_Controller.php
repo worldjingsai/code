@@ -39,7 +39,7 @@ class SB_Controller extends Base_Controller{
             'per_page_num'=>$data['items'][9]['value'],
             'logo'=>$this->config->item('logo')
         );
-        $this->settings = $data['settings'];
+        
         if($this->auth->is_login()){
             $this->is_login = true;
             $this->user_info = $this->db->select('uid,username,avatar,univs_id')->where('uid',$this->session->userdata('uid'))->get('users')->row_array();
@@ -83,7 +83,13 @@ class SB_Controller extends Base_Controller{
         //底部菜单(单页面)
         $this->load->model('page_m');
         $data['page_links'] = $this->page_m->get_page_menu(10,0);
-        $this->data = $data;
+
+        // 渲染模板 兼容两种方式
+        $this->load->vars($data);
+        foreach ($data as $key=>$value) {
+            $this->smarty->assign('key', $value);
+        }
+        
     }
 
     /**

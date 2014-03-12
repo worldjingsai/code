@@ -30,7 +30,6 @@ class Settings extends SB_Controller {
 
 		$uid = $this->session->userdata ('uid');
 		$data = $this->user_m->get_user_by_id($uid);
-		$data = array_merge($this->data, $data);
 		if($_POST){
 			$data = array(
 				'uid' => $uid,
@@ -52,7 +51,6 @@ class Settings extends SB_Controller {
 	}
 	
 	public function avatar() {
-	    $data = $this->data;
 		$data['title'] = '头像设置';
 		$uid=$this->session->userdata('uid');
 		$data['my_avatar'] = $this->upload_m->get_avatar_url($uid, 'middle');
@@ -61,7 +59,7 @@ class Settings extends SB_Controller {
 			if($this->upload_m->do_avatar()){
 				$this->db->where('uid',$uid)->update('users', array('avatar'=>$data['my_avatar']));
 				$data['msg'] = '头像上传成功!';
-				header("location:".$_SERVER["PHP_SELF"]);
+				header("location:/settings/avatar");
 				exit();
 			} else {
 				$data['msg'] = $this->upload->display_errors();

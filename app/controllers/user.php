@@ -4,8 +4,6 @@
  */
 
 class User extends SB_Controller{
-
-    public $data = array();
     
     function __construct (){
         parent::__construct();
@@ -21,7 +19,6 @@ class User extends SB_Controller{
     }
     public function info ($uid){
         $data = $this->user_m->get_user_by_id($uid);
-        $data = array_merge($this->data, $data);
         //用户大头像
         $this->load->model('upload_m');
         $data['big_avatar']=$this->upload_m->get_avatar_url($uid, 'big');
