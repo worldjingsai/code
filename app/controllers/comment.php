@@ -13,7 +13,7 @@ class Comment extends SB_Controller{
 
     public function add_comment (){
         if(empty($this->uid)) {
-            $this->myclass->notice('alert("请登录后再发表");window.location.href="'.site_url('user/login/').'";');
+             return show_json(0, '请登录', array('return_url' => '/user/login'));
         }else{
             //数据提交
             $data = array(
@@ -35,7 +35,6 @@ class Comment extends SB_Controller{
                 'layer' => @$query['comments']+1
             );
 
-            echo json_encode($callback);
             //无编辑器时的处理
             if($this->config->item('show_editor')=='off'){
                 $data['content'] = filter_check($data['content']);
@@ -66,14 +65,17 @@ class Comment extends SB_Controller{
 
             //入库
             $this->load->model('comment_m');
-            $this->comment_m->add_comment($data);
-            //更新回复数,最后回复用户,最后回复时间,更新时间,ord时间
-            $this->load->model('forum_m');
-            $this->forum_m->set_top($this->input->post('fid'),$this->input->post('is_top'),1);//已更新时间
-            $this->db->set('ruid',$this->session->userdata('uid'),FALSE)->set('comments','comments+1',FALSE)->set('lastreply',time(),FALSE)->where('fid',$this->input->post('fid'))->update('forums');
-            //更新用户的回复数
-            $this->db->set('replies','replies+1',FALSE)->where('uid',$this->uid)->update('users');
 
+            $res = $this->comment_m->add_comment($data);
+
+            //更新回复数,最后回复用户,最后回复时间,更新时间,ord时间
+            if ($query) {
+                $this->load->model('forum_m');
+                $this->forum_m->set_top($this->input->post('fid'),$this->input->post('is_top'),1);//已更新时间
+                $this->db->set('ruid',$this->session->userdata('uid'),FALSE)->set('comments','comments+1',FALSE)->set('lastreply',time(),FALSE)->where('fid',$this->input->post('fid'))->update('forums');
+                //更新用户的回复数
+                $this->db->set('replies','replies+1',FALSE)->where('uid',$this->uid)->update('users');
+            }
             //回复提醒作者
             /*$user = $this->db->select('uid')->where('fid',$data['fid'])->get('forums')->row_array();
             if($this->uid!=$user['uid']){
@@ -84,9 +86,10 @@ class Comment extends SB_Controller{
             }*/
             //更新数据库缓存
             $this->db->cache_delete('/default', 'index');
+            return show_json(0, '更新成功', array('return_url' => $this->input->server('HTTP_REFERER', true)));
         }
     }
-	
+
     //删除回复
     public function del($cid,$fid,$id){
         if($this->auth->is_admin() || $this->auth->is_master($cid)){
@@ -140,7 +143,7 @@ class Comment extends SB_Controller{
                         $this->db->set('lastreply',time(),FALSE)->where('fid',$fid)->update('forums');
                         redirect('forum/view/'.$fid);
                         exit;
-                }	
+                }
             }
             $data['title'] = '编辑回贴';
             $this->load->view('comment_edit',$data);

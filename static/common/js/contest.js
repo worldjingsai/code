@@ -197,14 +197,23 @@ $(document).ready(function(){
 
 	    // bind form using 'ajaxForm' 
 	    $('#create_apply').ajaxForm(options); 
-	    
 	};
 	
 	$('.js_reply').click(function(){
 		if($(this).parents(".toolbar").next(".post_box").length>0) {
 			$(this).parents(".toolbar").next(".post_box").remove();
 		}else {
-			$(this).parents(".comment_box").append($("#post_box").html());
+			var id = new Date().getTime();
+			$(this).parents(".comment_box").append($("#post_box").html().replace(/js_comment/, 'js_comment js_'+id));
+			// 重新注册一下事件
+			$(".js_"+id).validate({});
+			var options = {
+		    		beforeSubmit: ajaxFormStart,  // pre-submit callback
+		            success:      ajaxFormSuccess, // post-submit callback 
+		            dataType:     'json'
+		    }; 
+		    // bind form using 'ajaxForm' 
+		    $('.js_comment').ajaxForm(options); 
 		}
 	});
 
@@ -229,6 +238,7 @@ $(document).ready(function(){
 		} else {
 			var htm = $("#js_add_data").html().replace(/{i}/g, num+1)
 			$(".team_member").append(htm);
+
 		}
 	});
 	
@@ -255,6 +265,18 @@ $(document).ready(function(){
 
 	    // bind form using 'ajaxForm' 
 	    $('#js_user_apply').ajaxForm(options); 
-	    
 	};
+	
+	if($('.js_comment').length > 0) {
+		$(".js_comment").validate({});
+		
+		var options = {
+	    		beforeSubmit: ajaxFormStart,  // pre-submit callback
+	            success:      ajaxFormSuccess, // post-submit callback 
+	            dataType:     'json'
+	    }; 
+	    // bind form using 'ajaxForm' 
+	    $('.js_comment').ajaxForm(options); 
+	}
+	
 });

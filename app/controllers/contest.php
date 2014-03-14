@@ -364,6 +364,9 @@ class Contest extends SB_controller{
         $data['col'] = $article['column_id'];
         $data['article'] =$article;
 
+        $this->load->model('comment_m');
+        $query = $this->comment_m->get_comment(0,20,$article_id,$order='desc');
+        $data['comment'] = $query;
         return $data;
     }
 

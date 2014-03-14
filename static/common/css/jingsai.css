@@ -178,7 +178,7 @@ a.edit { font-size:13px; color:#0119C9;}
 
 .article_body   input.error {border: 1px dotted red;}
 .article_body   label.error {color: red;font-style: italic; }
-
+.post_comment label.error {color: red;font-style: italic; }
 .article_body .table_row .title{width:600px; line-height:20px; font-size:14px;}
 
 .article_body .register{line-height:40px; vertical-align:middle; font-size:18px;}

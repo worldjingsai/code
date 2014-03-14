@@ -1,5 +1,6 @@
 <%include file="contest/contest_header.html"%>
-
+<script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
+<script type="text/javascript" src="/static/common/js/jquery.form.js"></script>
         <!--第一栏-->
         <div class="right_div FR">
         
@@ -24,13 +25,14 @@
         <div class="post_box fixed" >
             <div class="post_area fixed" >
 	        <div class="post_notice">发表评论：</div>
-	        <form action="/comment/add_comment" method="post">
+	        <form action="/comment/add_comment" method="post" class="js_comment">
                     <input type="hidden" name ="fid" value="<%$tplData.article.article_id%>">
 	        <div class="post_comment">
-	            <textarea class="comment_content" name="comment"></textarea>
+	            <textarea class="comment_content" name="comment" data-rule-required="true" data-msg-required="内容不能为空" ></textarea>
 	        </div>
-	        <div class="post_bottom fixed"><button type="submit" class="btn btn-small btn-primary FR">发布</button></div>
+	        <div class="post_bottom fixed"><button type="submit" class="btn btn-small btn-primary FR" >发布</button></div>
 	        </form>
+	        
 	        </div>
         </div>
         </div>
@@ -39,16 +41,19 @@
         <div class="block fixed">
         <div class="comment_list">
         <div class="show_comment">评论列表</div>
+        <%if empty($tplData.comment)%>
         <div class="comment_box">
-	        <div class="info"><a href="">用户名</a></div>
-	        <div class="content">这里是评论的内容</div>
-	        <div class="toolbar" ><span class="comment_date FL">2013年5月6日</span><span class="reply FR"><a class="btn btn-small js_reply" href="javascript:;">回复</a></span></div>
+            <div class="content">暂时没有评论</div>
         </div>
+        <%else%>
+        <%foreach from=$tplData.comment key=key item=item%>
         <div class="comment_box">
-	        <div class="info"><a href="">用户名</a></div>
-	        <div class="content">这里是评论的内容</div>
-	        <div class="toolbar" ><span class="comment_date FL">2013年5月6日</span><span class="reply FR"><a class="btn btn-small js_reply" href="javascript:;">回复</a></span></div>
+	        <div class="info"><a href="/user/info<%$item.uid%>"><%$item.username%></a></div>
+	        <div class="content"><%$item.content%></div>
+	        <div class="toolbar" ><span class="comment_date FL"><%date('Y-m-d', $item.replytime)%></span><span class="reply FR"><a class="btn btn-small js_reply" href="javascript:;">回复</a></span></div>
         </div>
+        <%/foreach%>
+        <%/if%>
         </div>
         </div>
         
