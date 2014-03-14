@@ -45,8 +45,10 @@
 		<%/foreach%>
 	    <li><a href="#">论坛</a></li>
 	</ul>
+	<%if !empty($user.uid) && $user.uid == $tplData.contest.create_user_id%>
 	<span class="btn btn-success FR"><a href="/contest/upContest/<%$tplData.contest.contest_id%>">更新竞赛</a></span>
   	<span class="btn btn-success FR"><a href="/contest/create_apply/<%$tplData.contest.contest_id%>">报名系统</a></span>
+  	<%/if%>
   	<div style="clear:both;"></div>
    </div>
    </div>

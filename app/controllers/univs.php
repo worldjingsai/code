@@ -85,7 +85,7 @@ class Univs extends SB_Controller{
         $this->load->model('contest_regist_config_m');
         $config = $this->contest_regist_config_m->get_normal($cid);
         $data['reconf'] = $config;
-        
+
         $page = $this->input->get('page');
         $limit = $this->input->get('limit');
         if (!$page){
@@ -121,6 +121,10 @@ class Univs extends SB_Controller{
      * @return boolean
      */
     public function create($univs_id){
+        if (!$this->is_login) {
+            $this->myclass->notice('alert("请登录后再操作");window.location.href="/user/login";');
+            return 0;
+        }
         $contest_id = 0;
         $univs_id = intval($univs_id);
         $data = array();
@@ -137,9 +141,8 @@ class Univs extends SB_Controller{
             $data['univs_id'] = $univs_id;
             $data['create_time'] = date('Y-m-d H:i:s');
 
-            // TODO
-            $data['create_user_id'] = 0;
-            
+            $data['create_user_id'] = $this->user_info['uid'];
+
             $contest_id = $this->input->post('contest_id', true);
             if ($contest_id) {
                 $this->contest_m->update($contest_id, $data);
@@ -169,6 +172,10 @@ class Univs extends SB_Controller{
      * @param int $contest_id
      */
     public function content($contest_id){
+        if (!$this->is_login) {
+            $this->myclass->notice('alert("请登录后再操作");window.location.href="/user/login";');
+            return 0;
+        }
         $cid = intval($contest_id);
 
         if(!$cid){
@@ -182,10 +189,13 @@ class Univs extends SB_Controller{
         if (empty($cInfo)){
             return show_error('不存在的竞赛');
         }
+
+        // 只有创建者可以编辑文章
+
         $this->load->model('contest_regist_config_m');
         $config = $this->contest_regist_config_m->get_normal($cid);
         $data['reconf'] = $config;
-        
+
         $univs_id = $cInfo['univs_id'];
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
@@ -213,8 +223,8 @@ class Univs extends SB_Controller{
             $articleData['type_id'] = $contest_id;
             $articleData['title'] = $this->input->post('title', true);
             $articleData['create_time'] = date('Y-m-d H:i:s');
-            // TODO
-            $articleData['create_user_id'] = 0;
+
+            $articleData['create_user_id'] = $this->user_info['uid'];;
 
             $contentdata['content'] = $this->input->post('content');
             // 如果是更新

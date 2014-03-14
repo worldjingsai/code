@@ -8,7 +8,7 @@
           
           <div class="block_list FL">
             <div class="div_block_head">
-              <h2 ><%$tplData.colums[$tplData.col]%><span class="FR"><a href="/univs/content/<%$tplData.contest.contest_id%>?col=<%$tplData.col%>" class="edit btn">添加文章</a></span></h2> 
+              <h2 ><%$tplData.colums[$tplData.col]%> <%if !empty($user.uid) && $user.uid == $tplData.contest.create_user_id%><span class="FR"><a href="/univs/content/<%$tplData.contest.contest_id%>?col=<%$tplData.col%>" class="edit btn">添加文章</a></span><%/if%></h2> 
             </div>
             <div class="div_block_body">
                <ul >
