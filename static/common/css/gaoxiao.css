@@ -240,10 +240,13 @@ a.red{color:red;}
 
 .div_block_body li span{float:right; }
 
-.div_block_body ul{margin-left:20px;}
-.div_block_body ul li{list-style:circle; height:28px; line-height:28px;}
+.div_block_body ul{margin-left:10px;}
+.div_block_body ul li{list-style:none; height:28px; line-height:28px;}
 
 .div_block_body ul li a{ font-size:14px}
+
+.div_block_body ul li a.stitle {float:left;width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}
+.div_block_body ul li a.ltitle {float:left;width:600px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}
 
 .border-top{border-top:#333 1px dashed;}
 
