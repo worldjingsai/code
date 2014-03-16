@@ -9,8 +9,10 @@
     header("Content-Type: text/html; charset=utf-8");
     error_reporting(E_ERROR|E_WARNING);
     //远程抓取图片配置
+    $globalConfig = include( "config.php" );
+    $imgSavePathConfig = $globalConfig[ 'imageSavePath' ];
     $config = array(
-        "savePath" => "upload/" ,            //保存路径
+        "savePath" => $imgSavePathConfig ,            //保存路径
         "allowFiles" => array( ".gif" , ".png" , ".jpg" , ".jpeg" , ".bmp" ) , //文件允许格式
         "maxSize" => 3000                    //文件大小限制，单位KB
     );
@@ -73,10 +75,8 @@
                 continue;
             }
             //创建保存位置
-            $savePath = $config[ 'savePath' ];
-            if ( !file_exists( $savePath ) ) {
-                mkdir( "$savePath" , 0777 );
-            }
+            $savePath = getFolder($config[ 'savePath' ]);
+
             //写入文件
             $tmpName = $savePath . rand( 1 , 10000 ) . time() . strrchr( $imgUrl , '.' );
             try {
@@ -87,6 +87,7 @@
             } catch ( Exception $e ) {
                 array_push( $tmpNames , "error" );
             }
+            $tmpNames = strstr($tmpNames, $config[ 'savePath' ]);
         }
         /**
          * 返回数据格式
@@ -97,4 +98,20 @@
          * }
          */
         echo "{'url':'" . implode( "ue_separate_ue" , $tmpNames ) . "','tip':'远程图片抓取成功！','srcUrl':'" . $uri . "'}";
+    }
+
+    function getFolder($path)
+    {
+        $system_path = trim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/');
+        $pathStr = $system_path . $path;
+        if ( strrchr( $pathStr , "/" ) != "/" ) {
+            $pathStr .= "/";
+        }
+        $pathStr .= date( "Ymd" );
+        if ( !file_exists( $pathStr ) ) {
+            if ( !mkdir( $pathStr , 0777 , true ) ) {
+                return false;
+            }
+        }
+        return $pathStr;
     }

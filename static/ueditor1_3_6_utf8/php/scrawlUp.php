@@ -3,8 +3,9 @@
     error_reporting( E_ERROR | E_WARNING );
     include "Uploader.class.php";
     //上传配置
+    $globalConfig = include( "config.php" );
     $config = array(
-        "savePath" => "upload/" ,             //存储文件夹
+        "savePath" => $globalConfig[ 'fileSavePath'] ,             //存储文件夹
         "maxSize" => 1000 ,                   //允许的文件最大尺寸，单位KB
         "allowFiles" => array( ".gif" , ".png" , ".jpg" , ".jpeg" , ".bmp" )  //允许的文件格式
     );

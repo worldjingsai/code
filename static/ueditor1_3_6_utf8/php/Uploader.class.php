@@ -136,7 +136,7 @@ class Uploader
         return array(
             "originalName" => $this->oriName ,
             "name" => $this->fileName ,
-            "url" => $this->fullName ,
+            "url" => strstr($this->fullName, $this->config['savePath']),
             "size" => $this->fileSize ,
             "type" => $this->fileType ,
             "state" => $this->stateInfo
@@ -234,7 +234,8 @@ class Uploader
      */
     private function getFolder()
     {
-        $pathStr = $this->config[ "savePath" ];
+        $system_path = trim(str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']), '/');
+        $pathStr = $system_path . $this->config[ "savePath" ];
         if ( strrchr( $pathStr , "/" ) != "/" ) {
             $pathStr .= "/";
         }

@@ -1,5 +1,5 @@
 <?php
-	
+
 
     /**
      * Created by JetBrains PhpStorm.
@@ -47,7 +47,7 @@
         return;
     }
 
-    $config[ 'savePath' ] = $path . '/';
+    $config[ 'savePath' ] = rtrim($path, '/') . '/';
 
     //生成上传实例对象并完成上传
     $up = new Uploader("upfile", $config);

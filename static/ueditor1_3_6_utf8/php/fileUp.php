@@ -7,11 +7,13 @@
      */
     header("Content-Type: text/html; charset=utf-8");
     error_reporting( E_ERROR | E_WARNING );
+    date_default_timezone_set("Asia/Chongqing");
     include "Uploader.class.php";
     //上传配置
+    $globalConfig = include( "config.php" );
     $config = array(
-        "savePath" => "upload/" , //保存路径
-        "allowFiles" => array( ".rar" , ".doc" , ".docx" , ".zip" , ".pdf" , ".txt" , ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg", ".ogg", ".mov", ".wmv", ".mp4", ".webm") , //文件允许格式
+        "savePath" => $globalConfig[ 'fileSavePath'] , //保存路径
+        "allowFiles" => array( ".rar" , ".doc" , ".docx" , ".xls", ".xlsx", ".csv", ".zip" , ".pdf" , ".txt" , ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg", ".mpg", ".ogg", ".mov", ".wmv", ".mp4", ".webm") , //文件允许格式
         "maxSize" => 100000, //文件大小限制，单位KB
         "fileNameFormat" => $_POST['fileNameFormat']
     );

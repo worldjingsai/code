@@ -10,7 +10,7 @@
     error_reporting( E_ERROR | E_WARNING );
 
     //需要遍历的目录列表，最好使用缩略图地址，否则当网速慢时可能会造成严重的延时
-    $paths = array('upload/','upload1/');
+    $paths = array('');
 
     $action = htmlspecialchars( $_POST[ "action" ] );
     if ( $action == "get" ) {
