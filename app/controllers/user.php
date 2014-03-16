@@ -4,7 +4,7 @@
  */
 
 class User extends SB_Controller{
-    
+
     function __construct (){
         parent::__construct();
         $this->load->model ('user_m');
@@ -119,6 +119,9 @@ class User extends SB_Controller{
         $data['title'] = '用户登录';
         $data['referer']=$this->input->get_post('referer',true);
         $data['referer']=$data['referer']?$data['referer']: $this->input->server('HTTP_REFERER', true);
+        if (strpos($data['referer'], '/user/login')) {
+            $data['referer'] = '/';
+        }
         if($this->auth->is_login()){
             // redirect();
             $this->myclass->notice('alert("此用户已登录");window.location.href="'.$data['referer'].'";');

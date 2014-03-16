@@ -48,7 +48,7 @@
         <%else%>
         <%foreach from=$tplData.comment key=key item=item%>
         <div class="comment_box">
-	        <div class="info"><a href="/user/info<%$item.uid%>"><%$item.username%></a></div>
+	        <div class="info"><a href="/user/info/<%$item.uid%>"><%$item.username%></a></div>
 	        <div class="content"><%$item.content%></div>
 	        <div class="toolbar" ><span class="comment_date FL"><%date('Y-m-d', $item.replytime)%></span><span class="reply FR"><a class="btn btn-small js_reply" href="javascript:;">回复</a></span></div>
         </div>
