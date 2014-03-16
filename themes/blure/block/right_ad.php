@@ -1,14 +1,11 @@
 <div class='box'>
 <div class='inner'>
-<span style='font-weight: bold; font-size: 10px; color: #e2e2e2;'>Promotion</span>
+<span style='font-weight: bold; font-size: 10px; color: #e2e2e2;'>推荐内容</span>
 <div class='sep10'></div>
 <span style='font-size: 12px; color: #666;'>
-<strong style='color: #000;'>
-<a href="https://me.alipay.com/startbbs" class="black track_event" data-action="click" data-category="ad" data-label="赞助 StartBBS 开发" target="_blank">广告位:</a>
-</strong>
 </span>
 <div class='sep3'></div>
-<span style='font-size: 12px;'><a href="http://www.startbbs.com">StartBBS</a>-一款轻量简单易用的开源社区程序</span>
+<span style='font-size: 12px;'><a target="_blank" href="http://mgmcm.worldjingsai.com">MathorCup全球大学生数学建模挑战赛</a></span>
 
 </div>
 </div>
