@@ -14,6 +14,7 @@ class Univs extends SB_Controller{
 
     /**
      * 根据高校昵称获取高校信息
+     * 如果高校昵称不存在则查询竞赛短地址
      */
     public function index($short_name){
         if($this->auth->is_login()){
@@ -21,6 +22,14 @@ class Univs extends SB_Controller{
         }
         $univs_info = $this->univs_m->get_univs_info_by_univs_short_name($short_name);
         if(empty($univs_info)){
+            
+            // 查询是否有竞赛存在
+            $contestInfo = $this->contest_m->get_contest_by_short_name($short_name);
+            
+            if ($contestInfo) {
+                $_GET['cid'] = $contestInfo['contest_id'];
+                return $this->contest($contestInfo['univs_id']);
+            }
             $this->myclass->notice('alert("该高校不存在");window.location.href="'.site_url('/').'";');
         }
         $data['university'] = $univs_info;
@@ -137,6 +146,7 @@ class Univs extends SB_Controller{
             $data['regist_end_time'] = $this->input->post('regist_end_time', true);
             $data['contest_start_time'] = $this->input->post('contest_start_time', true);
             $data['contest_end_time'] = $this->input->post('contest_end_time', true);
+            $data['contest_bbs'] = $this->input->post('contest_bbs', true);
 
             $data['univs_id'] = $univs_id;
             $data['create_time'] = date('Y-m-d H:i:s');

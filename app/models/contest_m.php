@@ -18,6 +18,17 @@ class Contest_m extends SB_Model{
 
     const TYPE_SCHOOL = 1;
     const TYPE_PUBLIC = 2;
+    
+    const LEVEL_SCHOOL = 1;
+    const LEVEL_PROVINCE = 2;
+    const LEVEL_NATION = 3;
+    const LEVEL_INTERNATION = 4;
+    static $leverNames = array(
+        self::LEVEL_SCHOOL => '校内竞赛',
+        self::LEVEL_PROVINCE => '省级竞赛',
+        self::LEVEL_NATION => '全国竞赛',
+        self::LEVEL_INTERNATION => '国际竞赛'
+    );
 
     public $tb = 'contest';
     
@@ -36,6 +47,15 @@ class Contest_m extends SB_Model{
     public function get($cid){
         $this->db->select('*');
         $query = $this->db->where('contest_id',$cid)->where('status',1)->get($this->tb);
+        return $query->row_array();
+    }
+    
+    public function get_contest_by_short_name($short_name){
+        $this->db->select('*');
+        $col = self::$leverNames;
+        unset($col[self::LEVEL_SCHOOL]);
+
+        $query = $this->db->where('contest_url',$short_name)->where('status',1)->where_in('contest_level', array_keys($col))->get($this->tb);
         return $query->row_array();
     }
     
@@ -73,7 +93,11 @@ class Contest_m extends SB_Model{
         $this->db->select('*');
         $this->db->from($this->tb);
         $this->db->order_by('create_time','desc');
-        $this->db->where('contest_type', self::TYPE_PUBLIC)->where('status',1);
+        $col = self::$leverNames;
+        unset($col[self::LEVEL_SCHOOL]);
+        
+        $this->db->where_in('contest_level', array_keys($col))->where('status',1);
+        
         $this->db->offset($offset);
         $this->db->limit($limit);
         $query = $this->db->get();
