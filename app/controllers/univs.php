@@ -16,7 +16,9 @@ class Univs extends SB_Controller{
      * 根据高校昵称获取高校信息
      * 如果高校昵称不存在则查询竞赛短地址
      */
-    public function index($short_name){
+    public function index(){
+        $args = func_get_args();
+        $short_name = $args[0];
         if($this->auth->is_login()){
             $data['is_login'] = true;
         }

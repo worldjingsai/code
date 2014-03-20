@@ -337,6 +337,9 @@ class CI_Router {
 		{
 			$x = explode('/', $this->routes['404_override']);
 
+			// 特殊的处理，如果没有找到方法返回univs/index
+			array_unshift($segments, $x[0], isset($x[1]) ? $x[1] : 'index');
+			return $segments;
 			$this->set_class($x[0]);
 			$this->set_method(isset($x[1]) ? $x[1] : 'index');
 

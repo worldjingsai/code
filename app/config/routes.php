@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')){ exit('No direct script access allowed');}
 
 $route['default_controller'] = 'home';
-$route['404_override'] = '';
+$route['404_override'] = 'univs/index';
 $route['admin']='/admin';
 $route['add.html']='forum/add';
 $route['qq_login'] = 'oauth/qqlogin';

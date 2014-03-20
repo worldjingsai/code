@@ -66,7 +66,7 @@ $().ready(function() {
 		if(ct == 1) {
 			$('#pre_url').html($('#pre_url').attr('def'));
 		} else {
-			$('#pre_url').html('contest');
+			$('#pre_url').html('');
 		}
 		$('#contest_url').val('');
 	});

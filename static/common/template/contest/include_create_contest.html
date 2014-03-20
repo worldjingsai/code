@@ -1,0 +1,111 @@
+<div class="article FL">
+     <div class="article_title">
+         <h3 ><span class="current">创建竞赛基本信息</span></h3> 
+     </div>
+     <div class="article_menu"></div>
+     <div class="article_body">
+        <div class="register">
+            <div class="create_data">
+        <form id="form-practice" action="/univs/create/<%$tplData.university.univs_id%>" method="post" class="dialog-box">
+            <input type="hidden" value="<%$tplData.university.univs_id%>" name="univs_id" id="univs_id"/>
+            <input type="hidden" value="<%$tplData.contest.contest_id|default:''%>" name="contest_id" id="contest_id"/>
+            <table width="100%" class="create_teble">
+        <colgroup>
+            <col width="100">
+            <col width="200">
+        </colgroup>
+        <tbody>
+        <tr>
+            <th><em>*</em>竞赛名称:</th>
+            <td class="input" >
+                <div class="clearfix"><input type="text" class="text" name="contest_name" id="contest_name" maxlength="255" value="<%$tplData.contest.contest_name|default:''%>" ></div>
+            </td>
+        </tr>
+        <tr>
+            <th><em>*</em>竞赛级别:</th>
+            <td >
+            <select name="contest_level" class="select" id="contest_level">
+                    <option value="1" <%if $tplData.contest.contest_level == 1%>selected<%/if%>>校内竞赛</option>
+                    <option value="2" <%if $tplData.contest.contest_level == 2%>selected<%/if%>>省市竞赛</option>
+                    <option value="3" <%if $tplData.contest.contest_level == 3%>selected<%/if%>>全国竞赛</option>
+                    <option value="4" <%if $tplData.contest.contest_level == 4%>selected<%/if%>>国际竞赛</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th><em>*</em>竞赛类型:</th>
+            <td >
+                <select name="contest_type" class="select" id="contest_type">
+                    <option value="1" <%if $tplData.contest.contest_type == 1%>selected<%/if%>>数学建模</option>
+                    <option value="2" <%if $tplData.contest.contest_type == 2%>selected<%/if%>>ACM程序设计</option>
+                    <option value="3" <%if $tplData.contest.contest_type == 3%>selected<%/if%>>创新创业</option>
+                    <option value="4" <%if $tplData.contest.contest_type == 4%>selected<%/if%>>工科类竞赛</option>
+                    <option value="5" <%if $tplData.contest.contest_type == 5%>selected<%/if%>>理科类竞赛</option>
+                    <option value="6" <%if $tplData.contest.contest_type == 6%>selected<%/if%>>文体类竞赛</option>
+                    <option value="7" <%if $tplData.contest.contest_type == 7%>selected<%/if%>>艺术类竞赛</option>
+                </select>
+            </td>
+        </tr>
+        
+        <tr>
+            <th><em>*</em>竞赛网址:</th>
+            <td >
+                www.worldjingsai.com/<span id='pre_url' def='<%$tplData.university.short_name%>/' ><%if $tplData.contest.contest_level == 1%><%$tplData.university.short_name%>/<%else%><%/if%></span><input type="text" class="w_100" id="contest_url" name="contest_url" maxlength="40" value="<%$tplData.contest.contest_url|default:''%>" />
+            </td>
+        </tr>
+        
+        <tr>
+            <th>上级竞赛网址:</th>
+            <td >
+                www.worldjingsai.com/<input type="text" class="w_100" id="parent_url" name="parent_url" maxlength="40" value="<%$tplData.contest.parent_url|default:''%>" />
+            </td>
+        </tr>
+        
+        <tr>
+            <th>报名开始时间:</th>
+            <td >
+                <input type="text" class="text timer pointer" name="regist_start_time" value="<%$tplData.contest.regist_start_time|truncate:16:'':true|default:''%>" readonly/>
+            </td>
+        </tr>
+        <tr>
+            <th>报名结束时间:</th>
+            <td >
+                <input type="text" class="text timer pointer" name="regist_end_time" value="<%$tplData.contest.regist_end_time|truncate:16:'':true|default:''%>" readonly/>
+            </td>
+        </tr>
+        
+        
+        <tr>
+            <th>比赛开始时间:</th>
+            <td  >
+                <input type="text" class="text timer pointer" name="contest_start_time" value="<%$tplData.contest.contest_start_time|truncate:16:'':true|default:''%>" readonly/>
+            </td>
+        </tr>
+        
+        <tr>
+            <th>比赛结束时间:</th>
+            <td  >
+                <input type="text" class="text timer pointer" name="contest_end_time" value="<%$tplData.contest.contest_end_time|truncate:16:'':true|default:''%>" readonly/>
+            </td>
+        </tr>
+        
+        <tr>
+            <th>论坛地址:</th>
+            <td  >
+                <input type="text" class="text" name="contest_bbs" value="<%$tplData.contest.contest_bbs|default:''%>"/>
+            </td>
+        </tr>
+        
+        <tr class="center">
+            <td colspan="2" >
+                <button type="submit" class="btn btn-primary" >提  交</button>
+            </td>
+        </tr>
+             
+             </tbody>
+             </table>
+             </form>  
+            </div>
+        </div>
+    </div>
+</div>
