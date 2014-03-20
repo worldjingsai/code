@@ -8,6 +8,7 @@
 	<div class="register_area" id="js_register" <%if empty($tplData.register)%>style="display:none;"<%/if%>>
 	<p class="register_control"><span class="fr"><a href="javascript:" class="js_login">登录</a></span><a href="javascript:" class="js_register current">注册账号</a></p>
 	<form action="/user/reg" method="post" id="register_form">
+	<input type="hidden" name="referer" value="<%$tplData.referer|default:''%>"/>
 	<div class="input-group ">
         <label for="username" class="input-group-addon w_60">用户名</label>
         <input type="text" class="form-control" id="username" name="username">
@@ -47,7 +48,7 @@
 	<div class="register_area" id="js_login" <%if empty($tplData.login)%>style="display:none;"<%/if%>>
 	<p class="register_control"><span class="fr"><a href="javascript:" class="js_login current">登录</a></span><a href="javascript:" class="js_register">注册账号</a></p>
 	<form action="/user/login" method="post" id="login_form">
-	<input type="hidden" name="referer" value="<%$tplData.referer%>"/>
+	<input type="hidden" name="referer" value="<%$tplData.referer|default:''%>"/>
 	<div class="input-group ">
         <label class="input-group-addon w_60" for="login_username">邮箱/手机/账号</label>
         <input type="text" id="login_username" class="form-control" name="username" value="">
