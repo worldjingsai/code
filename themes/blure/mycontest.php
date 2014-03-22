@@ -90,7 +90,7 @@
 <?php echo $username?>
 参与的竞赛
 </div>
-<?php foreach($user_posts as $v){?>
+<?php foreach($user_contest as $v){?>
 <div class='admin cell topic'>
 <table border='0' cellpadding='0' cellspacing='0' width='100%'>
 <tr>
