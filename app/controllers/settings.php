@@ -18,7 +18,6 @@ class Settings extends SB_Controller {
 		if(!$this->auth->is_login ()){
 			redirect('user/login');
 		}
-
 	}
 	public function index()
 	{
