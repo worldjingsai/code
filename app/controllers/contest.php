@@ -49,6 +49,37 @@ class Contest extends SB_controller{
     }
 
     /**
+     * 检测父URL是否存在
+     */
+    public function ajax_parenturi(){
+        $uri  = $this->input->post('parent_url');
+    
+        $short_name = $contest_url = '';
+        $univs_id = 0;
+        if (strpos($uri, '/')) {
+            list($short_name, $contest_url) = explode('/', $uri);
+            $univsInfo = $this->univs_m->get_univs_info_by_univs_short_name($short_name);
+            if (empty($univsInfo['univs_id'])) {
+                echo "false";
+                return 0;
+            }
+            $univs_id = $univsInfo['univs_id'];
+        } else {
+            $contest_url = $uri;
+        }
+        
+        $cInfo = $this->contest_m->get_contest_by_short_name($univs_id, $contest_url);
+        // 如果是更新竞赛，并且都没有变化就返回成功
+        if (empty($cInfo)) {
+            echo "false";
+        } else {
+            echo "true";
+        }
+        return ;
+    }
+    
+    
+    /**
      * 显示一个文章
      * @param int $article_id
      */
@@ -68,7 +99,7 @@ class Contest extends SB_controller{
             return show_error('竞赛不存在');
         }
 
-        $data = $this->_get($contest_id);
+        $data = $this->_get_contest($contest_id);
         if (empty($data)){
             return show_error('不存在的竞赛');
         }
@@ -93,7 +124,7 @@ class Contest extends SB_controller{
             return show_error('竞赛不存在');
         }
 
-        $data = $this->_get($contest_id);
+        $data = $this->_get_contest($contest_id);
         if (empty($data)){
             return show_error('不存在的竞赛');
         }
@@ -217,7 +248,7 @@ class Contest extends SB_controller{
             return show_error('竞赛不存在');
         }
 
-        $data = $this->_get($contest_id);
+        $data = $this->_get_contest($contest_id);
         if (empty($data)){
             return show_error('不存在的竞赛');
         }
@@ -335,71 +366,5 @@ class Contest extends SB_controller{
         return show_json(0, '删除成功');
     }
 
-    public function _get_article($article_id){
-        $aid = intval($article_id);
 
-        if (!$aid){
-            return show_error('不存在的文章');
-        }
-        // 引入模型
-        $this->load->model('article_m');
-        $this->load->model('article_content_m');
-
-        $article = $this->article_m->get($aid);
-        $content = $this->article_content_m->get($aid);
-
-        if (!$article) {
-            return show_error('不存在的文章');
-        }
-        $article['content'] = $content['content'];
-
-        if ($article['article_type'] == article_m::TYPE_CONTEST)
-        {
-            $data = $this->_get($article['type_id']);
-        }
-        if (empty($data)){
-            return show_error('不存在的竞赛');
-        }
-
-        $data['col'] = $article['column_id'];
-        $data['article'] =$article;
-
-        $this->load->model('comment_m');
-        $query = $this->comment_m->get_comment(0,20,$article_id,$order='desc');
-        $data['comment'] = $query;
-        return $data;
-    }
-
-    /**
-     * 获取竞赛的基本信息
-     * @param int $contest_id
-     * @return multitype:string
-     */
-    public function _get($contest_id){
-        $cid = intval($contest_id);
-
-        if (!$cid){
-            return show_error('不存在的竞赛');
-        }
-        // 引入模型
-        $this->load->model('contest_regist_config_m');
-
-        $cInfo = $this->contest_m->get($cid);
-
-        if (empty($cInfo)){
-            return show_error('不存在的竞赛');
-        }
-        $config = $this->contest_regist_config_m->get_normal($cid);
-        $data['reconf'] = $config;
-
-        $univs_id = $cInfo['univs_id'];
-        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
-        $data['university'] = $univs_info;
-
-        $colums = Contest_m::$columNames;
-        $data['contest'] = $cInfo;
-        $data['colums'] = $colums;
-
-        return $data;
-    }
 }

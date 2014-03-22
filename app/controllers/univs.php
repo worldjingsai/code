@@ -19,21 +19,38 @@ class Univs extends SB_Controller{
     public function index(){
         $args = func_get_args();
         $short_name = $args[0];
+        $contest_url = isset($args[1]) ? $args[1] : '';
+        
         if($this->auth->is_login()){
             $data['is_login'] = true;
         }
         $univs_info = $this->univs_m->get_univs_info_by_univs_short_name($short_name);
+
+        $univs_id = isset($univs_info['univs_id']) ? $univs_info['univs_id'] : 0;
+        
+        // 如果有竞赛url或者不是一个学校，查看是否有这个是竞赛
         if(empty($univs_info)){
-            
             // 查询是否有竞赛存在
-            $contestInfo = $this->contest_m->get_contest_by_short_name($short_name);
-            
+            $contestInfo = $this->contest_m->get_contest_by_short_name($univs_id, $short_name);
+            array_shift($args);
+
             if ($contestInfo) {
-                $_GET['cid'] = $contestInfo['contest_id'];
-                return $this->contest($contestInfo['univs_id']);
+                return $this->_show_contest($contestInfo, $args);
             }
-            $this->myclass->notice('alert("该高校不存在");window.location.href="'.site_url('/').'";');
+            $this->myclass->notice('alert("该高校或者竞赛不存在");window.location.href="'.site_url('/').'";');
         }
+        
+        if ($contest_url) {
+            $args = array_slice($args, 2);
+            // 查询是否有竞赛存在
+            $contestInfo = $this->contest_m->get_contest_by_short_name($univs_id, $contest_url);
+            if ($contestInfo) {
+                return $this->_show_contest($contestInfo, $args);
+            }
+            $this->myclass->notice('alert("该高校竞赛不存在");window.location.href="'.site_url('/').'";');
+        }
+        
+        // 显示学校信息
         $data['university'] = $univs_info;
         $schooleContests = $this->_schoolcList(intval($univs_info['univs_id']), 0);
         $publicContests = $this->_cList(0);
@@ -73,58 +90,52 @@ class Univs extends SB_Controller{
         $this->display("contest/univs_contest_list.html");
     }
 
+    
     /**
      * 显示一个竞赛
+     * args[0],栏目
+     * args[1],分页
      */
-    public function contest($univs_id){
-        $univs_id = intval($univs_id);
-        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
-        $data['university'] = $univs_info;
-
-        $cid = $this->input->get('cid');
-        if (!$cid){
-            return show_error('不存在的竞赛');
-        }
+    protected function _show_contest($cInfo, $args)
+    {
         // 引入模型
         $this->load->model('article_m');
         $this->load->model('article_content_m');
-
-        $cInfo = $this->contest_m->get($cid);
-        if (empty($cInfo)){
-            return show_error('不存在的竞赛');
+    
+        $cid = $cInfo['contest_id'];
+        
+        $pageStr = '';
+        if (isset($args[1])) {
+            $pageStr = $args[1];
         }
-        $this->load->model('contest_regist_config_m');
-        $config = $this->contest_regist_config_m->get_normal($cid);
-        $data['reconf'] = $config;
-
-        $page = $this->input->get('page');
-        $limit = $this->input->get('limit');
-        if (!$page){
-            $page = 0;
-        }
-        if (!$limit){
+        if (strpos($pageStr, '.html') !== FALSE) {
+            $article_id = intval(str_replace('.html', '', $pageStr));
+            $data = $this->_get_article($article_id);
+            $tpl = 'contest/contest_article.html';
+        } else {
+            $data = $this->_get_contest($cid);
+            $page = $pageStr ? intval($pageStr) : 1;
             $limit = $this->limit;
+            
+            $colums = Contest_m::$columNames;
+        
+            $col = isset($args[0]) ? $args[0] : Contest_m::COLUM_NOTICE;
+            if (!$col || !isset($colums[$col])){
+                $col = Contest_m::COLUM_NOTICE;
+            }
+            
+            $start = ($page - 1) * $limit;
+        
+            $article = $this->article_m->get_all_contest(Article_content_m::TYPE_CONTEST, $cid, $col, $start, $limit);
+            
+            $data['col'] = $col;
+            $data['article'] = $article;
+            $tpl = 'contest/univs_contest_col_list.html';
         }
-
-        $colums = Contest_m::$columNames;
-
-        $col = $this->input->get('col');
-        if (!$col || !isset($colums[$col])){
-            $col = Contest_m::COLUM_NOTICE;
-        }
-
-        $article = $this->article_m->get_all_contest(Article_content_m::TYPE_CONTEST, $cid, $col, $page, $limit);
-        $tpl = 'contest/univs_contest_col_list.html';
-
-        $data['article'] = $article;
-        $data['contest'] = $cInfo;
-        $data['colums'] = $colums;
-        $data['col'] = $col;
-
+        
         $this->tplData = $data;
         $this->display($tpl);
     }
-
 
     /**
      * 创建竞赛
@@ -138,6 +149,14 @@ class Univs extends SB_Controller{
         }
         $contest_id = 0;
         $univs_id = intval($univs_id);
+        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        if (empty($univs_info)) {
+            $this->myclass->notice('alert("学校不存在");window.location.href="/";');
+            return 0;
+        }
+        $show_data['action'] = 'create';
+        $show_data['university'] = $univs_info;
+        
         $data = array();
         if ($_POST) {
             $data['contest_name'] = $this->input->post('contest_name', true);
@@ -150,6 +169,12 @@ class Univs extends SB_Controller{
             $data['contest_end_time'] = $this->input->post('contest_end_time', true);
             $data['contest_bbs'] = $this->input->post('contest_bbs', true);
 
+            $parent_url = $this->input->post('parent_url', true);
+            $parentInfo = $this->_get_contest_by_uri($parent_url);
+            if (!empty($parentInfo['contest_id'])) {
+                $data['parent_id'] = $parentInfo['contest_id'];
+            }
+            
             $data['univs_id'] = $univs_id;
             $data['create_time'] = date('Y-m-d H:i:s');
 
@@ -169,16 +194,53 @@ class Univs extends SB_Controller{
                     $this->univs_contest_m->add($addData);
                 }
             }
-            redirect('/univs/contest/' . $univs_id .'?cid='.$contest_id);
+            if ($data['contest_level'] > Contest_m::LEVEL_SCHOOL) {
+                $contest_short = $data['contest_url'];
+            } else {
+                $contest_short = $univs_info['short_name'] . '/' . $data['contest_url'];
+            }
+            
+            redirect($contest_short);
         }
-        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
-        $show_data['action'] = 'create';
-        $show_data['university'] = $univs_info;
 
+        $show_data['contest'] = array();
         $this->tplData = $show_data;
         $this->display("contest/create_1.html");
     }
 
+    
+    /**
+     * 获取parentID
+     */
+    protected function _get_contest_by_uri($uri)
+    {
+        $short_name = $contest_url = '';
+        $univs_id = 0;
+        if (strpos($uri, '/')) {
+            list($short_name, $contest_url) = explode('/', $uri);
+            $univsInfo = $this->univs_m->get_univs_info_by_univs_short_name($short_name);
+            if (empty($univsInfo['univs_id'])) {
+                return 0;
+            }
+            $univs_id = $univsInfo['univs_id'];
+        } else {
+            $contest_url = $uri;
+        }
+        
+        $cInfo = $this->contest_m->get_contest_by_short_name($univs_id, $contest_url);
+        return $cInfo;
+    }
+    
+    /**
+     * 显示一个文章
+     * @param int $article_id
+     */
+    public function show($article_id) {
+        $data = $this->_get_article($article_id);
+        $this->tplData = $data;
+        $this->display('contest/contest_article.html');
+    }
+    
     /**
      * 添加文章和编辑文章
      * @param int $contest_id
@@ -190,30 +252,15 @@ class Univs extends SB_Controller{
         }
         $cid = intval($contest_id);
 
-        if(!$cid){
+        $data = $this->_get_contest($cid);
+        if (empty($data)){
             return show_error('不存在的竞赛');
         }
-        // 引入模型
+
         $this->load->model('article_m');
         $this->load->model('article_content_m');
-
-        $cInfo = $this->contest_m->get($cid);
-        if (empty($cInfo)){
-            return show_error('不存在的竞赛');
-        }
-
+        
         // 只有创建者可以编辑文章
-
-        $this->load->model('contest_regist_config_m');
-        $config = $this->contest_regist_config_m->get_normal($cid);
-        $data['reconf'] = $config;
-
-        $univs_id = $cInfo['univs_id'];
-        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
-        $data['university'] = $univs_info;
-        $colums = Contest_m::$columNames;
-        $data['contest'] = $cInfo;
-        $data['colums'] = $colums;
         if ($_POST) {
             $col = intval($this->input->post('col'));
             if ($col == 1){
@@ -243,12 +290,12 @@ class Univs extends SB_Controller{
             if ($article_id) {
                 $this->article_m->update($article_id, $articleData);
                 $this->article_content_m->update($article_id, $contentdata);
-                return show_json(0, '更新成功', array('return_url' => '/contest/show/'.$article_id));
+                return show_json(0, '更新成功', array('return_url' => '/'.$data['contest_url'].'/2/'.$article_id.'.html'));
             } else {
                 $article_id = $this->article_m->add($articleData);
                 $contentdata['article_id'] = $article_id;
                 $this->article_content_m->add($contentdata);
-                return show_json(0, '添加成功', array('return_url' => '/contest/show/'.$article_id));
+                return show_json(0, '添加成功', array('return_url' => '/'.$data['contest_url'].'/2/'.$article_id.'.html'));
             }
         }
 
@@ -257,7 +304,6 @@ class Univs extends SB_Controller{
             $col = Contest_m::COLUM_NOTICE;
         }
         $data['col'] = $col;
-
         $this->tplData = $data;
         $this->display('contest/create_2.html');
     }

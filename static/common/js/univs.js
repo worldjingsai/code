@@ -24,6 +24,19 @@ $().ready(function() {
 					}
 					}
 				}
+			},
+			parent_url: {
+				required: false,
+				notEqualTo: "#contest_url",
+				remote: {
+					url:"/data/contest/parenturi",
+					type:"post",
+					data:{
+					"parent_url":function() {
+						return $("#parent_url").val();
+					}
+					}
+				}
 			}
 		},
 		messages: {
@@ -31,6 +44,10 @@ $().ready(function() {
 			contest_url: {
 				required: "竞赛网站不能为空",
 				remote:"此网址已存在请修改"
+			},
+			parent_url : {
+				notEqualTo:'不能为自己的URL',
+				remote:"竞赛网址不正确"
 			}
 		}
 	});

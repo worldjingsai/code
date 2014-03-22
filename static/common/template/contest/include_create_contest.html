@@ -25,10 +25,10 @@
             <th><em>*</em>竞赛级别:</th>
             <td >
             <select name="contest_level" class="select" id="contest_level">
-                    <option value="1" <%if $tplData.contest.contest_level == 1%>selected<%/if%>>校内竞赛</option>
-                    <option value="2" <%if $tplData.contest.contest_level == 2%>selected<%/if%>>省市竞赛</option>
-                    <option value="3" <%if $tplData.contest.contest_level == 3%>selected<%/if%>>全国竞赛</option>
-                    <option value="4" <%if $tplData.contest.contest_level == 4%>selected<%/if%>>国际竞赛</option>
+                    <option value="1" <%if isset($tplData.contest.contest_level) && $tplData.contest.contest_level == 1%>selected<%/if%>>校内竞赛</option>
+                    <option value="2" <%if isset($tplData.contest.contest_level) && $tplData.contest.contest_level == 2%>selected<%/if%>>省市竞赛</option>
+                    <option value="3" <%if isset($tplData.contest.contest_level) && $tplData.contest.contest_level == 3%>selected<%/if%>>全国竞赛</option>
+                    <option value="4" <%if isset($tplData.contest.contest_level) && $tplData.contest.contest_level == 4%>selected<%/if%>>国际竞赛</option>
                 </select>
             </td>
         </tr>
@@ -36,13 +36,13 @@
             <th><em>*</em>竞赛类型:</th>
             <td >
                 <select name="contest_type" class="select" id="contest_type">
-                    <option value="1" <%if $tplData.contest.contest_type == 1%>selected<%/if%>>数学建模</option>
-                    <option value="2" <%if $tplData.contest.contest_type == 2%>selected<%/if%>>ACM程序设计</option>
-                    <option value="3" <%if $tplData.contest.contest_type == 3%>selected<%/if%>>创新创业</option>
-                    <option value="4" <%if $tplData.contest.contest_type == 4%>selected<%/if%>>工科类竞赛</option>
-                    <option value="5" <%if $tplData.contest.contest_type == 5%>selected<%/if%>>理科类竞赛</option>
-                    <option value="6" <%if $tplData.contest.contest_type == 6%>selected<%/if%>>文体类竞赛</option>
-                    <option value="7" <%if $tplData.contest.contest_type == 7%>selected<%/if%>>艺术类竞赛</option>
+                    <option value="1" <%if isset($tplData.contest.contest_type) && $tplData.contest.contest_type == 1%>selected<%/if%>>数学建模</option>
+                    <option value="2" <%if isset($tplData.contest.contest_type) && $tplData.contest.contest_type == 2%>selected<%/if%>>ACM程序设计</option>
+                    <option value="3" <%if isset($tplData.contest.contest_type) && $tplData.contest.contest_type == 3%>selected<%/if%>>创新创业</option>
+                    <option value="4" <%if isset($tplData.contest.contest_type) && $tplData.contest.contest_type == 4%>selected<%/if%>>工科类竞赛</option>
+                    <option value="5" <%if isset($tplData.contest.contest_type) && $tplData.contest.contest_type == 5%>selected<%/if%>>理科类竞赛</option>
+                    <option value="6" <%if isset($tplData.contest.contest_type) && $tplData.contest.contest_type == 6%>selected<%/if%>>文体类竞赛</option>
+                    <option value="7" <%if isset($tplData.contest.contest_type) && $tplData.contest.contest_type == 7%>selected<%/if%>>艺术类竞赛</option>
                 </select>
             </td>
         </tr>
@@ -50,7 +50,7 @@
         <tr>
             <th><em>*</em>竞赛网址:</th>
             <td >
-                www.worldjingsai.com/<span id='pre_url' def='<%$tplData.university.short_name%>/' ><%if $tplData.contest.contest_level == 1%><%$tplData.university.short_name%>/<%else%><%/if%></span><input type="text" class="w_100" id="contest_url" name="contest_url" maxlength="40" value="<%$tplData.contest.contest_url|default:''%>" />
+                www.worldjingsai.com/<span id='pre_url' def='<%$tplData.university.short_name%>/' ><%if !isset($tplData.contest.contest_level) || $tplData.contest.contest_level == 1%><%$tplData.university.short_name%>/<%else%><%/if%></span><input type="text" class="w_100" id="contest_url" name="contest_url" maxlength="40" value="<%$tplData.contest.contest_url|default:''%>" />
             </td>
         </tr>
         

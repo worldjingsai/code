@@ -18,7 +18,7 @@
                 <%if !empty($user.uid) && $user.uid == $tplData.contest.create_user_id%>
                 <span class="control"> <a target="_blank" href="/contest/update/<%$value.article_id%>" class="js_edit" >编辑</a> <a href="javascript:;" url="/contest/del/<%$value.article_id%>" notice="<%$value.title%>" class="js_del" >删除</a></span>
                 <%/if%>
-                <a target="_blank" class="title" href="/contest/show/<%$value.article_id%>" title="<%$value.title|strip_tags%>"><%$value.title|strip_tags%></a> 
+                <a target="_blank" class="title" href="/<%$tplData.contest_url%>/2/<%$value.article_id%>.html" title="<%$value.title|strip_tags%>"><%$value.title|strip_tags%></a> 
                 <span><%$value.create_time|truncate:10:''%></span>
                 </li>
               <%/foreach%>

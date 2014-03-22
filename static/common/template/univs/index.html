@@ -14,7 +14,7 @@
               <ul >
               <%if $tplData.schooleContests%>
               <%foreach from=$tplData.schooleContests item item=value key=key%>
-                <li ><a target="_blank" class="stitle" href="<%if $value.contest_level >1%>/<%$value.contest_url%><%else%>/univs/contest/<%$tplData.university.univs_id%>?cid=<%$value.contest_id%><%/if%>" title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags%></a> <span><%$value.create_time|truncate:10:''%></span></li>
+                <li ><a target="_blank" class="stitle" href="/<%if $value.contest_level == 1%><%$tplData.university.short_name%>/<%/if%><%$value.contest_url%>" title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags%></a> <span><%$value.create_time|truncate:10:''%></span></li>
               <%/foreach%>
               <%/if%>
               </ul>

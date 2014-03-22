@@ -24,7 +24,7 @@
 <div class="top">
 	<div class="info">
 		<div class="top_logo FL">环球<span class="c_red">竞赛</span>网 <span class="ml_30">world</span><span class="c_red fs_italic">jingsai</span>.com  <span class="ml_30">出国or保研?N多大赛奖项等你拿！</span></div>
-		<div class="FR"><%if $tplData.is_login eq 1 %><a target="_blank" href="/user/info/<%$tplData.user_info.uid%>"><%$tplData.user_info.username%></a> | <a href="/setting/index">个人设置</a> | <a href="/user/logout">退出</a><%else%><a target="_blank" href="/user/login">登录</a> | <a href="/user/reg">注册</a>  | <a href="#">帮助</a> <%/if%></div>
+		<div class="FR"><%if $tplData.is_login eq 1 %><a target="_blank" href="/user/info/<%$tplData.user_info.uid%>"><%$tplData.user_info.username%></a> | <a href="/settings/index">个人设置</a> | <a href="/user/logout">退出</a><%else%><a target="_blank" href="/user/login">登录</a> | <a href="/user/reg">注册</a>  | <a href="#">帮助</a> <%/if%></div>
 	</div>
 </div>
 
@@ -41,9 +41,9 @@
 		<li><a href="/" >首页</a></li>
 	    <li><a href="/<%$tplData.university.short_name%>" >高校首页</a></li>
 	    <%foreach from=$tplData.colums item=value key=key%>
-		<li><a <%if $key==$tplData.col%> class="current" <%/if%>href="/univs/contest/<%$tplData.university.univs_id%>?cid=<%$tplData.contest.contest_id%>&col=<%$key%>"><%$value%></a></li>
+		<li><a <%if $key==$tplData.col%> class="current" <%/if%>href="/<%$tplData.contest_url%>/<%$key%>"><%$value%></a></li>
 		<%/foreach%>
-	    <li><a target="_blank" href="<%if $tplData.contest.contest_bbs%><%$tplData.contest.contest_bbs%><%else%>#<%/if%>">论坛</a></li>
+	    <li><a target="_blank" href="<%if $tplData.contest.contest_bbs%><%$tplData.contest.contest_bbs%><%else%>/forum/flist/<%$tplData.contest.contest_type%><%/if%>">论坛</a></li>
 	</ul>
 	<%if !empty($user.uid) && $user.uid == $tplData.contest.create_user_id%>
 	<span class="btn btn-success FR"><a href="/contest/upContest/<%$tplData.contest.contest_id%>">更新竞赛</a></span>

@@ -50,12 +50,16 @@ class Contest_m extends SB_Model{
         return $query->row_array();
     }
     
-    public function get_contest_by_short_name($short_name){
+    public function get_contest_by_short_name($univs_id, $short_name){
         $this->db->select('*');
-        $col = self::$leverNames;
-        unset($col[self::LEVEL_SCHOOL]);
-
-        $query = $this->db->where('contest_url',$short_name)->where('status',1)->where_in('contest_level', array_keys($col))->get($this->tb);
+        
+        if ($univs_id) {
+            $query = $this->db->where('univs_id', $univs_id)->where('contest_url',$short_name)->where('status',1)->get($this->tb);;
+        } else {
+            $col = self::$leverNames;
+            unset($col[self::LEVEL_SCHOOL]);
+            $query = $this->db->where('contest_url',$short_name)->where('status',1)->where_in('contest_level', array_keys($col))->get($this->tb);
+        }
         return $query->row_array();
     }
     
