@@ -113,7 +113,7 @@
     <%foreach item=value2 from=$value.universities%>
         <a href="/<%$value2.short_name%>"><%$value2.univs_name%></a>
     <%/foreach%>
-    <a>&nbsp;&nbsp;>>&nbsp;更多</a>
+    <a href="javascript:;" class="js_morechool" porvince_id="<%$value.provs_id%>">&nbsp;&nbsp;>>&nbsp;更多</a>
     </dd>
     </dl>
 <%/foreach%>

@@ -1,21 +1,23 @@
 var selectSchool = function(){
 //弹出窗口
 	this.pop = function(){
+		var province_id= arguments[0] || 1;
+		var link= arguments[1] || false;
 		//将窗口居中
 		makeCenter();
 
 		//初始化省份列表
-		initProvince();
+		initProvince(link);
 
 		//默认情况下, 给第一个省份添加choosen样式
-		$('[province-id="1"]').addClass('choosen');
+		$('[province-id='+province_id+']').addClass('choosen');
 
 		//初始化大学列表
-		initSchool(1);
+		initSchool(province_id, link);
 	};
 
 	var initProvince =function(){
-		
+		var link= arguments[0] || false;
 		//原先的省份列表清空
 		$('#choose-a-province').html('');
 		
@@ -33,17 +35,21 @@ var selectSchool = function(){
 			item.addClass('choosen');
 			
 			//更新大学列表
-			initSchool(province);
+			initSchool(province, link);
 		});
 	};
 
-	var initSchool=function(provinceID){
+	var initSchool=function(provinceID, link){
 
 		//原先的学校列表清空
 		$('#choose-a-school').html('');
 		var schools = schoolList[provinceID-1].school;
 		for(i=0;i<schools.length;i++){
-			$('#choose-a-school').append('<a href="javascript:void(0);" class="school-item" school-id="'+schools[i].id+'">'+schools[i].name+'</a>');
+			if (link) {
+				$('#choose-a-school').append('<a target="_blank" href="/'+schools[i].short_name+'" class="school_close" school-id="'+schools[i].id+'">'+schools[i].name+'</a>');
+			} else {
+				$('#choose-a-school').append('<a href="javascript:void(0);" class="school-item" school-id="'+schools[i].id+'">'+schools[i].name+'</a>');
+			}
 		}
 		
 		//添加大学列表项的click事件
@@ -55,6 +61,12 @@ var selectSchool = function(){
 			$('#school_name').val(item.text());
 			$('#univs_id').val(school);
 
+			//关闭弹窗
+			hide();
+		});
+		
+		//添加大学列表项的click事件
+		$('.school_close').bind('click', function(){
 			//关闭弹窗
 			hide();
 		});
@@ -85,6 +97,12 @@ $(document).ready(function(){
 	var se = new selectSchool();
 	$("#school_name").on("click",function(){se.pop()});
 	
+	$(".js_morechool").on("click", function(){
+		var item=$(this);
+		var provid = item.attr('porvince_id');
+		var link = true;
+		se.pop(provid, link);
+		});
 	//隐藏窗口
 	$('#closeSchoole').on("click",function(){
 		$('#choose-box-wrapper').css("display","none");
