@@ -3,7 +3,7 @@
  * 竞赛内容首页
  */
 
-class Contest extends SB_controller{
+class Mycontest extends SB_controller{
     function __construct (){
         parent::__construct();
         $this->load->model('contest_m');
@@ -24,23 +24,12 @@ class Contest extends SB_controller{
     {
         $uid = $this->session->userdata ('uid');
         $data = $this->user_m->get_user_by_id($uid);
-        if($_POST){
-            $data = array(
-                    'uid' => $uid,
-                    'email' => strip_tags($this->input->post('email')),
-                    'homepage' => prep_url(strip_tags($this->input->post('homepage'))),
-                    'location' => strip_tags($this->input->post('location')),
-                    'qq' => strip_tags($this->input->post('qq')),
-                    'signature' => strip_tags($this->input->post('signature')),
-                    'introduction' => strip_tags($this->input->post('introduction'))
-            );
-            $this->user_m->update_user($uid, $data);
-            $data = $this->user_m->get_user_by_id($uid);
-            //$this->myclass->notice('alert("更新账户成功");history.back();');
-            
-        }
-        $data['title'] = '账户设置';
-        $this->load->view('settings_profile', $data);
+        
+        $data['title'] = '我的竞赛';
+        $data['topics'][] = array('contest_id' => 1, 'contest_name' => '测试竞赛', 'contest_url' => 'cumcm', 'create_time'=>'2014-03-21', 
+                'level_name' => '学校竞赛', 'type_name' => '数学建模', 'enter_numbers' => 5,
+        );
+        $this->load->view('mycontest', $data);
     
     }
     

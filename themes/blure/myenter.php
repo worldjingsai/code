@@ -15,7 +15,7 @@
 
 <div class='box'>
 <div class='cell'>
-<a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> 我创建的竞赛
+<a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> 我参加的竞赛
 </div>
 <div class='cell'>
 <?php if(!empty($topics)){?>
@@ -23,11 +23,10 @@
 <table class='topics table'>
 <thead>
 <tr>
-<!-- th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th> -->
+<th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th>
 <th align='left' class='auto'>竞赛名称</th>
 <th align='left' class='auto'>竞赛类型</th>
 <th align='left' class='auto'>竞赛级别</th>
-<th align='right' class='auto'>报名人数</th>
 <th align='right' class='auto'>创建时间</th>
 <!--  th class='w100'>操作</th>-->
 </tr>
@@ -35,23 +34,20 @@
 <tbody>
 <?php foreach($topics as $k=>$v){ ?>
 <tr class='highlight'>
-<!-- td class='auto'>
-<input name="<?php echo $k?>" checked="1" value="<?php echo $v['contest_id']?>" type="checkbox">
-</td> -->
+<td class='auto'>
+<input name="<?php echo $k?>" checked="1" value="<?php echo $v['fid']?>" type="checkbox">
+</td>
 
 <td class='auto'>
-<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr($v['contest_name'],20)?></a>
+<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr($v['name'],10)?></a>
 </td>
 <td class='auto'>
-<?php echo sb_substr($v['type_name'],20)?>
+<?php echo sb_substr($v['type_name'],10)?>
 </td>
 <td class='auto'>
 <?php echo $v['level_name']?>
 </td>
-<td class='auto'>
-<a href="<?php echo site_url('mycontest/enter/'.$v['contest_id']);?>" class="rabel profile_link btn btn-primary" title="点击查看报名详情"><?php echo $v['enter_numbers']?></a>
-</td>
-<td  class='auto'>
+<td align='right' class='auto'>
 <small class='fade1'><?php echo $v['create_time']?></small>
 </td>
 <!--  td class='w100'>

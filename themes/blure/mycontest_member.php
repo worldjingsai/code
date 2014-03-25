@@ -15,7 +15,7 @@
 
 <div class='box'>
 <div class='cell'>
-<a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> 我创建的竞赛
+<a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/index');?>">我的创建的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> 竞赛报名
 </div>
 <div class='cell'>
 <?php if(!empty($topics)){?>
@@ -24,12 +24,12 @@
 <thead>
 <tr>
 <!-- th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th> -->
-<th align='left' class='auto'>竞赛名称</th>
-<th align='left' class='auto'>竞赛类型</th>
-<th align='left' class='auto'>竞赛级别</th>
-<th align='right' class='auto'>报名人数</th>
+<th align='left' class='auto'>团队ID</th>
+<th align='left' class='auto'>团队名称</th>
+<th align='left' class='auto'>队长姓名</th>
+<th align='right' class='auto'>队长电话</th>
 <th align='right' class='auto'>创建时间</th>
-<!--  th class='w100'>操作</th>-->
+<th class='w100'>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -54,8 +54,9 @@
 <td  class='auto'>
 <small class='fade1'><?php echo $v['create_time']?></small>
 </td>
-<!--  td class='w100'>
-<a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
+<td class='w100'>
+<a href="<?php echo site_url('mycontest/enter/'.$v['fid']);?>" class="btn btn-primary btn-sm">详情</a>
+<!--  <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
 <a href="<?php echo site_url('admin/topics/del/'.$v['fid'].'/'.$v['cid'].'/'.$v['uid']);?>" class="btn btn-sm btn-danger" data-confirm="真的要删除吗？" data-method="delete" rel="nofollow">删除</a>
 <?php if($v['is_top']==0){?>
 <a href="<?php echo site_url('admin/topics/set_top/'.$v['fid']).'/'.$v['is_top'];?>" class="btn btn-primary btn-sm">置顶</a>
@@ -65,10 +66,11 @@
 <?php if($v['is_hidden']==1){?>
 <a href="<?php echo site_url('admin/topics/approve/'.$v['fid']);?>" class="btn btn-primary btn-sm">审</a>
 <?php } ?>
+-->
 </td>
 </tr>
 <?php } ?>
--->
+
 
 </tbody>
 </table>
