@@ -43,7 +43,7 @@
 	    <%foreach from=$tplData.colums item=value key=key%>
 		<li><a <%if $key==$tplData.col%> class="current" <%/if%>href="/<%$tplData.contest_url%>/<%$key%>"><%$value%></a></li>
 		<%/foreach%>
-	    <li><a target="_blank" href="<%if $tplData.contest.contest_bbs%><%$tplData.contest.contest_bbs%><%else%>/forum/flist/<%$tplData.contest.contest_type%><%/if%>">论坛</a></li>
+	    <li><a target="_blank" href="<%if $tplData.contest.contest_bbs|default:0%><%$tplData.contest.contest_bbs%><%else%>/forum/flist/<%$tplData.contest.contest_type%><%/if%>">论坛</a></li>
 	</ul>
 	<%if !empty($user.uid) && $user.uid == $tplData.contest.create_user_id%>
 	<span class="btn btn-success FR"><a href="/contest/upContest/<%$tplData.contest.contest_id%>">更新竞赛</a></span>

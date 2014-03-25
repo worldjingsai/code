@@ -15,7 +15,7 @@
 
 <div class='box'>
 <div class='cell'>
-<a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/index');?>">我的创建的竞赛</a> 
+<a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/index');?>">我的创建的竞赛</a>
 <span class="chevron">&nbsp;›&nbsp;</span> <?php echo sb_substr($contest['contest_name'], 20)?>
 </div>
 <div class='cell'>
@@ -26,8 +26,11 @@
 <tr>
 <!-- th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th> -->
 <th align='left' class='auto'>队号</th>
-<th align='right' class='auto'>创建人</th>
-<th align='right' class='auto'>创建时间</th>
+<?php $i=1;?>
+<?php  foreach($conf['team_column'] as $k=>$v) {?>
+<?php if($i++ > 5) {break;}?>
+<th align='right' class='auto'><?php echo $v[0];?></th>
+<?php }?>
 <th class='w100'>操作</th>
 </tr>
 </thead>
@@ -41,13 +44,12 @@
 <td class='auto'>
 <?=$v['team_number']?>
 </td>
-
+<?php for($j=1; $j<$i-1; $j++) {?>
 <td class='auto'>
-<a target="_blank" href="<?php echo site_url('user/info/'.$v['uid']);?>"><?php echo $v['username']?></a>
+<?php echo $v["t$j"];?>
 </td>
-<td  class='auto'>
-<small class='fade1'><?php echo $v['create_time']?></small>
-</td>
+<?php }?>
+
 <td class='w100'>
 <a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>" class="btn btn-primary btn-sm">详情</a>
 <!--  <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
@@ -68,11 +70,11 @@
 
 </tbody>
 </table>
-<!-- div class='form-actions'>
-<input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="批量删除" />
-<input class="btn btn-primary" name="batch_approve" type="submit" value="批量审核" />
+<div class='form-actions'>
+<!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="批量删除" /> -->
+<a class="btn btn-primary"  href="?act=export">全部导出</a>
 </div>
- -->
+
 <?php } else{?>
 暂无竞赛
 <?php }?>

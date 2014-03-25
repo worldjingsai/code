@@ -10,7 +10,7 @@ class Mycontest extends SB_controller{
         $this->load->model('univs_m');
         $this->load->library('myclass');
         $this->load->model('user_m');
-        
+
         if(!$this->auth->is_login ()){
             redirect('user/login');
         }
@@ -26,7 +26,7 @@ class Mycontest extends SB_controller{
     public function my($page = 1)
     {
         $uid = $this->session->userdata ('uid');
-        
+
         //分页
         $limit = 20;
         $config = $this->pageConfig;
@@ -34,17 +34,17 @@ class Mycontest extends SB_controller{
         $config['base_url'] = site_url('mycontest/my/');
         $config['total_rows'] = $this->contest_m->count_contest(0, $uid);
         $config['per_page'] = $limit;
-        
+
         $this->load->library('pagination');
         $this->pagination->initialize($config);
-        
+
         $start = ($page-1)*$limit;
         $data['pagination'] = $this->pagination->create_links();
         $this->load->model('contest_regist_config_m');
         $this->load->model('team_m');
-        
+
         $rows = $this->contest_m->get_create_by_uid($uid, $start, $limit);
-        
+
         if ($rows) {
             foreach ($rows as &$row) {
                 $cid = $row['contest_id'];
@@ -57,7 +57,7 @@ class Mycontest extends SB_controller{
                 }
                 $row['type_name'] = Contest_m::$typeNames[$row['contest_type']];
                 $row['level_name'] = Contest_m::$leverNames[$row['contest_level']];
-                
+
                 if ($row['contest_level'] <= Contest_m::LEVEL_SCHOOL) {
                     $univs = $this->univs_m->get_univs_info_by_univs_id($row['univs_id']);
                     $row['contest_url'] = $univs['short_name'] . '/' . $row['contest_url'];
@@ -68,14 +68,16 @@ class Mycontest extends SB_controller{
         $data['rows'] = $rows;
         $this->load->view('mycontest', $data);
     }
-    
+
     /**
      * 根据cid获取参赛的队列表
      * @param unknown $cid
      * @param number $page
      */
     public function my_team_list($cid, $page = 1) {
+        $act = $this->input->get('act', true);
         $limit = 20;
+
         $config = $this->pageConfig;
         $config['uri_segment'] = 4;
         $config['base_url'] = site_url('mycontest/my_team_list/');
@@ -87,25 +89,61 @@ class Mycontest extends SB_controller{
         if ($conf) {
             $config['total_rows'] = $this->team_m->count_team($conf['contest_id'], $conf['session']);
         }
-        
+
         $this->load->library('pagination');
         $this->pagination->initialize($config);
-        
+
         $start = ($page-1)*$limit;
         $data['pagination'] = $this->pagination->create_links();
         // 获取数据
         $rows = array();
         if($conf) {
-            $rows = $this->team_m->get_by_cid_session($cid, $conf['session'], $start, $limit);
+            $conf['team_column'] = json_decode($conf['team_column'], true);
+            $conf['member_column'] = json_decode($conf['member_column'], true);
+            if ($act == 'export') {
+                $start = 0;
+                $limit = $config['total_rows'];
+            }
+            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit);
         }
-        
+
+        if ($act == 'export') {
+            $start = 0;
+            $limit = $config['total_rows'];
+            if(!empty($rows)){
+                $title = "队号";
+                $i=1;
+                $sk = array();
+
+                foreach($conf['team_column'] as $k=>$v) {
+                    if ($v[2] > 0) {
+                        if($i++ > 5) {
+                            break;
+                        }
+                        $sk[$k] = $k;
+                        $title .= ','.$v[0];
+                    }
+                }
+                $title.="\r\n";
+                $content = '';
+                foreach($rows as $k=>$v){
+                    $content .= $v['team_number'];
+                    foreach($sk as $kk) {
+                        $content .= ','.$kk["t$kk"];
+                    }
+                    $content.="\r\n";
+                }
+                return $this->exportCsv($contest['contest_name'] . '_报名表.csv' , $title.$content);
+            }
+        }
         $data['title'] = '我的竞赛';
         $data['rows'] = $rows;
         $data['contest'] = $contest;
+        $data['conf'] = $conf;
         $this->load->view('mycontest_member', $data);
     }
-    
-    
+
+
     /**
      * 显示一个团队信息
      * @param int $team_id
@@ -115,7 +153,7 @@ class Mycontest extends SB_controller{
         $this->load->model('team_column_m');
         $this->load->model('member_column_m');
         $this->load->model('contest_regist_config_m');
-        
+
         $teamInfo = $this->team_m->get($team_id);
         $teamColumn = $memberColumn = array();
         if ($teamInfo) {
@@ -137,7 +175,7 @@ class Mycontest extends SB_controller{
         $data['contest'] = $contest;
         $this->load->view('show_team_info', $data);
     }
-    
+
     /**
      * 展示我报名的竞赛
      */
@@ -147,7 +185,7 @@ class Mycontest extends SB_controller{
         $this->load->model('team_column_m');
         $this->load->model('member_column_m');
         $this->load->model('contest_regist_config_m');
-        
+
         //分页
         $limit = 20;
         $config = $this->pageConfig;
@@ -155,15 +193,15 @@ class Mycontest extends SB_controller{
         $config['base_url'] = site_url('mycontest/enter/');
         $config['total_rows'] = $this->team_m->count_by_uid($uid);
         $config['per_page'] = $limit;
-        
+
         $this->load->library('pagination');
         $this->pagination->initialize($config);
-        
+
         $start = ($page-1)*$limit;
         $data['pagination'] = $this->pagination->create_links();
-        
+
         $rows = $this->team_m->list_by_uid($uid, $start, $limit);
-        
+
         $data['title'] = '我的竞赛';
         $data['rows'] = $rows;
         $this->load->view('mycontest_enter', $data);

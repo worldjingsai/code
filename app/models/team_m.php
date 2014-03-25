@@ -56,8 +56,8 @@ class Team_m extends SB_Model{
         $query = $this->db->where('contest_id', $cid)->where('session', $session)->where('create_user_id', $uid)->where('status', 1)->get($this->tb);
         return $query->row_array();
     }
-    
-    
+
+
     /**
      * 根据contest_id获取竞赛和届数获取列表
      */
@@ -73,8 +73,8 @@ class Team_m extends SB_Model{
             return false;
         }
     }
-    
-    
+
+
     /**
      * 根据contestid和sessionid获取参数总数
      */
@@ -104,7 +104,7 @@ class Team_m extends SB_Model{
         if($uid){
             $this->db->where('create_user_id', $uid);
         }
-        
+
         $query = $this->db->get($this->tb);
         if($query->result()){
             return $query->num_rows();
@@ -112,7 +112,7 @@ class Team_m extends SB_Model{
             return '0';
         }
     }
-    
+
 
     /**
      * 根据uid获取参与的竞赛
@@ -131,8 +131,8 @@ class Team_m extends SB_Model{
             return false;
         }
     }
-    
-    
+
+
     /**
      * 获取创建的竞赛
      * @param unknown $page
@@ -143,6 +143,27 @@ class Team_m extends SB_Model{
         $this->db->select('a.*, b.username, b.uid');
         $this->db->from($this->tb .' a');
         $this->db->join('users b', 'b.uid = a.create_user_id');
+        $this->db->order_by('create_time','desc');
+        $this->db->where('a.contest_id',$cid)->where('a.session', $session)->where('a.status',1);
+        $this->db->limit($limit,$page);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 获取详细的参赛列表
+     * @param unknown $page
+     * @param unknown $limit
+     */
+    public function get_detail_by_cid_session($cid, $session, $page, $limit)
+    {
+        $this->db->select('a.*, b.*');
+        $this->db->from($this->tb .' a');
+        $this->db->join('team_column b', 'b.team_id = a.team_id');
         $this->db->order_by('create_time','desc');
         $this->db->where('a.contest_id',$cid)->where('a.session', $session)->where('a.status',1);
         $this->db->limit($limit,$page);

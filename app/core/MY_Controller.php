@@ -115,26 +115,26 @@ class SB_Controller extends Base_Controller{
             $this->smarty->assign($key, $value);
         }
     }
-    
+
 
     protected function _get_article($article_id){
         $aid = intval($article_id);
-    
+
         if (!$aid){
             return show_error('不存在的文章');
         }
         // 引入模型
         $this->load->model('article_m');
         $this->load->model('article_content_m');
-    
+
         $article = $this->article_m->get($aid);
         $content = $this->article_content_m->get($aid);
-    
+
         if (!$article) {
             return show_error('不存在的文章');
         }
         $article['content'] = $content['content'];
-    
+
         if ($article['article_type'] == article_m::TYPE_CONTEST)
         {
             $data = $this->_get_contest($article['type_id']);
@@ -142,17 +142,17 @@ class SB_Controller extends Base_Controller{
         if (empty($data)){
             return show_error('不存在的竞赛');
         }
-    
+
         $data['col'] = $article['column_id'];
         $data['article'] =$article;
-    
+
         $this->load->model('comment_m');
         $query = $this->comment_m->get_comment(0,20,$article_id,$order='desc');
         $data['comment'] = $query;
         return $data;
     }
-    
-    
+
+
     /**
      * 获取竞赛的基本信息
      * @param int $contest_id
@@ -160,7 +160,7 @@ class SB_Controller extends Base_Controller{
      */
     protected function _get_contest($contest_id){
         $cid = intval($contest_id);
-    
+
         if (!$cid){
             return show_error('不存在的竞赛');
         }
@@ -168,17 +168,17 @@ class SB_Controller extends Base_Controller{
         $this->load->model('univs_m');
         $this->load->model('contest_m');
         $this->load->model('contest_regist_config_m');
-    
+
         $cInfo = $this->contest_m->get($cid);
-    
+
         if (empty($cInfo)){
             return show_error('不存在的竞赛');
         }
         $config = $this->contest_regist_config_m->get_normal($cid);
         $data['reconf'] = $config;
-    
+
         $univs_id = $cInfo['univs_id'];
-        if ($cInfo['parent_id']) {
+        if (!empty($cInfo['parent_id'])){
             $pInfo = $this->contest_m->get($cInfo['parent_id']);
             if ($pInfo) {
                 $cInfo['parent_url'] = $pInfo['contest_url'];
@@ -186,18 +186,18 @@ class SB_Controller extends Base_Controller{
         }
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
-    
+
         $colums = Contest_m::$columNames;
         $data['contest'] = $cInfo;
         $data['colums'] = $colums;
-    
+
         if ($cInfo['contest_level'] > Contest_m::LEVEL_SCHOOL) {
             $contest_short = $cInfo['contest_url'];
         } else {
             $contest_short = $univs_info['short_name'] . '/' . $cInfo['contest_url'];
         }
         $data['contest_url'] = $contest_short;
-        
+
         return $data;
     }
 
@@ -227,6 +227,17 @@ class SB_Controller extends Base_Controller{
         }
         echo json_encode($data);
         return ;
+    }
+
+    public function exportCsv($filename,$data)
+    {
+        $data = mb_convert_encoding($data, 'GBK', "UTF8");
+        header("Content-type:text/csv");
+        header("Content-Disposition:attachment;filename=".$filename);
+        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+        header('Expires:0');
+        header('Pragma:public');
+        echo $data;
     }
 }
 
