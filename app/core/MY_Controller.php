@@ -16,6 +16,30 @@ class Base_Controller extends CI_Controller{
 }
 
 class SB_Controller extends Base_Controller{
+    public $pageConfig = array(
+            'uri_segment' => 3,
+            'use_page_numbers' => TRUE,
+            'base_url' => '',
+            'total_rows' => 0,
+            'per_page' => 20,
+            'prev_link' => '&larr;',
+            'prev_tag_open' => '<li class=\'prev\'>',
+            'prev_tag_close' => '</li',
+            'cur_tag_open' => '<li class=\'active\'><span>',
+            'cur_tag_close' => '</span></li>',
+            'num_tag_open' => '<li>',
+            'num_tag_close' => '</li>',
+            'next_link' => '&rarr;',
+            'next_tag_open' => '<li class=\'next\'>',
+            'next_tag_close' => '</li>',
+            'first_link' => '首页',
+            'first_tag_open' => '<li class=\'first\'>',
+            'first_tag_close' => '</li>',
+            'last_link' => '尾页',
+            'last_tag_open' => '<li class=\'last\'>',
+            'last_tag_close' => '</li>',
+            'num_links' => 10,
+    );
     function __construct(){
         parent::__construct();
         //判断关闭

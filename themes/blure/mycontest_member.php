@@ -15,47 +15,41 @@
 
 <div class='box'>
 <div class='cell'>
-<a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/index');?>">我的创建的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> 竞赛报名
+<a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/index');?>">我的创建的竞赛</a> 
+<span class="chevron">&nbsp;›&nbsp;</span> <?php echo sb_substr($contest['contest_name'], 20)?>
 </div>
 <div class='cell'>
-<?php if(!empty($topics)){?>
+<?php if(!empty($rows)){?>
 <form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process')?>">
 <table class='topics table'>
 <thead>
 <tr>
 <!-- th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th> -->
-<th align='left' class='auto'>团队ID</th>
-<th align='left' class='auto'>团队名称</th>
-<th align='left' class='auto'>队长姓名</th>
-<th align='right' class='auto'>队长电话</th>
+<th align='left' class='auto'>队号</th>
+<th align='right' class='auto'>创建人</th>
 <th align='right' class='auto'>创建时间</th>
 <th class='w100'>操作</th>
 </tr>
 </thead>
 <tbody>
-<?php foreach($topics as $k=>$v){ ?>
+<?php foreach($rows as $k=>$v){ ?>
 <tr class='highlight'>
 <!-- td class='auto'>
-<input name="<?php echo $k?>" checked="1" value="<?php echo $v['contest_id']?>" type="checkbox">
+<input name="<?php echo $k?>" checked="1" value="<?php echo $v['team_id']?>" type="checkbox">
 </td> -->
 
 <td class='auto'>
-<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr($v['contest_name'],20)?></a>
+<?=$v['team_number']?>
 </td>
+
 <td class='auto'>
-<?php echo sb_substr($v['type_name'],20)?>
-</td>
-<td class='auto'>
-<?php echo $v['level_name']?>
-</td>
-<td class='auto'>
-<a href="<?php echo site_url('mycontest/enter/'.$v['contest_id']);?>" class="rabel profile_link btn btn-primary" title="点击查看报名详情"><?php echo $v['enter_numbers']?></a>
+<a target="_blank" href="<?php echo site_url('user/info/'.$v['uid']);?>"><?php echo $v['username']?></a>
 </td>
 <td  class='auto'>
 <small class='fade1'><?php echo $v['create_time']?></small>
 </td>
 <td class='w100'>
-<a href="<?php echo site_url('mycontest/enter/'.$v['fid']);?>" class="btn btn-primary btn-sm">详情</a>
+<a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>" class="btn btn-primary btn-sm">详情</a>
 <!--  <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
 <a href="<?php echo site_url('admin/topics/del/'.$v['fid'].'/'.$v['cid'].'/'.$v['uid']);?>" class="btn btn-sm btn-danger" data-confirm="真的要删除吗？" data-method="delete" rel="nofollow">删除</a>
 <?php if($v['is_top']==0){?>

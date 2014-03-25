@@ -29,6 +29,19 @@ class Contest_m extends SB_Model{
         self::LEVEL_NATION => '全国竞赛',
         self::LEVEL_INTERNATION => '国际竞赛'
     );
+    
+    static $typeNames = array(
+        1 => '数学建模',
+        2=>'ACM程序设计',
+        3=>'创新创业',
+        4=>'工科类竞赛',
+        5=>'理科类竞赛',
+        6=>'文体类竞赛',
+        7=>'艺术类竞赛'
+    );
+    
+    const STATUS_NORMAL = 1;
+    const STATUS_DEL = -6;
 
     public $tb = 'contest';
     
@@ -115,13 +128,56 @@ class Contest_m extends SB_Model{
     /*
      * 获取所有的竞赛明细
      */
-    public function get_all_contest($univs_id, $offset, $limit){
+    public function get_all_contest($univs_id = 0, $offset =0, $limit = 20){
         $this->db->select('*');
         $this->db->from($this->tb);
         $this->db->order_by('create_time','desc');
-        $this->db->where('univs_id',$univs_id)->where('status',1);
+        if ($univs_id) {
+            $this->db->where('univs_id',$univs_id);
+        }
+        $this->db->where('status',1);
         $this->db->offset($offset);
         $this->db->limit($limit);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * 获取创建的竞赛
+     * @param unknown $page
+     * @param unknown $limit
+     */
+    public function get_create_by_uid($uid, $page, $limit)
+    {
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->order_by('create_time','desc');
+        $this->db->where('create_user_id',$uid)->where('status',1);
+        $this->db->limit($limit,$page);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+     * 获取参加的竞赛
+     * @param unknown $page
+     * @param unknown $limit
+     */
+    public function get_enter_by_uid($uid, $page, $limit)
+    {
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->order_by('create_time','desc');
+        $this->db->where('create_user_id',$uid)->where('status',1);
+        $this->db->limit($limit,$page);
         $query = $this->db->get();
         if($query->num_rows() > 0){
             return $query->result_array();
@@ -160,4 +216,28 @@ class Contest_m extends SB_Model{
         }
         return false;
     }
+    
+
+    /**
+     * 获取栏目条目
+     */
+    public function count_contest($univs_id = 0, $cid = 0)
+    {
+        $this->db->select('contest_id');
+        $this->db->where('status', self::STATUS_NORMAL);
+        if($cid){
+            $this->db->where('create_user_id', $cid);
+        } 
+        if($univs_id) {
+            $this->db->where('univs_id', $univs_id);
+        }
+        $query = $this->db->get($this->tb);
+        if ($query->result()) {
+            return $query->num_rows();
+        } else {
+            return 0;
+        }
+    }
+    
+    
 }

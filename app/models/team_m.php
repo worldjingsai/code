@@ -73,4 +73,84 @@ class Team_m extends SB_Model{
             return false;
         }
     }
+    
+    
+    /**
+     * 根据contestid和sessionid获取参数总数
+     */
+    public function count_team($cid = 0, $session = 0){
+        $this->db->select('team_id');
+        $this->db->where('status', self::STATUS_NORMAL);
+        if($cid){
+            $this->db->where('contest_id', $cid);
+        }
+        if($session) {
+            $this->db->where('session', $session);
+        }
+        $query = $this->db->get($this->tb);
+        if($query->result()){
+            return $query->num_rows();
+        } else {
+            return '0';
+        }
+    }
+
+    /**
+     * 根据contestid和sessionid获取参数总数
+     */
+    public function count_by_uid($uid = 0){
+        $this->db->select('team_id');
+        $this->db->where('status', self::STATUS_NORMAL);
+        if($uid){
+            $this->db->where('create_user_id', $uid);
+        }
+        
+        $query = $this->db->get($this->tb);
+        if($query->result()){
+            return $query->num_rows();
+        } else {
+            return '0';
+        }
+    }
+    
+
+    /**
+     * 根据uid获取参与的竞赛
+     */
+    public function list_by_uid($uid = 0, $page, $limit){
+        $this->db->select('a.*, b.contest_name');
+        $this->db->from($this->tb .' a');
+        $this->db->join('contest b', 'b.contest_id = a.contest_id');
+        $this->db->order_by('a.create_time','desc');
+        $this->db->where('a.create_user_id',$uid)->where('a.status',1)->where('b.status', 1);
+        $this->db->limit($limit,$page);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+    
+    
+    /**
+     * 获取创建的竞赛
+     * @param unknown $page
+     * @param unknown $limit
+     */
+    public function get_by_cid_session($cid, $session, $page, $limit)
+    {
+        $this->db->select('a.*, b.username, b.uid');
+        $this->db->from($this->tb .' a');
+        $this->db->join('users b', 'b.uid = a.create_user_id');
+        $this->db->order_by('create_time','desc');
+        $this->db->where('a.contest_id',$cid)->where('a.session', $session)->where('a.status',1);
+        $this->db->limit($limit,$page);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
 }
