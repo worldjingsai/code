@@ -30,13 +30,22 @@
 
 <div class="contest_header">
 	<div class="info">
+
   	<div class="show_top">
+  	<div class="bdshare">
+	<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
+	</div>
   	<h1 class="contest_h1"><%$tplData.contest.contest_name%></h1>
   	<div class="time" id="lxftime" endtime="<%$tplData.contest.contest_start_time%>" showdetailtime="no"></div>
   	<div class="bm"><%if !empty($tplData.reconf.type) && $tplData.reconf.type==2%><a href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a><%/if%></div>
   	
   	<%if $tplData.contest.sons_num > 0%><div class="fsbm"><a href="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a></div><%/if%>
-  	
+  	<div class="contest_time">
+  	<div class="enterbm"><span class="icon"></span>报名时间：<%if $tplData.contest.regist_start_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_start_time|truncate:16:'':true%><%else%>还未设置<%/if%>
+  	~ <%if $tplData.contest.regist_end_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_start_time|truncate:16:'':true%><%else%>还未设置<%/if%></div>
+  	<div class="startbm"><span class="icon"></span>竞赛时间：<%if $tplData.contest.contest_start_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_start_time|truncate:16:'':true%><%else%>还未设置<%/if%>
+  	~ <%if $tplData.contest.contest_end_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_start_time|truncate:16:'':true%><%else%>还未设置<%/if%></div>
+  	</div>
   	<div style="clear:both;"></div>
   	</div>
   	<div class="dhbox">
