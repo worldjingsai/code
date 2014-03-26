@@ -214,7 +214,8 @@ a.red{color:red;}
 .nav ul li a.current {color:#FFFF00;}
 
 .current {color:#FF0000;}
-
+.header .container{position:relative;}
+.header .container .bdshare{position:absolute; right:10px; top:10px;}
 .main .logo{display:block;padding:10px; border:#666 solid 1px; background:#FFF; width:180px; height:180px;}
 .main .point{margin-left:10px;display:block; border:#666 solid 1px; background:#FFF; width:744px; overflow:hidden; height:200px;}
 

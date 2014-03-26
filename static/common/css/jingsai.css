@@ -61,18 +61,18 @@ a.red{color:red;}
 .fixed { display: block; min-height: 1%; }
 
 
-.contest_h1{padding-top:150px;line-height:90px; color:#ffff00; font-size:50px;letter-spacing:10px; font-family:"华文中宋", "Microsoft Yahei", "新宋体"; text-align:center;}
+.contest_h1{padding-top:100px;line-height:90px; color:#3300FF; font-size:50px;letter-spacing:10px; font-family:"华文中宋", "Microsoft Yahei", "新宋体"; text-align:center;}
 
 .contest_header .show_top{height:500px; position:relative;}
 .show_top .bdshare{position:absolute; right:10px; top:10px;}
-.show_top .time{color: #FFFFFF; font-family: "微软雅黑"; font-size: 15px; position:absolute; right:300px; top:350px;}
+.show_top .time{color: #FFFFFF; font-family: "微软雅黑"; font-size: 15px; position:absolute; right:400px; top:350px;}
 .show_top .time b {font-size: 35px;color: #FFFFFF;font-family: "Times New Roman", Times, serif;}
-.show_top .bm {position:absolute; left:700px; top:330px;}
+.show_top .bm {position:absolute; right:210px; top:330px;}
 .show_top .bm em {font-size: 1px; visibility: hidden;}
 .show_top .bm a {background-image: url(../images/a1.png);height: 66px;width: 188px;display: block;text-decoration: none;}
 .show_top .bm a:hover {background-image: url(../images/a2.png);text-decoration: none;}
 
-.show_top .fsbm {position:absolute; left:200px; top:330px;}
+.show_top .fsbm {position:absolute; right:0px; top:330px;}
 .show_top .fsbm em {font-size: 1px; visibility: hidden;}
 .show_top .fsbm a {background-image: url(../images/fs.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
 .show_top .fsbm a:hover {background-position: 0 100%;text-decoration: none;}
