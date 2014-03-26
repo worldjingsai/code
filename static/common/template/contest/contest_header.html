@@ -41,10 +41,10 @@
   	
   	<%if $tplData.contest.sons_num > 0%><div class="fsbm"><a href="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a></div><%/if%>
   	<div class="contest_time">
-  	<div class="enterbm"><span class="icon"></span>报名时间：<%if $tplData.contest.regist_start_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_start_time|truncate:16:'':true%><%else%>还未设置<%/if%>
-  	~ <%if $tplData.contest.regist_end_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_start_time|truncate:16:'':true%><%else%>还未设置<%/if%></div>
+  	<div class="enterbm"><span class="icon"></span>报名时间：<%if $tplData.contest.regist_start_time != '0000-00-00 00:00:00'%><%$tplData.contest.regist_start_time|truncate:16:'':true%><%else%>还未设置<%/if%>
+  	~ <%if $tplData.contest.regist_end_time != '0000-00-00 00:00:00'%><%$tplData.contest.regist_end_time|truncate:16:'':true%><%else%>还未设置<%/if%></div>
   	<div class="startbm"><span class="icon"></span>竞赛时间：<%if $tplData.contest.contest_start_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_start_time|truncate:16:'':true%><%else%>还未设置<%/if%>
-  	~ <%if $tplData.contest.contest_end_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_start_time|truncate:16:'':true%><%else%>还未设置<%/if%></div>
+  	~ <%if $tplData.contest.contest_end_time != '0000-00-00 00:00:00'%><%$tplData.contest.contest_end_time|truncate:16:'':true%><%else%>还未设置<%/if%></div>
   	</div>
   	<div style="clear:both;"></div>
   	</div>
