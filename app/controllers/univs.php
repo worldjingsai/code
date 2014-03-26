@@ -108,7 +108,16 @@ class Univs extends SB_Controller{
         if (isset($args[1])) {
             $pageStr = $args[1];
         }
-        if (strpos($pageStr, '.html') !== FALSE) {
+        
+        // 是否是分支赛事
+        if (isset($args[0]) && $args[0] == 'branch') {
+            $data = $this->_get_contest($cid);
+            $subContest = $this->contest_m->list_subcontest($cid);
+            $data['son_contest'] = $subContest;
+            $tpl = 'contest/son_contest_list.html';
+            $data['col'] = 0;
+        
+        } elseif (strpos($pageStr, '.html') !== FALSE) {
             $article_id = intval(str_replace('.html', '', $pageStr));
             $data = $this->_get_article($article_id);
             $tpl = 'contest/contest_article.html';

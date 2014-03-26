@@ -75,6 +75,8 @@ class Mycontest extends SB_controller{
      * @param number $page
      */
     public function my_team_list($cid, $page = 1) {
+        
+        $uid = $this->session->userdata ('uid');
         $act = $this->input->get('act', true);
         $limit = 20;
 
@@ -85,6 +87,10 @@ class Mycontest extends SB_controller{
         $this->load->model('team_m');
         $conf = $this->contest_regist_config_m->get_normal($cid);
         $contest = $this->contest_m->get($cid);
+        if ($uid != $contest['create_user_id']) {
+            return show_error('查看错误', 404);
+        }
+        
         $config['total_rows'] = 0;
         if ($conf) {
             $config['total_rows'] = $this->team_m->count_team($conf['contest_id'], $conf['session']);
@@ -149,6 +155,8 @@ class Mycontest extends SB_controller{
      * @param int $team_id
      */
     public function team_info($team_id) {
+        $uid = $this->session->userdata ('uid');
+        
         $this->load->model('team_m');
         $this->load->model('team_column_m');
         $this->load->model('member_column_m');
@@ -161,6 +169,11 @@ class Mycontest extends SB_controller{
             $teamColumn = $this->team_column_m->get($team_id);
             $memberColumn = $this->member_column_m->list_by_team_id($team_id);
             $contest = $this->contest_m->get($teamInfo['contest_id']);
+            if ($uid != $contest['create_user_id']) {
+                return show_error('查看错误', 404);
+            }
+        } else {
+            return show_error('团队不存在', 404);
         }
         $configs = $this->contest_regist_config_m->get_normal($teamInfo['contest_id']);
         if ($configs) {

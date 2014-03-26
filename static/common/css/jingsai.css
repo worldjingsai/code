@@ -72,6 +72,11 @@ a.red{color:red;}
 .show_top .bm a {background-image: url(../images/a1.png);height: 66px;width: 188px;display: block;text-decoration: none;}
 .show_top .bm a:hover {background-image: url(../images/a2.png);text-decoration: none;}
 
+.show_top .fsbm {position:absolute; left:200px; top:330px;}
+.show_top .fsbm em {font-size: 1px; visibility: hidden;}
+.show_top .fsbm a {background-image: url(../images/fs.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
+.show_top .fsbm a:hover {background-position: 0 100%;text-decoration: none;}
+
 .dhbox {}
 .dhbox ul li b {display: block;font-weight: normal;color: #FFFFFF;font-size: 14px;float: left;line-height: 40px;height: 40px;}
 .dhbox ul li a {display: block;font-family: "微软雅黑";font-size: 18px;color: #FFFFFF;text-decoration: none;float: left; line-height: 40px;}

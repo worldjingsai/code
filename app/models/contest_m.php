@@ -239,5 +239,40 @@ class Contest_m extends SB_Model{
         }
     }
     
+    /**
+     * 获取子竞赛数
+     */
+    public function count_subcontest($cid = 0)
+    {
+        $this->db->select('contest_id');
+        $this->db->where('status', self::STATUS_NORMAL);
+        if($cid){
+            $this->db->where('parent_id', $cid);
+        }
+        $query = $this->db->get($this->tb);
+        if ($query->result()) {
+            return $query->num_rows();
+        } else {
+            return 0;
+        }
+    }
     
+    /**
+     * 获取子竞赛数
+     */
+    public function list_subcontest($cid = 0)
+    {
+        $this->db->select('a.*, b.*');
+        $this->db->from($this->tb .' a');
+        $this->db->join('university b', 'b.univs_id = a.univs_id');
+        $this->db->order_by('create_time','desc');
+        $this->db->where('a.parent_id',$cid)->where('a.status',1);
+        
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
 }

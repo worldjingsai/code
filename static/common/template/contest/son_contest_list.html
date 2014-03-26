@@ -1,0 +1,29 @@
+<%include file="contest/contest_header.html"%>
+
+        <script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
+        <!--第一栏-->
+        <div class="right_div FR">
+        
+          <div class="block fixed">
+          
+          <div class="block_list FL">
+            <div class="div_block_head">
+              <h2 >分赛列表</h2> 
+            </div>
+            <div class="div_block_body">
+               <ul >
+              <%if $tplData.son_contest%>
+              <%foreach from=$tplData.son_contest item=value key=key%>
+                <li >
+                <a target="_blank" class="title" href="/<%if $value.contest_level<=1%><%$value.short_name%>/<%/if%><%$value.contest_url%>" title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags%></a> 
+                <span><%$value.univs_name|truncate:20:''%></span>
+                </li>
+              <%/foreach%>
+              <%/if%>
+              </ul>
+            </div>
+          </div>
+          </div>
+        </div>
+
+<%include file="contest/contest_footer.html"%>

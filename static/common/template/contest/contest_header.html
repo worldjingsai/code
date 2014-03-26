@@ -34,6 +34,9 @@
   	<h1 class="contest_h1"><%$tplData.contest.contest_name%></h1>
   	<div class="time" id="lxftime" endtime="<%$tplData.contest.contest_start_time%>" showdetailtime="no"></div>
   	<div class="bm"><%if !empty($tplData.reconf.type) && $tplData.reconf.type==2%><a href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a><%/if%></div>
+  	
+  	<%if $tplData.contest.sons_num > 0%><div class="fsbm"><a href="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a></div><%/if%>
+  	
   	<div style="clear:both;"></div>
   	</div>
   	<div class="dhbox">
