@@ -48,8 +48,8 @@
 			<li><a href="<?php echo site_url('user/logout')?>" data-method="delete" rel="nofollow">退出</a></li>
 			<?php }else{?>
             <li><a href="<?php echo site_url('user/reg')?>">注册</a></li>
-            <li><a href="<?php echo site_url('user/login')?>">登入</a></li>
-            <li><a style="padding-top: 11px;overflow:hidden;" href="<?php echo site_url("qq_login")?>"><img src="<?php echo base_url("static/common/images/qq_login.png");?>" /></a></li>
+            <li><a href="<?php echo site_url('user/login')?>">登录</a></li>
+            <!-- li><a style="padding-top: 11px;overflow:hidden;" href="<?php echo site_url("qq_login")?>"><img src="<?php echo base_url("static/common/images/qq_login.png");?>" /></a></li> -->
             <?php }?>
           </ul>
         </div><!--/.nav-collapse -->

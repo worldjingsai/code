@@ -13,11 +13,14 @@
             <div class="div_block_body">
                <ul >
               <%if $tplData.son_contest%>
-              <%foreach from=$tplData.son_contest item=value key=key%>
+              <%foreach from=$tplData.son_contest item=value key=key name=foo%>
                 <li >
-                <a target="_blank" class="title" href="/<%if $value.contest_level<=1%><%$value.short_name%>/<%/if%><%$value.contest_url%>" title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags%></a> 
-                <span><%$value.univs_name|truncate:20:''%></span>
+                <a target="_blank" class="subcontest" href="/<%if $value.contest_level<=1%><%$value.short_name%>/<%/if%><%$value.contest_url%>" title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags%></a> 
+                <span><a target="_blank" href="/<%$value.short_name%>" ><%$value.univs_name|truncate:20:''%></a></span>
                 </li>
+                <%if $value@iteration%8 == 0%>
+                <div class="DivH10 dashed"></div>
+                <%/if%>
               <%/foreach%>
               <%/if%>
               </ul>

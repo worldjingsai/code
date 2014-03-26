@@ -115,11 +115,12 @@ a.red{color:red;}
 .div_block_body li span{float:right; }
 
 .div_block_body ul{margin-left:20px;}
-.div_block_body ul li{list-style:none; height:28px; line-height:28px;}
+.div_block_body ul li{list-style:none; height:30px; line-height:28px;}
 
 .div_block_body ul li a{ font-size:14px}
 .div_block_body .control a{margin-left:5px; color:#0119C9;}
 .div_block_body ul li a.title{float:left;width:580px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}
+.div_block_body ul li a.subcontest{float:left;width:500px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}
 
 .border-top{border-top:#333 1px dashed;}
 
