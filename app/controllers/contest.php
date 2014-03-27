@@ -140,6 +140,7 @@ class Contest extends SB_controller{
             $baseNumber = intval($this->input->post('base_number'));
             $minMember = intval($this->input->post('min_member'));
             $maxMember = intval($this->input->post('max_member'));
+            $fee = intval($this->input->post('fee'));
 
             // 团队的配置信息  t字段名 b备注  c是否有效
             $t = $this->input->post('t');
@@ -183,6 +184,7 @@ class Contest extends SB_controller{
                     'base_number' => $baseNumber,
                     'min_member' => $minMember,
                     'max_member' => $maxMember,
+                    'fee' => $fee,
                     'team_column' => json_encode($teamColumn),
                     'member_column' => json_encode($memberColumn),
                     'create_time' => date('Y-m-d H:i:s'),
@@ -316,6 +318,7 @@ class Contest extends SB_controller{
 
             return show_json(0, '更新成功', array('return_url' => '/contest/user_apply/'.$contest_id));
         }
+        $data['teamInfo'] = $teamInfo;
         $data['teamColumn'] = $teamColumn;
         $data['memberColumn'] = $memberColumn;
 

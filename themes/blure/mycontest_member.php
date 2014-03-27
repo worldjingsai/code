@@ -11,25 +11,28 @@
 <div class="container" id="page-main">
 <div class="row">
 <?php $this->load->view('mycontest_left');?>
-<div class='col-xs-12 col-sm-6 col-md-9'>
+<div class='col-xs-12 col-sm-6 col-md-10'>
 
 <div class='box'>
 <div class='cell'>
 <a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/index');?>">我的创建的竞赛</a>
-<span class="chevron">&nbsp;›&nbsp;</span> <?php echo sb_substr($contest['contest_name'], 20)?>
+<span class="chevron">&nbsp;›&nbsp;</span> <?php echo sb_substr(strip_tags($contest['contest_name']), 19)?>
 </div>
 <div class='cell'>
 <?php if(!empty($rows)){?>
-<form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process')?>">
+<form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process/'.$conf['contest_id'])?>">
 <table class='topics table'>
 <thead>
 <tr>
-<!-- th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th> -->
+<th align='left' class='auto'><input id="checkall" type="checkbox" ></th>
 <th align='left' class='auto'>队号</th>
 <?php $i=1;?>
 <?php  foreach($conf['team_column'] as $k=>$v) {?>
 <?php if($i++ > 5) {break;}?>
 <th align='right' class='auto'><?php echo $v[0];?></th>
+<?php }?>
+<?php if($conf['fee'] > 0) {?>
+<th align='right' class='auto'>缴费</th>
 <?php }?>
 <th class='w100'>操作</th>
 </tr>
@@ -37,9 +40,9 @@
 <tbody>
 <?php foreach($rows as $k=>$v){ ?>
 <tr class='highlight'>
-<!-- td class='auto'>
-<input name="<?php echo $k?>" checked="1" value="<?php echo $v['team_id']?>" type="checkbox">
-</td> -->
+<td class='auto'>
+<input name="<?php echo $v['team_id'];?>"  value="<?php echo $v['team_id']?>" type="checkbox">
+</td>
 
 <td class='auto'>
 <?=$v['team_number']?>
@@ -49,7 +52,12 @@
 <?php echo $v["t$j"];?>
 </td>
 <?php }?>
-
+<?php if($conf['fee'] > 0) {?>
+<th class='auto'>
+<?php if($v['is_fee']) {?>
+<?php echo '是';?>
+<?php }else { echo '否';}?></th>
+<?php }?>
 <td class='w100'>
 <a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>" class="btn btn-primary btn-sm">详情</a>
 <!--  <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
@@ -71,8 +79,13 @@
 </tbody>
 </table>
 <div class='form-actions'>
-<!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="批量删除" /> -->
+<?php if($conf['fee'] > 0) {?>
+<input class="btn btn-primary btn-info" name="batch_fee" type="submit" value="选中缴费" />
+<?php }?>
+<!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export">全部导出</a>
+
+
 </div>
 
 <?php } else{?>

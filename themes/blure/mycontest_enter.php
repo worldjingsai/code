@@ -26,7 +26,8 @@
 <!-- th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th> -->
 <th align='left' class='auto'>队号</th>
 <th align='left' class='auto'>竞赛名称</th>
-<th align='right' class='auto'>创建时间</th>
+<th align='right' class='auto'>报名时间</th>
+<th align='right' class='auto'>备注</th>
 <!--  th class='w100'>操作</th>-->
 </tr>
 </thead>
@@ -38,11 +39,17 @@
 <?php echo $v['team_number']?>
 </td>
 <td class='auto'>
-<?php echo sb_substr($v['contest_name'],100)?>
+<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr(strip_tags($v['contest_name']),50)?></a>
 </td>
 
 <td  class='auto'>
 <small class='fade1'><?php echo $v['create_time']?></small>
+</td>
+<td class='auto'>
+<?php if($v['is_fee']) {
+echo "已交费";
+}?>
+</td>
 </td>
 <!--  td class='w100'>
 <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>

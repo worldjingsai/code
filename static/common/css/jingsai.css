@@ -23,6 +23,9 @@ a:hover{color:#F60;text-decoration: underline;}
 a.green{color:green;}
 a.red{color:red;}
 
+.red {color:red;}
+.green{color:green;}
+
 .w100 {width:100px;}
 .t-c{text-align:center;}
 
@@ -245,6 +248,8 @@ a.edit { font-size:13px; color:#0119C9;}
 .post_box .post_area .comment_content{width: 97%;height: 72px;line-height: 24px;float: left;border-radius: 4px;box-shadow: 0 1px 1px #C6C6C6 inset;
 box-shadow: inset 2px 2px 2px rgba(0,0,0,.1);overflow: auto;padding: 4px 10px;background: #fff;font-size: 14px;}
 .post_box .post_bottom{padding-bottom:5px;}
+
+.sys_info{background:#B4CDFA}
 
 .team_info{background:#EEE}
 .rg_data .rg_info{font-weight:bold;}

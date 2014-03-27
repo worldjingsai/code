@@ -130,17 +130,31 @@ class Mycontest extends SB_controller{
                         $title .= ','.$v[0];
                     }
                 }
+                if (!empty($conf['fee'])) {
+                    $title .= ',是否缴费';
+                }
                 $title.="\r\n";
                 $content = '';
                 foreach($rows as $k=>$v){
                     $content .= $v['team_number'];
                     foreach($sk as $kk) {
-                        $content .= ','.$kk["t$kk"];
+                        $content .= ','.$v[$kk];
+                    }
+                    // 是否缴费
+                    if (!empty($conf['fee'])) {
+                        if ($v['is_fee'] >= 1) {
+                            $content .= ',是';
+                        } else {
+                            $content .= ',否';
+                        }
                     }
                     $content.="\r\n";
                 }
                 return $this->exportCsv($contest['contest_name'] . '_报名表.csv' , $title.$content);
+            } else {
+                $this->myclass->notice('alert("没有没有报名团队");window.location.href="'.site_url("/mycontest/my_team_list/$cid").'";');
             }
+            
         }
         $data['title'] = '我的竞赛';
         $data['rows'] = $rows;
@@ -214,10 +228,45 @@ class Mycontest extends SB_controller{
         $data['pagination'] = $this->pagination->create_links();
 
         $rows = $this->team_m->list_by_uid($uid, $start, $limit);
+        if ($rows) {
+            foreach ($rows as &$row) {
+                if ($row['contest_level'] == Contest_m::LEVEL_SCHOOL) {
+                    $univs = $this->univs_m->get_univs_info_by_univs_id($row['univs_id']);
+                    $row['contest_url'] = $univs['short_name'] . '/' . $row['contest_url'];
+                }
+            }
+        }
 
         $data['title'] = '我的竞赛';
         $data['rows'] = $rows;
         $this->load->view('mycontest_enter', $data);
     }
+    
+    /**
+     * 
+     */
+	public function batch_process($cid = 0, $page=1)
+	{
+	    $uid = $this->session->userdata ('uid');
+
+	    $contest = $this->contest_m->get($cid);
+	    if (empty($contest) || ($uid != $contest['create_user_id'])) {
+	        return show_error('查看错误', 404, '违法操作');
+	    }
+		$tids = array_slice($this->input->post(), 0, -1);
+		if(empty($tids)){
+		    $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+		}
+		if($this->input->post('batch_del')){
+			if($this->db->where_in('fid',$tids)->delete('forums')){
+				$this->myclass->notice('alert("批量删除贴子成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+			}
+		}
+		if($this->input->post('batch_fee')){
+			if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>1))){
+				$this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+			}
+		}
+	}
 
 }

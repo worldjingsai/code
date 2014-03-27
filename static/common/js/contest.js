@@ -167,6 +167,10 @@ $(document).ready(function(){
 				max_member: {
 					required: true,
 					digits:true
+				},
+				fee: {
+					required:false,
+					digits:true
 				}
 			},
 			messages: {
@@ -184,6 +188,9 @@ $(document).ready(function(){
 				},
 				max_member: {
 					required: '最多参赛人数不能为空',
+					digits:'请填写数字'
+				},
+				fee: {
 					digits:'请填写数字'
 				}
 			}

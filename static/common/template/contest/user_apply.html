@@ -19,10 +19,37 @@
 			  
 			<form id="js_user_apply" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
 
+	<div class="sys_info">
+	   <p class="rg_info">系统信息</p>
+	   <table class="">
+        <colgroup>
+            <col width="150">
+            <col width="350">
+        </colgroup>
+        <tbody>
+        
+        <tr>
+            <th>参赛队号:</th>
+            <td>
+                <%if !empty($tplData.teamInfo)%><%$tplData.teamInfo.team_number%><%else%>还未生成，提交报名后会自动生成队号<%/if%>
+            </td>
+        </tr>
+        <%if $tplData.reconf.fee%>
+        <tr>
+            <th>报名费用:</th>
+            <td>
+                <%$tplData.reconf.fee%>元 &nbsp;&nbsp;<%if !empty($tplData.teamInfo.is_fee)%><span class="green">已付款</span><%else%><span class="red">未支付</span><%/if%>
+            </td>
+        </tr>
+        <%/if%>
+		</tbody>
+		</table>
+	</div>
+	<div class="DivH10"></div>
 	<div class="team_info">
 	<p class="rg_info">团队信息</p>
 	<input type="hidden" name="team_id" value="<%$tplData.team_id|default:''%>"/>
-   <table class="">
+    <table class="">
         <colgroup>
             <col width="150">
             <col width="350">

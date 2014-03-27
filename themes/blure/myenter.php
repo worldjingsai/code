@@ -39,7 +39,7 @@
 </td>
 
 <td class='auto'>
-<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr($v['name'],10)?></a>
+<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr(strip_tags($v['name']),20)?></a>
 </td>
 <td class='auto'>
 <?php echo sb_substr($v['type_name'],10)?>

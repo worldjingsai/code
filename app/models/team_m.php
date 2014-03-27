@@ -118,7 +118,7 @@ class Team_m extends SB_Model{
      * 根据uid获取参与的竞赛
      */
     public function list_by_uid($uid = 0, $page, $limit){
-        $this->db->select('a.*, b.contest_name');
+        $this->db->select('a.*, b.*');
         $this->db->from($this->tb .' a');
         $this->db->join('contest b', 'b.contest_id = a.contest_id');
         $this->db->order_by('a.create_time','desc');

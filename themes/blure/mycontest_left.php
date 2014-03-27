@@ -1,4 +1,4 @@
-<div class='col-sm-6 col-md-3'>
+<div class='col-sm-6 col-md-2'>
 <div class='box fix_cell'>
 <div class='cell'>
 <strong class='gray'>我的竞赛</strong>

@@ -44,6 +44,13 @@
                 <div class=""><input type="text" class="number" value="<%$tplData.reconf.min_member|default:1%>" name="min_member" id="min_member"/>~<input type="text" class="number" value="<%$tplData.reconf.max_member|default:3%>" name="max_member" id="max_member"/></div>
             </td>
         </tr>
+        
+        <tr>
+            <th>报名费用:</th>
+            <td class="t-l" colspan="2" >
+                <div class=""><input type="text" class="number" value="<%$tplData.reconf.fee|default:0%>" name="fee" id="fee"/>元</div>
+            </td>
+        </tr>
         </table>
         <div class="DivH10"></div>
         <table class="apply_teble js_table" border=1 >
@@ -67,7 +74,7 @@
         <div class="DivH10"></div>
         <table class="apply_teble js_table" border=1 >
         <tr>
-            <td class="current t-c" colspan="3" >第三部分：报名时需要填写的参赛者信息</td>
+            <td class="current t-c" colspan="3" >第三部分：每个参赛者需要填写的个人信息</td>
         </tr>
         
         <tr class="control">
