@@ -11,7 +11,7 @@
 <div class="container" id="page-main">
 <div class="row">
 <?php $this->load->view('mycontest_left');?>
-<div class='col-xs-12 col-sm-6 col-md-9'>
+<div class='col-xs-12 col-sm-6 col-md-10'>
 
 <div class='box'>
 <div class='cell'>
@@ -49,7 +49,7 @@
 <?php echo $v['level_name']?>
 </td>
 <td class='auto'>
-<a href="<?php echo site_url('mycontest/my_team_list/'.$v['contest_id']);?>" class="rabel profile_link btn btn-primary" title="点击查看报名详情"><?php echo $v['enter_members']?></a>
+<a href="<?php echo site_url('mycontest/my_team_list/'.$v['contest_id']);?>" class="rabel profile_link btn btn-primary btn-sm" title="点击查看报名详情"><?php echo $v['enter_members']?></a>
 </td>
 <td  class='auto'>
 <small class='fade1'><?php echo $v['create_time']?></small>

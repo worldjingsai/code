@@ -11,7 +11,7 @@
 <div class="container" id="page-main">
 <div class="row">
 <?php $this->load->view('mycontest_left');?>
-<div class='col-xs-12 col-sm-6 col-md-9'>
+<div class='col-xs-12 col-sm-6 col-md-10'>
 
 <div class='box'>
 <div class='cell'>
@@ -28,7 +28,7 @@
 <th align='left' class='auto'>竞赛名称</th>
 <th align='right' class='auto'>报名时间</th>
 <th align='right' class='auto'>备注</th>
-<!--  th class='w100'>操作</th>-->
+<th class='w100'>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -50,6 +50,8 @@
 echo "已交费";
 }?>
 </td>
+<td>
+<a class="btn btn-primary btn-sm" href="<?php echo site_url('/mycontest/i_team/' . $v['team_id']);?>">详情</a>
 </td>
 <!--  td class='w100'>
 <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>

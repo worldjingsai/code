@@ -203,6 +203,48 @@ class Mycontest extends SB_controller{
         $this->load->view('show_team_info', $data);
     }
 
+
+
+    /**
+     * 显示一个团队信息
+     * @param int $team_id
+     */
+    public function i_team($team_id) {
+        $uid = $this->session->userdata ('uid');
+    
+        $this->load->model('team_m');
+        $this->load->model('team_column_m');
+        $this->load->model('member_column_m');
+        $this->load->model('contest_regist_config_m');
+    
+        $teamInfo = $this->team_m->get($team_id);
+        $teamColumn = $memberColumn = array();
+        if ($teamInfo) {
+            $team_id = $teamInfo['team_id'];
+            $teamColumn = $this->team_column_m->get($team_id);
+            $memberColumn = $this->member_column_m->list_by_team_id($team_id);
+            $contest = $this->contest_m->get($teamInfo['contest_id']);
+            if ($uid != $teamInfo['create_user_id']) {
+                return show_error('查看错误', 404);
+            }
+        } else {
+            return show_error('团队不存在', 404);
+        }
+        $configs = $this->contest_regist_config_m->get_normal($teamInfo['contest_id']);
+        if ($configs) {
+            $configs['t'] = json_decode($configs['team_column'], true);
+            $configs['m'] = json_decode($configs['member_column'], true);
+        }
+        $data['title'] = '团队信息';
+        $data['team'] = $teamInfo;
+        $data['t'] = $teamColumn;
+        $data['m'] = $memberColumn;
+        $data['conf'] = $configs;
+        $data['contest'] = $contest;
+        $this->load->view('i_team', $data);
+    }
+    
+    
     /**
      * 展示我报名的竞赛
      */

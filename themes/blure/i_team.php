@@ -15,8 +15,7 @@
 
 <div class='box'>
 <div class='cell'>
-<a href="<?php echo site_url('mycontest/my');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/my');?>">我的创建的竞赛</a> 
-<span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/my_team_list/'.$contest['contest_id']);?>"><?php echo sb_substr(strip_tags($contest['contest_name']), 20)?></a>
+<a href="<?php echo site_url('mycontest/my');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/enter');?>">我的参加的竞赛</a> 
 <span class="chevron">&nbsp;›&nbsp;</span> <?php echo $team['team_number']?>
 </div>
 <div class='cell'>
@@ -85,7 +84,7 @@
 </div>
 
 </div>
-</div></div></div>
+</div></div>
 <?php $this->load->view ('footer');?>
 <script type="text/javascript">
 $(document).ready(function(){
