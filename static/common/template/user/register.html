@@ -11,22 +11,22 @@
 	<input type="hidden" name="referer" value="<%$tplData.referer|default:''%>"/>
 	<div class="input-group ">
         <label for="username" class="input-group-addon w_60">用户名</label>
-        <input type="text" class="form-control" id="username" name="username">
+        <input type="text" class="form-control" id="username" name="username" maxlength="20">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="email"  class="input-group-addon w_60">邮箱</label>
-        <input type="text" class="form-control" id="email" name="email">
+        <input type="text" class="form-control" id="email" name="email" maxlength="50">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="password"  class="input-group-addon w_60">密码</label>
-        <input type="password" class="form-control" id="password" name="password">
+        <input type="password" class="form-control" id="password" name="password" maxlength="20">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="password_c" class="input-group-addon w_60">确认密码</label>
-        <input type="password" class="form-control" id="password_c" name="password_c">
+        <input type="password" class="form-control" id="password_c" name="password_c" maxlength="20">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
@@ -37,7 +37,7 @@
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="tel" class="input-group-addon w_60">手机</label>
-        <input type="text" class="form-control" id="tel" name="tel">
+        <input type="text" class="form-control" id="tel" name="tel" maxlength="11">
     </div>
     <div class="DivH10"></div>
 	<div class="tc"><button type="submit" class="btn btn-large btn-info w_200">立即注册</button></div>

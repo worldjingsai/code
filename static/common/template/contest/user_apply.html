@@ -17,11 +17,9 @@
 			   <div class="rg_title">报名竞赛-报名人员限制<%$tplData.reconf.min_member%>~<%$tplData.reconf.max_member%>人</div>
 			   <div class="rg_data">
 			  
-			<form id="js_user_apply" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
-
-	<div class="sys_info">
-	   <p class="rg_info">系统信息</p>
-	   <table class="">
+			<div class="sys_info">
+       <p class="rg_info">系统信息</p>
+       <table class="">
         <colgroup>
             <col width="150">
             <col width="350">
@@ -38,13 +36,24 @@
         <tr>
             <th>报名费用:</th>
             <td>
-                <%$tplData.reconf.fee%>元 &nbsp;&nbsp;<%if !empty($tplData.teamInfo.is_fee)%><span class="green">已付款</span><%else%><span class="red">未支付</span><%/if%>
+                <%$tplData.reconf.fee%>元 &nbsp;&nbsp;<%if !empty($tplData.teamInfo.is_fee)%><span class="green">已付款</span><%else%>
+                <span class="red">未支付</span>
+                <%if !empty($tplData.teamInfo.team_number)%>
+                <form id="js_pay_imag" action="/contest/user_pay_img/<%$tplData.teamInfo.team_number%>" method="post" >
+                <input type="file" id="payimag_file" name="imgfile" />
+                <button type="submit" name="upload" class="btn btn-sm btn-primary">上传付款证明图片</button>
+                </form>
+                <%/if%>
+                <%/if%>
             </td>
         </tr>
         <%/if%>
-		</tbody>
-		</table>
-	</div>
+        </tbody>
+        </table>
+    </div>
+			<form id="js_user_apply" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
+
+
 	<div class="DivH10"></div>
 	<div class="team_info">
 	<p class="rg_info">团队信息</p>

@@ -37,9 +37,11 @@ a.red{color:red;}
 .c_red {color:red;}
 .fs_italic{font-style:italic;}
 .ml_30 {margin-left:30px;}
+.ml_10 {margin-left:10px;}
 
-.top a{ color:#FF3; margin:auto 10px; font-size:14px; height:40px; line-height:40px;}
+.top a{ color:#FF3; margin:auto 0; font-size:14px; height:40px; line-height:40px;}
 .top a:hover{color: #00FF00}
+.top .doc{margin:auto 5px;}
 
 /* 浮动定义 */
 .FL{float:left;}

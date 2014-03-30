@@ -53,7 +53,7 @@ class Contest extends SB_controller{
      */
     public function ajax_parenturi(){
         $uri  = $this->input->post('parent_url');
-    
+
         $short_name = $contest_url = '';
         $univs_id = 0;
         if (strpos($uri, '/')) {
@@ -67,7 +67,7 @@ class Contest extends SB_controller{
         } else {
             $contest_url = $uri;
         }
-        
+
         $cInfo = $this->contest_m->get_contest_by_short_name($univs_id, $contest_url);
         // 如果是更新竞赛，并且都没有变化就返回成功
         if (empty($cInfo)) {
@@ -77,8 +77,8 @@ class Contest extends SB_controller{
         }
         return ;
     }
-    
-    
+
+
     /**
      * 显示一个文章
      * @param int $article_id
@@ -333,6 +333,33 @@ class Contest extends SB_controller{
         $this->tplData = $data;
         $this->display('contest/user_apply.html');
     }
+
+    /**
+     * 显示图片
+     */
+    public function user_pay_img($team_id) {
+        $data['title'] = '头像设置';
+        $uid=$this->session->userdata('uid');
+        $data['my_avatar'] = $this->upload_m->get_avatar_url($uid, 'middle');
+        if($_POST){
+            //print_r($this->input->post('avatar_file'));
+            if($this->upload_m->do_avatar()){
+                $this->db->where('uid',$uid)->update('users', array('avatar'=>$data['my_avatar']));
+                $data['msg'] = '头像上传成功!';
+                header("location:/settings/avatar");
+                exit();
+            } else {
+                $data['msg'] = $this->upload->display_errors();
+            }
+            //header("location:".$_SERVER["PHP_SELF"]);
+
+        }
+        $data['avatars']['big'] = $this->upload_m->get_avatar_url($uid, 'big');
+        $data['avatars']['middle'] = $this->upload_m->get_avatar_url($uid, 'middle');
+        $data['avatars']['small'] = $this->upload_m->get_avatar_url($uid, 'small');
+        $this->load->view('settings_avatar', $data);
+    }
+
 
     /**
      * 显示编辑的文章界面
