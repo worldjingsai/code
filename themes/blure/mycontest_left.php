@@ -13,7 +13,7 @@
 <div class='cell'>
 
 &nbsp;
-<a href="<?php echo site_url('mycontest/enter');?>">我参加的竞赛</a>
+<a href="<?php echo site_url('myenter/enter');?>">我参加的竞赛</a>
 </div>
 
 <!--<div class='cell'>

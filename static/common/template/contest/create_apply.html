@@ -91,6 +91,28 @@
         <%/foreach%>
         
         </table>
+        
+        <div class="DivH10"></div>
+        <table class="apply_teble js_table" border=1 >
+        <tr>
+            <td class="current t-c" colspan="3" >第四部分：上交作品配置项</td>
+        </tr>
+        
+        <tr class="control">
+            <td >字段名称</td>
+            <td title="竖杠|隔开表示单选框的选项">选项信息</td>
+            <td >是否启用</td>
+        </tr>
+        <%foreach from=$tplData.reconf.r item=item name=foo%>
+        <tr>
+            <td><%$item.0|default:''%></td>
+            <td><input type="text" name="o[]" value="<%$item.1|default:''%>"></td>
+            <td class="t-c"><input type="checkbox" name="i[]" <%if !empty($item.2)%>checked <%/if%> value="1"></td>
+        </tr>
+        <%/foreach%>
+        
+        </table>
+        
              <div class="DivH10"></div>
              <div class="t-c">
              <button class=" btn btn-primary" type="submit" >提交</button>

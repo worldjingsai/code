@@ -14,10 +14,17 @@
 <div class='col-xs-12 col-sm-6 col-md-10'>
 
 <div class='box'>
-<div class='cell'>
-<a href="<?php echo site_url('mycontest/my');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/enter');?>">我的参加的竞赛</a> 
+
+<div class='cell' style="border-bottom-style: none;">
+<a href="<?php echo site_url('mycontest/my');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('myenter/enter');?>">我的参加的竞赛</a> 
 <span class="chevron">&nbsp;›&nbsp;</span> <?php echo $team['team_number']?>
+    <ul class="nav nav-tabs" style="margin-top:10px;">
+    <li class="active"><a href="#">团队</a></li>
+    <li><a href="<?php echo site_url('myenter/fee/'.$team['team_id']);?>">缴费</a></li>
+    <li><a href="<?php echo site_url('myenter/result/'.$team['team_id']);?>">作品</a></li>
+    </ul>
 </div>
+
 <div class='cell'>
 <?php if(!empty($conf)){?>
 <form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process')?>">

@@ -11,44 +11,47 @@
 <div class="container" id="page-main">
 <div class="row">
 <?php $this->load->view('mycontest_left');?>
-<div class='col-xs-12 col-sm-6 col-md-9'>
+<div class='col-xs-12 col-sm-6 col-md-10'>
 
 <div class='box'>
 <div class='cell'>
 <a href="<?php echo site_url('mycontest/index');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> 我参加的竞赛
 </div>
 <div class='cell'>
-<?php if(!empty($topics)){?>
+<?php if(!empty($rows)){?>
 <form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process')?>">
 <table class='topics table'>
 <thead>
 <tr>
-<th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th>
+<!-- th align='left' class='auto'><input id="checkall" type="checkbox" checked="1"></th> -->
+<th align='left' class='auto'>队号</th>
 <th align='left' class='auto'>竞赛名称</th>
-<th align='left' class='auto'>竞赛类型</th>
-<th align='left' class='auto'>竞赛级别</th>
-<th align='right' class='auto'>创建时间</th>
-<!--  th class='w100'>操作</th>-->
+<th align='right' class='auto'>报名时间</th>
+<th align='right' class='auto'>备注</th>
+<th class='w100'>操作</th>
 </tr>
 </thead>
 <tbody>
-<?php foreach($topics as $k=>$v){ ?>
+<?php foreach($rows as $k=>$v){ ?>
 <tr class='highlight'>
-<td class='auto'>
-<input name="<?php echo $k?>" checked="1" value="<?php echo $v['fid']?>" type="checkbox">
-</td>
 
 <td class='auto'>
-<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr(strip_tags($v['name']),20)?></a>
+<?php echo $v['team_number']?>
 </td>
 <td class='auto'>
-<?php echo sb_substr($v['type_name'],10)?>
+<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr(strip_tags($v['contest_name']),50)?></a>
 </td>
-<td class='auto'>
-<?php echo $v['level_name']?>
-</td>
-<td align='right' class='auto'>
+
+<td  class='auto'>
 <small class='fade1'><?php echo $v['create_time']?></small>
+</td>
+<td class='auto'>
+<?php if($v['is_fee']) {
+echo "已交费";
+}?>
+</td>
+<td>
+<a class="btn btn-primary btn-sm" href="<?php echo site_url('/myenter/team/' . $v['team_id']);?>">详情</a>
 </td>
 <!--  td class='w100'>
 <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
@@ -62,9 +65,10 @@
 <a href="<?php echo site_url('admin/topics/approve/'.$v['fid']);?>" class="btn btn-primary btn-sm">审</a>
 <?php } ?>
 </td>
+-->
 </tr>
 <?php } ?>
--->
+
 
 </tbody>
 </table>

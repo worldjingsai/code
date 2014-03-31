@@ -152,6 +152,10 @@ class Contest extends SB_controller{
             $d = $this->input->post('d');
             $s = $this->input->post('s');
 
+            // 结果配置信息  o选项信息  i是否有效
+            $o = $this->input->post('o');
+            $ii = $this->input->post('i');
+            
             $i = 1;
             $teamColumn = array();
             foreach($t as $k => $v) {
@@ -175,6 +179,25 @@ class Contest extends SB_controller{
                 $memberColumn["m$i"] = array($v, $d[$k], $isValid);
                 $i++;
             }
+            
+            $resultColumn = array();
+            if (isset($o[0])) {
+                if (!empty($ii[0])) {
+                    $isValid = 1;
+                } else {
+                    $isValid = 0;
+                }
+                $resultColumn["r1"] = array('团队组别', $o[0], $isValid);
+            }
+            
+            if (isset($o[1])) {
+                if (!empty($ii[1])) {
+                    $isValid = 1;
+                } else {
+                    $isValid = 0;
+                }
+                $resultColumn["r2"] = array('题目选择', $o[1], $isValid);
+            }
 
             $configData = array(
                     'contest_id' =>$contest_id,
@@ -187,6 +210,7 @@ class Contest extends SB_controller{
                     'fee' => $fee,
                     'team_column' => json_encode($teamColumn),
                     'member_column' => json_encode($memberColumn),
+                    'result_column' => json_encode($resultColumn),
                     'create_time' => date('Y-m-d H:i:s'),
                     'create_user_id' => $this->user_info['uid'],
                     'status' => Contest_regist_config_m::STATUS_NORMAL
@@ -219,6 +243,8 @@ class Contest extends SB_controller{
         if ($configs) {
             $configs['t'] = json_decode($configs['team_column'], true);
             $configs['m'] = json_decode($configs['member_column'], true);
+            $configs['r'] = json_decode($configs['result_column'], true);
+            
         } else {
             // 设置默认值
             $configs= array(
@@ -229,6 +255,7 @@ class Contest extends SB_controller{
                     'max_member' => 3,
                     't' => Contest_regist_config_m::$default_t,
                     'm' => Contest_regist_config_m::$default_m,
+                    'r' => Contest_regist_config_m::$default_r,
             );
         }
         $data['reconf'] = $configs;
