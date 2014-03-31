@@ -39,7 +39,8 @@ function ajaxFormSuccess(responseText, statusText) {
 			if (responseText.message != '') {
 				ajax_message(responseText.message);
 				if (responseText.data.return_url != undefined) {
-					setTimeout(function(){window.location.href=responseText.data.return_url}, 1000);
+					
+					setTimeout(function(){window.location.href=responseText.data.return_url}, responseText.data.show_time||1000);
 				}
 			}
 		} else {
@@ -49,7 +50,7 @@ function ajaxFormSuccess(responseText, statusText) {
 				ajax_message('程序错误，错误代码' + responseText.code);
 			}
 		}
-		setTimeout(function(){$('#ajaxMessage').dialog('close')}, 1000);
+		setTimeout(function(){$('#ajaxMessage').dialog('close')}, responseText.data.show_time||1000);
 	} else {
 		ajax_message('系统错误' + statusText);
 	}

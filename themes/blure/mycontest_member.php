@@ -56,10 +56,14 @@
 <th class='auto'>
 <?php if($v['is_fee']) {?>
 <?php echo '是';?>
-<?php }else { echo '否';}?></th>
+<?php }else {if ($v['fee_image']) {?><a class="btn btn-primary btn-sm" href="/uploads/fee_images/<?php echo $v['fee_image'];?>" target="_blank">图</a><?php } else {?>
+    否
+<?php }}?>
+</th>
 <?php }?>
 <td class='w100'>
 <a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>" class="btn btn-primary btn-sm">详情</a>
+<?php if ($v['result_file']) {?><a href="<?php echo site_url('mycontest/result_file/'.$v['team_id']);?>" class="btn btn-primary btn-sm">作品</a><?php }?>
 <!--  <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
 <a href="<?php echo site_url('admin/topics/del/'.$v['fid'].'/'.$v['cid'].'/'.$v['uid']);?>" class="btn btn-sm btn-danger" data-confirm="真的要删除吗？" data-method="delete" rel="nofollow">删除</a>
 <?php if($v['is_top']==0){?>

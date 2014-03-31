@@ -75,7 +75,7 @@ class Mycontest extends SB_controller{
      * @param number $page
      */
     public function my_team_list($cid, $page = 1) {
-        
+
         $uid = $this->session->userdata ('uid');
         $act = $this->input->get('act', true);
         $limit = 20;
@@ -90,7 +90,7 @@ class Mycontest extends SB_controller{
         if ($uid != $contest['create_user_id']) {
             return show_error('查看错误', 404);
         }
-        
+
         $config['total_rows'] = 0;
         if ($conf) {
             $config['total_rows'] = $this->team_m->count_team($conf['contest_id'], $conf['session']);
@@ -154,7 +154,7 @@ class Mycontest extends SB_controller{
             } else {
                 $this->myclass->notice('alert("没有没有报名团队");window.location.href="'.site_url("/mycontest/my_team_list/$cid").'";');
             }
-            
+
         }
         $data['title'] = '我的竞赛';
         $data['rows'] = $rows;
@@ -170,7 +170,7 @@ class Mycontest extends SB_controller{
      */
     public function team_info($team_id) {
         $uid = $this->session->userdata ('uid');
-        
+
         $this->load->model('team_m');
         $this->load->model('team_column_m');
         $this->load->model('member_column_m');
@@ -203,9 +203,48 @@ class Mycontest extends SB_controller{
         $this->load->view('show_team_info', $data);
     }
 
-    
     /**
-     * 
+     * 显示一个团队信息
+     * @param int $team_id
+     */
+    public function result_file($team_id) {
+        $uid = $this->session->userdata ('uid');
+
+        $this->load->model('team_m');
+        $this->load->model('contest_regist_config_m');
+
+        $teamInfo = $this->team_m->get($team_id);
+        $teamColumn = $memberColumn = array();
+        if ($teamInfo) {
+            $team_id = $teamInfo['team_id'];
+            $contest = $this->contest_m->get($teamInfo['contest_id']);
+            if ($uid != $contest['create_user_id']) {
+                return show_error('查看错误', 404);
+            }
+        } else {
+            return show_error('团队不存在', 404);
+        }
+
+        if (empty($teamInfo['result_file'])) {
+            return $this->myclass->notice('alert("未上交作品！");');
+        }
+        $file_dir = FCPATH . '/uploads/result_file/';
+        $file_name = $teamInfo['result_file'];
+        $show_name = $teamInfo['team_number'] . strrchr($file_name, '.');
+        $file = fopen($file_dir . $teamInfo['result_file'],"r"); // 打开文件
+        // 输入文件标签
+        Header("Content-type: application/octet-stream");
+        Header("Accept-Ranges: bytes");
+        Header("Accept-Length: ".filesize($file_dir . $file_name));
+        Header("Content-Disposition: attachment; filename=" . $show_name);
+        // 输出文件内容
+        echo fread($file,filesize($file_dir . $file_name));
+        fclose($file);
+        exit();
+    }
+
+    /**
+     *
      */
 	public function batch_process($cid = 0, $page=1)
 	{

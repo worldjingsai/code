@@ -345,7 +345,7 @@ class Contest extends SB_controller{
                 }
             }
 
-            return show_json(0, '更新成功', array('return_url' => '/contest/user_apply/'.$contest_id));
+            return show_json(0, '您已成功报名参赛,请尽快缴纳参赛费,并在您的个人账户”我的竞赛”中上传缴费的付款证明图片,同时在”我的竞赛”中可以查看到完整的报名信息,及是否已缴费的状态', array('return_url' => '/contest/user_apply/'.$contest_id, 'show_time'=>10000));
         }
         $data['teamInfo'] = $teamInfo;
         $data['teamColumn'] = $teamColumn;

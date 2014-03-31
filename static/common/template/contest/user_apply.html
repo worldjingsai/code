@@ -36,13 +36,13 @@
         <tr>
             <th>报名费用:</th>
             <td>
-                <%$tplData.reconf.fee%>元 &nbsp;&nbsp;<%if !empty($tplData.teamInfo.is_fee)%><span class="green">已付款</span><%else%>
+                <%$tplData.reconf.fee%>元 &nbsp;&nbsp;
+                <%if !empty($tplData.teamInfo.is_fee)%><span class="green">已付款</span><%else%>
                 <span class="red">未支付</span>
                 <%if !empty($tplData.teamInfo.team_number)%>
-                <form id="js_pay_imag" action="/contest/user_pay_img/<%$tplData.teamInfo.team_number%>" method="post" >
-                <input type="file" id="payimag_file" name="imgfile" />
-                <button type="submit" name="upload" class="btn btn-sm btn-primary">上传付款证明图片</button>
-                </form>
+                
+                <a href="/myenter/fee/<%$tplData.teamInfo.team_id%>" class="btn btn-sm btn-primary">上传付款证明图片</a>
+                
                 <%/if%>
                 <%/if%>
             </td>
