@@ -155,7 +155,7 @@ class Contest extends SB_controller{
             // 结果配置信息  o选项信息  i是否有效
             $o = $this->input->post('o');
             $ii = $this->input->post('i');
-            
+
             $i = 1;
             $teamColumn = array();
             foreach($t as $k => $v) {
@@ -179,7 +179,7 @@ class Contest extends SB_controller{
                 $memberColumn["m$i"] = array($v, $d[$k], $isValid);
                 $i++;
             }
-            
+
             $resultColumn = array();
             if (isset($o[0])) {
                 if (!empty($ii[0])) {
@@ -189,7 +189,7 @@ class Contest extends SB_controller{
                 }
                 $resultColumn["r1"] = array('团队组别', $o[0], $isValid);
             }
-            
+
             if (isset($o[1])) {
                 if (!empty($ii[1])) {
                     $isValid = 1;
@@ -244,7 +244,9 @@ class Contest extends SB_controller{
             $configs['t'] = json_decode($configs['team_column'], true);
             $configs['m'] = json_decode($configs['member_column'], true);
             $configs['r'] = json_decode($configs['result_column'], true);
-            
+            if (empty($configs['r'])) {
+                $configs['r'] = Contest_regist_config_m::$default_r;
+            }
         } else {
             // 设置默认值
             $configs= array(

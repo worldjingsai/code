@@ -47,10 +47,10 @@ class Contest_regist_config_m extends SB_Model{
                     );
 
     static $default_r =array(
-            'r1' => array('团队组别', '大专组|本科组|研究生组' ,1),
-            'r2' => array('题目选择', 'A题|B题|C题' ,1)
+            'r1' => array('团队组别', '大专组|本科组|研究生组' ,0),
+            'r2' => array('题目选择', 'A题|B题|C题' ,0)
     );
-    
+
     public $tb = 'contest_regist_config';
 
     function __construct(){
@@ -85,8 +85,8 @@ class Contest_regist_config_m extends SB_Model{
         $query = $this->db->where('contest_id', $contest_id)->where('session', $session)->where('status',1)->get($this->tb);
         return $query->row_array();
     }
-    
-    
+
+
     /**
      * 根据ID得到正常的一个竞赛正常的配置
      * @param int $id
