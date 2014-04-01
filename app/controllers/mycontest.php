@@ -278,9 +278,10 @@ class Mycontest extends SB_controller{
         $is_upload_fee_image = intval($this->input->get('is_upload_fee_image'));
         $page       = intval($this->input->get('page'));
         $limit      = 10;
-        $this->load->model('contest_m');
-        $data = $this->contest_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_fee,$is_upload_fee_image,$page,$limit);
-        print_r($data);
-        
+        $this->load->model('team_m');
+        $data['err_no'] = 10000;
+        $data['err_msg'] = "成功！";
+        $data['data'] = $this->team_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_upload_fee_image,$page,$limit);
+        echo json_encode($data);        
     }
 }
