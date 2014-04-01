@@ -92,3 +92,28 @@
 	margin-top:6px;
 	margin-right:6px;
 }
+
+#choose-box-bottom  #otherSchoole {
+    vertical-align:middle;
+    text-align:left;
+    background:#FFF;
+    color:#000;
+    border-top:1px solid #B8D4E8;
+    border-left:1px solid #B8D4E8;
+    border-right:1px solid #114680;
+    border-bottom:1px solid #114680;
+    cursor:auto;
+    width:200px;
+    height:25px;
+    margin-top:6px;
+    margin-right:6px;
+}
+
+#choose-box-bottom #selectOtherSchoole{
+	margin-right:20px;
+}
+
+#js_schoole_select{
+    width: 500px;
+    float: left;
+}
