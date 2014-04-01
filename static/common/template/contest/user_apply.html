@@ -70,7 +70,7 @@
             <th><%$item.0%>:</th>
             <td>
                 <div class="clearfix"><input type="text" class="text " name="t[<%$key%>]" data-rule-required="true" data-msg-required="内容不能为空" value="<%$tplData.teamColumn.$key|default:''%>">
-                <%if !empty($item.1)%><br/><span class="notice"> <%$item.1|default:''%></span><%/if%>
+                <%if !empty($item.1)%  value=<%$item.1|default:''%> onmouseover=" this.value='' "><%/if%>
                 </div>
             </td>
         </tr>
