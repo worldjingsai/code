@@ -53,7 +53,6 @@
     </div>
 			<form id="js_user_apply" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
 
-
 	<div class="DivH10"></div>
 	<div class="team_info">
 	<p class="rg_info">团队信息</p>
@@ -69,9 +68,9 @@
         <tr>
             <th><%$item.0%>:</th>
             <td>
-                <div class="clearfix"><input type="text" value="<%$item.1|default:''%>" onmouseover="this.value=''"
-                                      class="text " name="t[<%$key%>]" data-rule-required="true" data-msg-required="内容不能为空" value="<%$tplData.teamColumn.$key|default:''%>">
-     
+                <div class="clearfix"><input type="text" value="<%$tplData.teamColumn.$key|default:''%>" title="<%$item.1|default:''%>"
+                                      class="js_notice text " name="t[<%$key%>]" data-rule-required="true" data-msg-required="内容不能为空" value="<%$tplData.teamColumn.$key|default:''%>">
+                <%if !empty($item.1)%><br/><span class="notice"> <%$item.1|default:''%></span><%/if%>
                 </div>
             </td>
         </tr>

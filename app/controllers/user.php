@@ -167,7 +167,12 @@ class User extends SB_Controller{
         delete_cookie('group_type');
         delete_cookie('gid');
         delete_cookie('openid');
-        Header("Location: ".site_url('user/login'));
+        $refer = $this->input->server('HTTP_REFERER', true);
+        if ($refer) {
+            Header("Location: ".$refer);
+        } else {
+            Header("Location: ".site_url('user/login'));
+        }
         exit;
     }
 

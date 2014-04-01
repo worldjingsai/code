@@ -1,6 +1,7 @@
 function lxfEndtime(){
 	$("#lxftime").each(function(){
-		var endtime = new Date($(this).attr("endtime")).getTime();//取结束日期(毫秒值)
+		
+		var endtime = new Date($(this).attr("endtime").replace(/-/g,'/')).getTime();//取结束日期(毫秒值)
 		var nowtime = new Date().getTime(); //今天的日期(毫秒值)
 		var youtime = endtime-nowtime; //还有多久(毫秒值)
 		var seconds = youtime/1000;
@@ -274,6 +275,7 @@ $(document).ready(function(){
 	    // bind form using 'ajaxForm' 
 	    $('#js_user_apply').ajaxForm(options); 
 	};
+	
 	
 	if($('.js_comment').length > 0) {
 		$(".js_comment").validate({});

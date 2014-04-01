@@ -95,9 +95,13 @@ $(document).ready(function(){
 	});
 
 	var se = new selectSchool();
-	$("#school_name").on("click",function(){se.pop()});
+	$("#school_name").on("click",function(){
+		se.pop();
+		$("#js_schoole_select").css("display", "");
+		});
 	
 	$(".js_morechool").on("click", function(){
+		$("#js_schoole_select").css("display", "none");
 		var item=$(this);
 		var provid = item.attr('porvince_id');
 		var link = true;
@@ -106,5 +110,14 @@ $(document).ready(function(){
 	//隐藏窗口
 	$('#closeSchoole').on("click",function(){
 		$('#choose-box-wrapper').css("display","none");
+	});
+	//选择窗口
+	$('#selectOtherSchoole').on("click",function(){
+		$('#choose-box-wrapper').css("display","none");
+		var sname = function(){
+			return $('#otherSchoole').val();
+		};
+		$("#school_name").val(sname);
+		$('#univs_id').val('');
 	});
 })
