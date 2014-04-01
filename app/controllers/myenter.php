@@ -231,4 +231,46 @@ class Myenter extends SB_controller{
             return show_error('团队不存在', 404);
         }
     }
+    
+    /**
+     * 导出报名队伍信息
+     */
+    public function ajax_export_team(){
+        $this->uid = $this->session->userdata('uid');
+        $uid       = intval($this->input->get('uid'));
+        if(empty($this->uid) || $uid != $this->uid || $_SERVER['HTTP_REFERER'] != 'http://www.worldjingsai.com/myenter/enter') {
+            $this->myclass->notice('alert("下载失败！");window.location.href="'.site_url('myenter/enter').'";');
+        }
+        // 输出Excel文件头，可把user.csv换成你要的文件名 http://yige.org
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="myteam.csv"');
+        header('Cache-Control: max-age=0');
+        $team_num = intval($this->input->get('team_num'));
+        $cid      = intval($this->input->get('cid'));
+        $this->load->model('team_m');
+        $this->load->model('team_column_m');
+         $this->load->model('contest_regist_config_m');
+        $data = $this->team_m->get_by_team_number($team_num);
+        if(!empty($data)){
+            $team_id = intval($data['team_id']);
+            $contest_config = $this->contest_regist_config_m->get_normal($cid);
+            $team_column = json_decode($contest_config['team_column'],true);
+            $data = $this->team_column_m->get($team_id); // 打开PHP文件句柄，php://output 表示直接输出到浏览器
+            $fp = fopen('php://output', 'a');
+            $head[] = 'ID';
+            foreach($team_column as $one){
+                $head[] = $one[0];
+            }
+            foreach ($head as $i => $v){
+                $head[$i] = iconv('utf-8', 'gbk', $v); // CSV的Excel支持GBK编码，一定要转换，否则乱码
+            }
+            fputcsv($fp, $head); // 将数据通过fputcsv写到文件句柄
+            if(is_array($data) && !empty($data)){
+                foreach($data as $i => $v){
+                    $data[$i] = trim(iconv('utf-8', 'gbk', $v));
+                }
+                fputcsv($fp, $data);
+            }
+        }
+    }
 }
