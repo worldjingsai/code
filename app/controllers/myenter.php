@@ -188,6 +188,7 @@ class Myenter extends SB_controller{
                     $univs = $this->univs_m->get_univs_info_by_univs_id($row['univs_id']);
                     $row['contest_url'] = $univs['short_name'] . '/' . $row['contest_url'];
                 }
+                $row['uid'] = $uid;
             }
         }
 
@@ -240,6 +241,7 @@ class Myenter extends SB_controller{
         $uid       = intval($this->input->get('uid'));
         if(empty($this->uid) || $uid != $this->uid || $_SERVER['HTTP_REFERER'] != 'http://www.worldjingsai.com/myenter/enter') {
             $this->myclass->notice('alert("下载失败！");window.location.href="'.site_url('myenter/enter').'";');
+            exit;
         }
         // 输出Excel文件头，可把user.csv换成你要的文件名 http://yige.org
         header('Content-Type: application/vnd.ms-excel');
