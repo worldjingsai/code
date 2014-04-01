@@ -246,28 +246,41 @@ class Mycontest extends SB_controller{
     /**
      *
      */
-	public function batch_process($cid = 0, $page=1)
-	{
-	    $uid = $this->session->userdata ('uid');
+    public function batch_process($cid = 0, $page=1)
+    {
+        $uid = $this->session->userdata ('uid');
 
-	    $contest = $this->contest_m->get($cid);
-	    if (empty($contest) || ($uid != $contest['create_user_id'])) {
-	        return show_error('查看错误', 404, '违法操作');
-	    }
-		$tids = array_slice($this->input->post(), 0, -1);
-		if(empty($tids)){
-		    $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
-		}
-		if($this->input->post('batch_del')){
-			if($this->db->where_in('fid',$tids)->delete('forums')){
-				$this->myclass->notice('alert("批量删除贴子成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
-			}
-		}
-		if($this->input->post('batch_fee')){
-			if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>1))){
-				$this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
-			}
-		}
-	}
-
+        $contest = $this->contest_m->get($cid);
+        if (empty($contest) || ($uid != $contest['create_user_id'])) {
+            return show_error('查看错误', 404, '违法操作');
+        }
+            $tids = array_slice($this->input->post(), 0, -1);
+            if(empty($tids)){
+                $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+            }
+            if($this->input->post('batch_del')){
+                    if($this->db->where_in('fid',$tids)->delete('forums')){
+                            $this->myclass->notice('alert("批量删除贴子成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+                    }
+            }
+            if($this->input->post('batch_fee')){
+                    if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>1))){
+                            $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+                    }
+            }
+    }
+        
+    public function ajax_search_team(){
+        $type = $this->input->post('type');
+        $contest_id = intval($this->input->get('cid'));
+        $session    = intval($this->input->get('session'));
+        $is_fee     = intval($this->input->get('is_fee'));
+        $is_upload_fee_image = intval($this->input->get('is_upload_fee_image'));
+        $page       = intval($this->input->get('page'));
+        $limit      = 10;
+        $this->load->model('contest_m');
+        $data = $this->contest_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_fee,$is_upload_fee_image,$page,$limit);
+        print_r($data);
+        
+    }
 }

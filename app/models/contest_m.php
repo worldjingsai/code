@@ -10,10 +10,10 @@ class Contest_m extends SB_Model{
     const COLUM_PROBLEM = 3;
     const COLUM_WINNER  = 4;
     static $columNames = array(
-        self::COLUM_NOTICE => '竞赛通知',
-        self::COLUM_ABOUT => '竞赛简介',
-        self::COLUM_PROBLEM => '赛题发布',
-        self::COLUM_WINNER => '获奖名单',
+    self::COLUM_NOTICE => '竞赛通知',
+    self::COLUM_ABOUT => '竞赛简介',
+    self::COLUM_PROBLEM => '赛题发布',
+    self::COLUM_WINNER => '获奖名单',
     );
 
     const TYPE_SCHOOL = 1;
@@ -24,10 +24,10 @@ class Contest_m extends SB_Model{
     const LEVEL_NATION = 3;
     const LEVEL_INTERNATION = 4;
     static $leverNames = array(
-        self::LEVEL_SCHOOL => '校内竞赛',
-        self::LEVEL_PROVINCE => '省级竞赛',
-        self::LEVEL_NATION => '全国竞赛',
-        self::LEVEL_INTERNATION => '国际竞赛'
+    self::LEVEL_SCHOOL => '校内竞赛',
+    self::LEVEL_PROVINCE => '省级竞赛',
+    self::LEVEL_NATION => '全国竞赛',
+    self::LEVEL_INTERNATION => '国际竞赛'
     );
     
     static $typeNames = array(

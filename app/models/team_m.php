@@ -156,16 +156,24 @@ class Team_m extends SB_Model{
 
     /**
      * 获取详细的参赛列表
-     * @param unknown $page
-     * @param unknown $limit
+     * @param  int $cid 竞赛的ID
+     * @param  int $session 竞赛是第几届
+     * @param  int $is_fee 是否已经付费
+     * @param  int $is_upload_fee_image 是否上传缴费证明
      */
-    public function get_detail_by_cid_session($cid, $session, $page, $limit)
+    public function get_detail_by_cid_session($cid, $session, $is_fee=-1, $is_upload_fee_image=-1, $page, $limit)
     {
         $this->db->select('a.*, b.*');
         $this->db->from($this->tb .' a');
         $this->db->join('team_column b', 'b.team_id = a.team_id');
         $this->db->order_by('create_time','desc');
         $this->db->where('a.contest_id',$cid)->where('a.session', $session)->where('a.status',1);
+        if($is_fee != -1){
+            $this->db->where('a.is_fee',$is_fee);
+        }
+        if($is_upload_fee_image != -1){
+            $this->db->where('a.is_upload_fee_image',$is_upload_fee_image);
+        }
         $this->db->limit($limit,$page);
         $query = $this->db->get();
         if($query->num_rows() > 0){

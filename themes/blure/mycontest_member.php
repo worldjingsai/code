@@ -19,6 +19,15 @@
 <span class="chevron">&nbsp;›&nbsp;</span> <?php echo sb_substr(strip_tags($contest['contest_name']), 19)?>
 </div>
 <div class='cell'>
+    
+<label for="category">筛选</label>
+<select name="cid" id="cid" width="20%">
+<option selected="selected" value="">请选择分类</option>
+<option value="1">已缴费队伍</option>
+<option value="1">未上传缴费证明队伍</option>
+<option value="1">缴费证明尚未审核队伍</option>
+</select>
+
 <?php if(!empty($rows)){?>
 <form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process/'.$conf['contest_id'])?>">
 <table class='topics table'>
