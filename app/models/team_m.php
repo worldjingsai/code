@@ -32,6 +32,12 @@ class Team_m extends SB_Model{
         $query = $this->db->where('team_id',$id)->where('status',1)->get($this->tb);
         return $query->row_array();
     }
+    
+    public function get_by_team_number($team_number){
+        $this->db->select('*');
+        $query = $this->db->where('team_number',$team_number)->get($this->tb);
+        return $query->row_array();
+    }
 
     /**
      * 更新一个团队
