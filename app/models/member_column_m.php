@@ -46,6 +46,25 @@ class Member_column_m extends SB_Model{
         $query = $this->db->where('team_id',$team_id)->get($this->tb);
         return $query->result_array();
     }
+    
+    /**
+     * 根据contest_id获取竞赛和届数获取列表
+     */
+    public function listByTeamIds($teamIds){
+        if (!is_array($teamIds)) {
+            $teamIds = array($teamIds);
+        }
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->order_by('member_id','asc');
+        $this->db->where_in('team_id', $teamIds);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
 
     /**
      * 更新一个团队

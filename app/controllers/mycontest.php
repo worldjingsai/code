@@ -78,6 +78,7 @@ class Mycontest extends SB_controller{
 
         $uid = $this->session->userdata ('uid');
         $act = $this->input->get('act', true);
+        $mem = $this->input->get('mem', true);
         $limit = 20;
 
         $config = $this->pageConfig;
@@ -111,46 +112,92 @@ class Mycontest extends SB_controller{
                 $limit = $config['total_rows'];
             }
             $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit);
+            
         }
 
+        // 导出团队信息
         if ($act == 'export') {
             $start = 0;
             $limit = $config['total_rows'];
             if(!empty($rows)){
-                $title = "队号";
-                $i=1;
-                $sk = array();
+                $title = '"队号"';
+                $mk = $sk = array();
 
                 foreach($conf['team_column'] as $k=>$v) {
                     if ($v[2] > 0) {
-                        if($i++ > 5) {
-                            break;
-                        }
+                        
                         $sk[$k] = $k;
-                        $title .= ','.$v[0];
+                        $title .= ',"'.$v[0].'"';
                     }
                 }
                 if (!empty($conf['fee'])) {
-                    $title .= ',是否缴费';
+                    $title .= ',"是否缴费"';
+                    $title .= ',"是否上传缴费图片"';
+                }
+                $title .= ',"团队组别","团队选题","是否上传作品"';
+                
+                // 导出团队信息
+                if ($mem) {
+                    for($i=1; $i<=$conf['max_member']; $i++) {
+                        foreach($conf['member_column'] as $k=>$v) {
+                            if ($v[2] > 0) {
+                                $mk[$k] = $k;
+                                $title .= ',"队员'.$i.$v[0].'"';
+                            }
+                        }
+                    }
+                    $mt = array();
+                    foreach($rows as $k=>$v){
+                        $mt[$v['team_id']] = $v['team_id'];
+                    }
+                    
+                    $this->load->model('member_column_m');
+                    $members = $this->member_column_m->listByTeamIds($mt);
+                    $showMembers = array();
+                    foreach ($members as $tmpm) {
+                        $showMembers[$tmpm['team_id']] = $tmpm;
+                    }
                 }
                 $title.="\r\n";
                 $content = '';
                 foreach($rows as $k=>$v){
-                    $content .= $v['team_number'];
+                    $content .= '"'.$v['team_number'].'"';
                     foreach($sk as $kk) {
-                        $content .= ','.$v[$kk];
+                        $content .= ',"'.$v[$kk].'"';
                     }
                     // 是否缴费
                     if (!empty($conf['fee'])) {
                         if ($v['is_fee'] >= 1) {
-                            $content .= ',是';
+                            $content .= ',"是"';
                         } else {
-                            $content .= ',否';
+                            $content .= ',"否"';
+                        }
+                        if ($v['fee_image']) {
+                            $content .= ',"是"';
+                        } else {
+                            $content .= ',"否"';
+                        }
+                    }
+                    $content.= ',"'.$v['team_level'] .'","'.$v['problem_number'].'"';
+                    if ($v['result_file']) {
+                        $content .= ',"是"';
+                    } else {
+                        $content .= ',"否"';
+                    }
+                    if ($mem) {
+                        foreach($showMembers[$v['team_id']] as $mv) {
+                            $content .= ',"'.$mv.'"';
                         }
                     }
                     $content.="\r\n";
                 }
-                return $this->exportCsv($contest['contest_name'] . '_报名表.csv' , $title.$content);
+                $fname = $contest['contest_name'];
+                if ($mem) {
+                    $fname .= '_团队和队员信息表';
+                } else {
+                    $fname .= '_团队信息表';
+                }
+                return $this->exportCsv($fname . '.csv' , $title.$content);
             } else {
                 $this->myclass->notice('alert("没有没有报名团队");window.location.href="'.site_url("/mycontest/my_team_list/$cid").'";');
             }
