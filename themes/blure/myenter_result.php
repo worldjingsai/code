@@ -75,7 +75,7 @@
       				<div class="col-sm-10">
       					<p class="alert alert-info">
       					<?php if ($team['result_file']){?>
-      						<a href="<?php echo base_url($team['result_file']); ?>">作品下载</a>
+      						<a href="<?php echo base_url('mycontest/result_file/'.$team['team_id']); ?>">作品下载</a>
       					<?php } else {?>
 							还未上传
       					<?php }?>
