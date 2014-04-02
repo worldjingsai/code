@@ -48,7 +48,7 @@ function sb_substr( $string, $length, $dot = '..', $charset='utf-8' ) {
             $strcut .= ord($string[$i]) > 127 ? $string[$i].$string[++$i] : $string[$i];
         }
     }
-    
+
     return $strcut.$dot;
 }
 
@@ -81,9 +81,9 @@ function check_auth()
 		$data=file_get_contents($url);
 	} else {
 		$ch = curl_init();
-		$timeout = 5; 
+		$timeout = 5;
 		curl_setopt ($ch, CURLOPT_URL, $url);
-		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1); 
+		curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
 		$data = curl_exec($ch);
 		curl_close($ch);
@@ -92,25 +92,25 @@ function check_auth()
 	return $data->product;
 }
 
-function get_domain($url=''){ 
-	$host=$url?$url:@$_SERVER[HTTP_HOST]; 
-	$host=strtolower($host); 
-	if(strpos($host,'/')!==false){ 
-		$parse = @parse_url($host); 
-		$host = $parse['host']; 
+function get_domain($url=''){
+	$host=$url?$url:@$_SERVER[HTTP_HOST];
+	$host=strtolower($host);
+	if(strpos($host,'/')!==false){
+		$parse = @parse_url($host);
+		$host = $parse['host'];
 	}
 	$topleveldomaindb=array('com','edu','gov','int','mil','net','org','biz','info','pro','name','museum','coop','aero','xxx','idv','mobi','cc','me','cn','tv','in','hk','de','us','tw');
-	$str=''; 
-	foreach($topleveldomaindb as $v){ 
+	$str='';
+	foreach($topleveldomaindb as $v){
 		$str.=($str ? '|' : '').$v;
-	} 
-	$matchstr="[^\.]+\.(?:(".$str.")|\w{2}|((".$str.")\.\w{2}))$";
-	if(preg_match("/".$matchstr."/ies",$host,$matchs)){ 
-		$domain=$matchs['0'];
-	}else{ 
-		$domain=$host; 
 	}
-	return $domain; 
+	$matchstr="[^\.]+\.(?:(".$str.")|\w{2}|((".$str.")\.\w{2}))$";
+	if(preg_match("/".$matchstr."/ies",$host,$matchs)){
+		$domain=$matchs['0'];
+	}else{
+		$domain=$host;
+	}
+	return $domain;
 }
 
 	//无编辑器的过滤
@@ -144,7 +144,7 @@ function get_domain($url=''){
 			$str=strip_tags($str,"<img> <pre> <a> <font> <span> <em>");
 		}
 		$str = nl2br($str);
-		
+
 		return $str;
 	}
 
@@ -156,10 +156,11 @@ function send_mail($username,$password,$to,$subject,$message)
 	$config['smtp_user']=$ci->config->item('smtp_user');
 	$config['smtp_pass']=$ci->config->item('smtp_pass');
 	$config['smtp_port']=$ci->config->item('smtp_port');
+	$config['smtp_crypto']=$ci->config->item('smtp_crypto');
 	$config['charset'] = 'utf-8';
 	$config['wordwrap'] = TRUE;
 	$config['mailtype'] = 'html';
-	
+
 	$ci->load->library('email',$config);
 	$ci->email->from($config['smtp_user'],'');
 	$ci->email->to($to);
