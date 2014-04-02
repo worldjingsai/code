@@ -50,7 +50,7 @@
 	<form action="/user/login" method="post" id="login_form">
 	<input type="hidden" name="referer" value="<%$tplData.referer|default:''%>"/>
 	<div class="input-group ">
-        <label class="input-group-addon w_60" for="login_username">邮箱/手机/账号</label>
+        <label class="input-group-addon w_60" for="login_username">用户名</label>
         <input type="text" id="login_username" class="form-control" name="username" value="">
     </div>
     <div class="DivH10"></div>
@@ -59,7 +59,9 @@
         <input type="password" id="login_password" class="form-control" name="password" value="">
     </div>
     <div class="DivH10"></div>
-	<div class="tc"><button type="submit" class="btn btn-large btn-info w_200">立即登录</button></div>
+	<div class="tc"><button type="submit" class="btn btn-large btn-info w_200">立即登录</button>
+	<a href="/user/findpwd">忘记密码</a>
+	</div>
 	
 	</form>
     </div>
