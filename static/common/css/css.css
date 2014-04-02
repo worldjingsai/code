@@ -510,6 +510,7 @@ font-weight: bold;
 
 .captcha_table{margin:15px 0; }
 .register_area .captcha_table a{font-size:15px; color:#E3EC0F}
+.register .captcha_table{margin:8px 0; }
 
 .register{position:relative;left:640px;width:245px;top:20px;z-index:2;}
 
