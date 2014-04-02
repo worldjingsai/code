@@ -155,7 +155,7 @@ class Mycontest extends SB_controller{
                     $members = $this->member_column_m->listByTeamIds($mt);
                     $showMembers = array();
                     foreach ($members as $tmpm) {
-                        $showMembers[$tmpm['team_id']] = $tmpm;
+                        $showMembers[$tmpm['team_id']][] = $tmpm;
                     }
                 }
                 $title.="\r\n";
@@ -186,7 +186,9 @@ class Mycontest extends SB_controller{
                     }
                     if ($mem) {
                         foreach($showMembers[$v['team_id']] as $mv) {
-                            $content .= ',"'.$mv.'"';
+                            foreach ($mk as $kk) {
+                                $content .= ',"'.$mv[$kk].'"';
+                            }
                         }
                     }
                     $content.="\r\n";
