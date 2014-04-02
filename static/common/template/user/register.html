@@ -59,6 +59,13 @@
         <input type="password" id="login_password" class="form-control" name="password" value="">
     </div>
     <div class="DivH10"></div>
+    <div class="input-group fl">
+        <label class="input-group-addon w_60" for="login_password" >验证吗</label>
+        <input type="text" id="captcha_code" name="captcha_code" style="width:60px;" class="form-control"  value="">
+        
+    </div>
+    <span class="captcha_table fr"> <a href="javascript:reloadcode();" title="更换一张验证码图片"><img src="/captcha_code/index" name="checkCodeImg" id="checkCodeImg" border="0" /></a> <a href="javascript:reloadcode();">换一张</a></span>
+    <div class="DivH10"></div>
 	<div class="tc"><button type="submit" class="btn btn-large btn-info w_200">立即登录</button>
 	<a href="/user/findpwd">忘记密码</a>
 	</div>
@@ -66,7 +73,13 @@
 	</form>
     </div>
 </DIV>
-
+<script >
+//刷新图片
+function reloadcode() {//刷新验证码函数
+ var verify = document.getElementById('checkCodeImg');
+ verify.src='/captcha_code/index?'+Math.random();
+}
+</script>
 </DIV>
 <div id="choose-box-wrapper">
 	<div id="choose-box">
