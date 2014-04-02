@@ -280,6 +280,6 @@ class Mycontest extends SB_controller{
         $limit      = 10;
         $this->load->model('team_m');
         $data = $this->team_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_upload_fee_image,$page,$limit);
-        show_json(10000, '成功！', array('data' => $data));     
+        $this->load->view('search_team_result', $data);
     }
 }
