@@ -167,7 +167,7 @@ class Team_m extends SB_Model{
      * @param  int $is_fee 是否已经付费
      * @param  int $is_upload_fee_image 是否上传缴费证明
      */
-    public function get_detail_by_cid_session($cid, $session, $is_fee=-1, $is_upload_fee_image=-1, $page, $limit)
+    public function get_detail_by_cid_session($cid, $session, $page, $limit, $is_fee=-1, $is_upload_fee_image=-1)
     {
         $this->db->select('a.*, b.*');
         $this->db->from($this->tb .' a');

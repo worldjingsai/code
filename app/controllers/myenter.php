@@ -116,7 +116,7 @@ class Myenter extends SB_controller{
         if($_POST){
             $config = array(
                     'allowed_types' => '*',
-                    'upload_path' => FCPATH.'uploads/result_file/',
+                    'upload_path' => UPLOADPATH.'paper/',
                     'encrypt_name' => true,
                     'max_size' => '10240'
             );
@@ -127,8 +127,8 @@ class Myenter extends SB_controller{
                 return $this->myclass->notice('alert("内容填写不完整!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
             }
 
-            // 分成10份
-            $dir = $team_id % 10;
+            // 分成60份
+            $dir = $data['contest']['contest_id'] . '/' . $team_id % 60;
             $config['upload_path'] = $config['upload_path'] . $dir . '/';
             if(!is_dir($config['upload_path'])){
                 mkdir($config['upload_path'],0777,true);

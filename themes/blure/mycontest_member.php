@@ -94,6 +94,7 @@
 <div class='form-actions'>
 <?php if($conf['fee'] > 0) {?>
 <input class="btn btn-primary btn-info" name="batch_fee" type="submit" value="选中缴费" />
+<input class="btn btn-primary btn-info" name="batch_unfee" type="submit" value="选中不缴费" />
 <?php }?>
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export">全部导出</a>

@@ -204,7 +204,7 @@ class Mycontest extends SB_controller{
     }
 
     /**
-     * 显示一个团队信息
+     * 下载数据文件，只有竞赛创建者和团队创建者可以下载
      * @param int $team_id
      */
     public function result_file($team_id) {
@@ -218,7 +218,7 @@ class Mycontest extends SB_controller{
         if ($teamInfo) {
             $team_id = $teamInfo['team_id'];
             $contest = $this->contest_m->get($teamInfo['contest_id']);
-            if ($uid != $contest['create_user_id']) {
+            if (($uid != $contest['create_user_id']) && ($uid != $teamInfo['create_user_id'])) {
                 return show_error('查看错误', 404);
             }
         } else {
@@ -228,7 +228,7 @@ class Mycontest extends SB_controller{
         if (empty($teamInfo['result_file'])) {
             return $this->myclass->notice('alert("未上交作品！");');
         }
-        $file_dir = FCPATH . '/uploads/result_file/';
+        $file_dir = UPLOADPATH . '/paper/';
         $file_name = $teamInfo['result_file'];
         $show_name = $teamInfo['team_number'] . strrchr($file_name, '.');
         $file = fopen($file_dir . $teamInfo['result_file'],"r"); // 打开文件
@@ -254,20 +254,25 @@ class Mycontest extends SB_controller{
         if (empty($contest) || ($uid != $contest['create_user_id'])) {
             return show_error('查看错误', 404, '违法操作');
         }
-            $tids = array_slice($this->input->post(), 0, -1);
-            if(empty($tids)){
-                $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+        $tids = array_slice($this->input->post(), 0, -1);
+        if(empty($tids)){
+            $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+        }
+        if($this->input->post('batch_del')){
+            if($this->db->where_in('fid',$tids)->delete('forums')){
+                $this->myclass->notice('alert("批量删除团队成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
             }
-            if($this->input->post('batch_del')){
-                    if($this->db->where_in('fid',$tids)->delete('forums')){
-                            $this->myclass->notice('alert("批量删除贴子成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
-                    }
+        }
+        if($this->input->post('batch_fee')){
+            if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>1))){
+                $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
             }
-            if($this->input->post('batch_fee')){
-                    if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>1))){
-                            $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
-                    }
+        }
+        if($this->input->post('batch_unfee')){
+            if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>0))){
+                $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
             }
+        }
     }
         
     public function ajax_search_team(){

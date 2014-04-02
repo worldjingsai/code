@@ -165,6 +165,9 @@ define('BASEPATH', str_replace("\\", "/", $system_path));
 // Path to the front controller (this file)
 define('FCPATH', str_replace(SELF, '', __FILE__));
 
+// Path to the front controller (this file)
+define('UPLOADPATH', '/upload/');
+
 // Name of the "system folder"
 define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
