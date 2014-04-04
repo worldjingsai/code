@@ -276,7 +276,6 @@ class Mycontest extends SB_controller{
     }
         
     public function ajax_search_team(){
-        $type = $this->input->post('type');
         $contest_id = intval($this->input->get('cid'));
         $session    = intval($this->input->get('session'));
         $is_fee     = intval($this->input->get('is_fee'));
@@ -284,7 +283,7 @@ class Mycontest extends SB_controller{
         $page       = intval($this->input->get('page'));
         $limit      = 10;
         $this->load->model('team_m');
-        $data = $this->team_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_upload_fee_image,$page,$limit);
-        $this->load->view('search_team_result', $data);
+        $result['rows'] = $this->team_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_upload_fee_image,$page,$limit);
+        $this->load->view('search_team_result', $result);
     }
 }
