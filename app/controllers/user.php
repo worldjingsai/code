@@ -118,6 +118,7 @@ class User extends SB_Controller{
     public function login (){
         $data['title'] = '用户登录';
         $data['referer']=$this->input->get_post('referer',true);
+        $captcha = $this->input->get_post('captcha_code',true);
         $data['referer']=$data['referer']?$data['referer']: $this->input->server('HTTP_REFERER', true);
         if (strpos($data['referer'], '/user/login')) {
             $data['referer'] = '/';
@@ -129,6 +130,11 @@ class User extends SB_Controller{
         if($_POST){
             $username = $this->input->post('username',true);
             $password = $this->input->post('password',true);
+
+            if($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
+                return $this->myclass->notice('alert("验证码不正确!!");history.back();');
+            }
+
             $user = $this->user_m->check_login($username, $password);
 
             $captcha = $this->input->post('captcha_code');
