@@ -21,7 +21,47 @@
 </div>
 <div class='cell'>
 <?php if(!empty($conf)){?>
-<form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process')?>">
+
+<div class="cell">
+系统信息
+</div>
+<div align='center' class='inner'>
+<table class="table table-bordered">
+
+<tbody>
+
+<?php if(!empty($team['team_number'])) {?>
+<tr>
+<td align="right" width="30%">
+<span class="gray">参赛队号</span>
+</td>
+<td align="left">
+<div class="pull-right"></div>
+<?php echo $team['team_number'];?>
+</td>
+</tr>
+<?php }?>
+
+<?php if($conf['fee'] > 0) {?>
+<tr>
+<td align="right" width="30%">
+<span class="gray">报名费用</span>
+</td>
+<td align="left">
+<div class="pull-right"></div>
+<span><?=$conf['fee']?>元 </span>&nbsp;&nbsp;
+<?php if($team['is_fee']) {?>
+<span class="green">已支付</span>
+<?php } else {?>
+<span class="red">未支付</span> 
+<?php }?>
+</td>
+</tr>
+<?php }?>
+
+</tbody></table>
+</div>
+
 <div class="cell">
 团队信息
 </div>

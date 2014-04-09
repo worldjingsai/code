@@ -202,6 +202,14 @@ class SB_Controller extends Base_Controller{
             $contest_short = $univs_info['short_name'] . '/' . $cInfo['contest_url'];
         }
         $data['contest_url'] = $contest_short;
+        
+        if ($this->is_login && isset($config['session']) && $config['type'] == 2) {
+            // 本人是否有报名信息
+            $this->load->model('team_m');
+            $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $config['session']);
+            
+            $data['teamInfo'] = $teamInfo;
+        }
 
         return $data;
     }
