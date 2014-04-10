@@ -83,7 +83,7 @@ class Mycontest extends SB_controller{
 
         $config = $this->pageConfig;
         $config['uri_segment'] = 4;
-        $config['base_url'] = site_url('mycontest/my_team_list/');
+        $config['base_url'] = site_url('mycontest/my_team_list/' . $cid . '/');
         $this->load->model('contest_regist_config_m');
         $this->load->model('team_m');
         $conf = $this->contest_regist_config_m->get_normal($cid);
