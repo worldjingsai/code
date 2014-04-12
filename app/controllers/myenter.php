@@ -232,47 +232,106 @@ class Myenter extends SB_controller{
             return show_error('团队不存在', 404);
         }
     }
-    
+
     /**
      * 导出报名队伍信息
      */
     public function ajax_export_team(){
-        $this->uid = $this->session->userdata('uid');
-        $uid       = intval($this->input->get('uid'));
-        if(empty($this->uid) || $uid != $this->uid || $_SERVER['HTTP_REFERER'] != 'http://www.worldjingsai.com/myenter/enter') {
+        $uid = $this->session->userdata ('uid');
+        if(empty($uid) ) {
             $this->myclass->notice('alert("下载失败！");window.location.href="'.site_url('myenter/enter').'";');
             exit;
         }
         // 输出Excel文件头，可把user.csv换成你要的文件名 http://yige.org
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="myteam.csv"');
-        header('Cache-Control: max-age=0');
-        $team_num = intval($this->input->get('team_num'));
-        $cid      = intval($this->input->get('cid'));
+        $team_id = intval($this->input->get('team_id'));
+
         $this->load->model('team_m');
         $this->load->model('team_column_m');
-         $this->load->model('contest_regist_config_m');
-        $data = $this->team_m->get_by_team_number($team_num);
-        if(!empty($data)){
-            $team_id = intval($data['team_id']);
-            $contest_config = $this->contest_regist_config_m->get_normal($cid);
-            $team_column = json_decode($contest_config['team_column'],true);
-            $data = $this->team_column_m->get($team_id); // 打开PHP文件句柄，php://output 表示直接输出到浏览器
-            $fp = fopen('php://output', 'a');
-            $head[] = 'ID';
-            foreach($team_column as $one){
-                $head[] = $one[0];
-            }
-            foreach ($head as $i => $v){
-                $head[$i] = iconv('utf-8', 'gbk', $v); // CSV的Excel支持GBK编码，一定要转换，否则乱码
-            }
-            fputcsv($fp, $head); // 将数据通过fputcsv写到文件句柄
-            if(is_array($data) && !empty($data)){
-                foreach($data as $i => $v){
-                    $data[$i] = trim(iconv('utf-8', 'gbk', $v));
-                }
-                fputcsv($fp, $data);
-            }
+        $this->load->model('member_column_m');
+        $this->load->model('contest_regist_config_m');
+        $data = $this->team_m->get($team_id);
+
+        if(empty($data) || ($data['create_user_id'] != $uid)){
+            $this->myclass->notice('alert("无权限下载！");window.location.href="'.site_url('myenter/enter').'";');
+            return 0;
         }
+        $cid = $data['contest_id'];
+        $session = $data['session'];
+        $conf = $this->contest_regist_config_m->get_by_cid_session($cid, $session);
+
+        if($conf) {
+            $conf['team_column'] = json_decode($conf['team_column'], true);
+            $conf['member_column'] = json_decode($conf['member_column'], true);
+        }
+
+        $t = $this->team_column_m->get($team_id);
+        $m = $this->member_column_m->list_by_team_id($team_id);
+
+        if(!empty($t) && !empty($m)){
+
+            // 导出团队信息
+            $title = '"队号"';
+            $mk = $sk = array();
+
+            foreach($conf['team_column'] as $k=>$v) {
+                if ($v[2] > 0) {
+                    $sk[$k] = $k;
+                    $title .= ',"'.$v[0].'"';
+                }
+            }
+            if (!empty($conf['fee'])) {
+                $title .= ',"是否缴费"';
+                $title .= ',"是否上传缴费图片"';
+            }
+            $title .= ',"团队组别","团队选题","是否上传作品"';
+
+            // 导出团队信息
+            for($i=1; $i<=$conf['max_member']; $i++) {
+                foreach($conf['member_column'] as $k=>$v) {
+                    if ($v[2] > 0) {
+                        $mk[$k] = $k;
+                        $title .= ',"队员'.$i.$v[0].'"';
+                    }
+                }
+            }
+
+            $title.="\r\n";
+            $content = '';
+            $v = $data;
+            $content .= '"'.$v['team_number'].'"';
+            foreach($sk as $kk) {
+                $content .= ',"'.$t[$kk].'"';
+            }
+            // 是否缴费
+            if (!empty($conf['fee'])) {
+                if ($v['is_fee'] >= 1) {
+                    $content .= ',"是"';
+                } else {
+                    $content .= ',"否"';
+                }
+                if ($v['fee_image']) {
+                    $content .= ',"是"';
+                } else {
+                    $content .= ',"否"';
+                }
+            }
+            $content.= ',"'.$v['team_level'] .'","'.$v['problem_number'].'"';
+            if ($v['result_file']) {
+                $content .= ',"是"';
+            } else {
+                $content .= ',"否"';
+            }
+
+            foreach($m as $mv) {
+                foreach ($mk as $kk) {
+                    $content .= ',"'.$mv[$kk].'"';
+                }
+            }
+
+            $content.="\r\n";
+        }
+
+        $fname = '团队信息表' . $team_id;
+        return $this->exportCsv($fname . '.csv' , $title.$content);
     }
 }

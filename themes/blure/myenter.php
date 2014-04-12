@@ -39,7 +39,7 @@
 <?php echo $v['team_number']?>
 </td>
 <td class='auto'>
-<a target="_blank" href="<?php echo site_url($v['contest_url']);?>"><?php echo sb_substr(strip_tags($v['contest_name']),50)?></a>
+<a target="_blank" href="<?php echo site_url($v['contest_url']);?>" title="<?php echo strip_tags($v['contest_name']);?>"><?php echo sb_substr(strip_tags($v['contest_name']),20)?></a>
 </td>
 
 <td  class='auto'>
@@ -52,9 +52,8 @@ echo "已交费";
 </td>
 <td>
 <a class="btn btn-primary btn-sm" href="<?php echo site_url('/myenter/team/' . $v['team_id']);?>">详情</a>
-</td>
-<td>
-<a class="btn btn-primary btn-sm" href="<?php echo site_url('/data/myenter/export_team?team_num='.$v['team_number'].'&cid=' . $v['contest_id'] . '&uid='.$v['uid']);?>">导出参赛队信息</a>
+
+<a class="btn btn-primary btn-sm" href="<?php echo site_url('/data/myenter/export_team?team_id='.$v['team_id']);?>">导出参赛队信息</a>
 </td>
 <!--  td class='w100'>
 <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
