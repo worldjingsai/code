@@ -32,7 +32,7 @@ class Team_m extends SB_Model{
         $query = $this->db->where('team_id',$id)->where('status',1)->get($this->tb);
         return $query->row_array();
     }
-    
+
     public function get_by_team_number($team_number){
         $this->db->select('*');
         $query = $this->db->where('team_number',$team_number)->get($this->tb);
@@ -167,7 +167,7 @@ class Team_m extends SB_Model{
      * @param  int $is_fee 是否已经付费
      * @param  int $is_upload_fee_image 是否上传缴费证明
      */
-    public function get_detail_by_cid_session($cid, $session, $page, $limit, $is_fee=-1, $is_upload_fee_image=-1)
+    public function get_detail_by_cid_session($cid, $session, $page, $limit, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = '')
     {
         $this->db->select('a.*, b.*');
         $this->db->from($this->tb .' a');
@@ -177,8 +177,26 @@ class Team_m extends SB_Model{
         if($is_fee != -1){
             $this->db->where('a.is_fee',$is_fee);
         }
-        if($is_upload_fee_image != -1){
-            $this->db->where('a.is_upload_fee_image',$is_upload_fee_image);
+        if($is_upfee_image != -1){
+            if ($is_upfee_image) {
+                $this->db->where('a.fee_image!=""',null,false);
+            } else {
+                $this->db->where('a.fee_image','');
+            }
+        }
+        if($is_result != -1){
+            if ($is_result) {
+                $this->db->where('a.result_file!=""',null, false);
+            } else {
+                $this->db->where('a.result_file','');
+            }
+        }
+        if ($tvalue !== '') {
+            if ($tkey == 'team_number') {
+                $this->db->where('a.team_number', $tvalue);
+            } else {
+                $this->db->like('b.'.$tkey, $tvalue);
+            }
         }
         $this->db->limit($limit,$page);
         $query = $this->db->get();
@@ -188,5 +206,47 @@ class Team_m extends SB_Model{
             return false;
         }
     }
-    
+
+
+    /**
+     * 根据contestid和sessionid获取参数总数
+     */
+    public function count_detail_by_cid_session($cid, $session, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = ''){
+        $this->db->select('a.team_id');
+        $this->db->from($this->tb .' a');
+        $this->db->join('team_column b', 'b.team_id = a.team_id');
+
+        $this->db->where('a.contest_id',$cid)->where('a.session', $session)->where('a.status',1);
+        if($is_fee != -1){
+            $this->db->where('a.is_fee',$is_fee);
+        }
+        if($is_upfee_image != -1){
+            if ($is_upfee_image) {
+                $this->db->where('a.fee_image!=""', null, false);
+            } else {
+                $this->db->where('a.fee_image', '');
+            }
+        }
+        if($is_result != -1){
+            if ($is_result) {
+                $this->db->where('a.result_file!=""',null, false);
+            } else {
+                $this->db->where('a.result_file','');
+            }
+        }
+        if ($tvalue !== '') {
+            if ($tkey == 'team_number') {
+                $this->db->where('a.team_number', $tvalue);
+            } else {
+                $this->db->like('b.'.$tkey, $tvalue);
+            }
+        }
+
+        $query = $this->db->get();
+        if($query->result()){
+            return $query->num_rows();
+        } else {
+            return '0';
+        }
+    }
 }

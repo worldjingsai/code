@@ -76,14 +76,18 @@ class Mycontest extends SB_controller{
      */
     public function my_team_list($cid, $page = 1) {
 
+        $gets = $this->input->get(null, true);
+
         $uid = $this->session->userdata ('uid');
         $act = $this->input->get('act', true);
         $mem = $this->input->get('mem', true);
-        $limit = 20;
+        $limit = 2;
 
         $config = $this->pageConfig;
+        $config['per_page'] = $limit;
         $config['uri_segment'] = 4;
         $config['base_url'] = site_url('mycontest/my_team_list/' . $cid . '/');
+        $config['url_arguments'] = $gets;
         $this->load->model('contest_regist_config_m');
         $this->load->model('team_m');
         $conf = $this->contest_regist_config_m->get_normal($cid);
@@ -92,9 +96,14 @@ class Mycontest extends SB_controller{
             return show_error('查看错误', 404);
         }
 
+        $is_fee = isset($gets['is_fee']) ? $gets['is_fee'] : '-1';
+        $is_up_imag = isset($gets['fee_image']) ? $gets['fee_image'] : '-1';
+        $is_result = isset($gets['is_result']) ? $gets['is_result'] :'-1';
+        $tk = isset($gets['select']) ? $gets['select'] : '';
+        $tv = isset($gets['keywords']) ? $gets['keywords'] :'';
         $config['total_rows'] = 0;
         if ($conf) {
-            $config['total_rows'] = $this->team_m->count_team($conf['contest_id'], $conf['session']);
+            $config['total_rows'] = $this->team_m->count_detail_by_cid_session($conf['contest_id'], $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv);
         }
 
         $this->load->library('pagination');
@@ -102,6 +111,7 @@ class Mycontest extends SB_controller{
 
         $start = ($page-1)*$limit;
         $data['pagination'] = $this->pagination->create_links();
+
         // 获取数据
         $rows = array();
         if($conf) {
@@ -111,8 +121,7 @@ class Mycontest extends SB_controller{
                 $start = 0;
                 $limit = $config['total_rows'];
             }
-            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit);
-            
+            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv);
         }
 
         // 导出团队信息
@@ -125,7 +134,7 @@ class Mycontest extends SB_controller{
 
                 foreach($conf['team_column'] as $k=>$v) {
                     if ($v[2] > 0) {
-                        
+
                         $sk[$k] = $k;
                         $title .= ',"'.$v[0].'"';
                     }
@@ -135,7 +144,7 @@ class Mycontest extends SB_controller{
                     $title .= ',"是否上传缴费图片"';
                 }
                 $title .= ',"团队组别","团队选题","是否上传作品"';
-                
+
                 // 导出团队信息
                 if ($mem) {
                     for($i=1; $i<=$conf['max_member']; $i++) {
@@ -150,7 +159,7 @@ class Mycontest extends SB_controller{
                     foreach($rows as $k=>$v){
                         $mt[$v['team_id']] = $v['team_id'];
                     }
-                    
+
                     $this->load->model('member_column_m');
                     $members = $this->member_column_m->listByTeamIds($mt);
                     $showMembers = array();
@@ -201,10 +210,11 @@ class Mycontest extends SB_controller{
                 }
                 return $this->exportCsv($fname . '.csv' , $title.$content);
             } else {
-                $this->myclass->notice('alert("没有没有报名团队");window.location.href="'.site_url("/mycontest/my_team_list/$cid").'";');
+                $this->myclass->notice('alert("没有报名团队");window.location.href="'.site_url("/mycontest/my_team_list/$cid").'";');
             }
-
         }
+        $data['gets'] = $gets;
+        $data['url_query'] = http_build_query((array)$gets);
         $data['title'] = '我的竞赛';
         $data['rows'] = $rows;
         $data['contest'] = $contest;
@@ -299,31 +309,37 @@ class Mycontest extends SB_controller{
     {
         $uid = $this->session->userdata ('uid');
 
+        $refer = $this->input->server('HTTP_REFERER', true);
+
+        $refer = str_replace(';', '', $refer);
+        if (preg_match('/.*batch_process.*/', $refer)) {
+            $refer = site_url('/mycontest/my_team_list/'.$cid.'/'.$page);
+        }
         $contest = $this->contest_m->get($cid);
         if (empty($contest) || ($uid != $contest['create_user_id'])) {
             return show_error('查看错误', 404, '违法操作');
         }
         $tids = array_slice($this->input->post(), 0, -1);
         if(empty($tids)){
-            $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+            $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.$refer.'";');
         }
         if($this->input->post('batch_del')){
             if($this->db->where_in('fid',$tids)->delete('forums')){
-                $this->myclass->notice('alert("批量删除团队成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+                $this->myclass->notice('alert("批量删除团队成功！");window.location.href="'.$refer.'";');
             }
         }
         if($this->input->post('batch_fee')){
             if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>1))){
-                $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+                $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.$refer.'";');
             }
         }
         if($this->input->post('batch_unfee')){
             if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>0))){
-                $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.site_url("mycontest/my_team_list/${cid}/${page}").'";');
+                $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.$refer.'";');
             }
         }
     }
-        
+
     public function ajax_search_team(){
         $contest_id = intval($this->input->get('cid'));
         $session    = intval($this->input->get('session'));

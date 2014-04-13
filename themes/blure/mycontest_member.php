@@ -19,14 +19,72 @@
 <span class="chevron">&nbsp;›&nbsp;</span> <?php echo sb_substr(strip_tags($contest['contest_name']), 19)?>
 </div>
 <div class='cell'>
-    
-<label for="category">筛选</label>
-<select name="cid" id="cid" width="20%">
-<option selected="selected" value="">请选择分类</option>
-<option value="1">已缴费队伍</option>
-<option value="1">未上传缴费证明队伍</option>
-<option value="1">缴费证明尚未审核队伍</option>
-</select>
+
+<div class="cell">
+<form method="get"  class="form-horizontal" action="<?php echo site_url('mycontest/my_team_list/'.$conf['contest_id'])?>">
+  			<fieldset>
+
+  			    <div class="form-group">
+  			    <?php if($conf['fee'] > 0) {?>
+      				<label class="col-sm-2 control-label" >是否缴费</label>
+      				<div class="col-sm-2">
+       					<select name="is_fee" class="form-control" id="cid" >
+                        <option value="-1">全部</option>
+                        <option value="1" <?php if(isset($gets['is_fee']) && $gets['is_fee'] == 1) {?>selected="selected"<?php }?>>已缴费</option>
+                        <option value="0" <?php if(isset($gets['is_fee']) && $gets['is_fee'] == 0) {?>selected="selected"<?php }?>>未缴费</option>
+                        </select>
+      				</div>
+
+      				<label class="col-sm-2 control-label" >缴费图片</label>
+      				<div class="col-sm-2">
+       					<select name="fee_image" id="cid" class="form-control" >
+                        <option  value="-1">全部</option>
+                        <option value="1" <?php if(isset($gets['fee_image']) && $gets['fee_image'] == 1) {?>selected="selected"<?php }?>>已上传</option>
+                        <option value="0" <?php if(isset($gets['fee_image']) && $gets['fee_image'] == 0) {?>selected="selected"<?php }?>>未上传</option>
+                        </select>
+      				</div>
+                <?php }?>
+
+                <?php if($conf['result_column']) {?>
+      				<label class="col-sm-2 control-label" >上传作品</label>
+      				<div class="col-sm-2">
+       					<select name="is_result" id="cid" class="form-control" >
+                        <option  value="-1">全部</option>
+                        <option value="1" <?php if(isset($gets['is_result']) && $gets['is_result'] == 1) {?>selected="selected"<?php }?>>已上传</option>
+                        <option value="0" <?php if(isset($gets['is_result']) && $gets['is_result'] == 0) {?>selected="selected"<?php }?>>未上传</option>
+                        </select>
+      				</div>
+      			<?php }?>
+    			</div>
+
+    			<div class="form-group">
+    			<label class="col-sm-2 control-label" >组队信息查询</label>
+      				<div class="col-sm-4 control-div">
+      				<select name="select"  class="form-control" >
+      				<option value="team_number">队号</option>
+      				<?php  foreach($conf['team_column'] as $k=>$v) {?>
+                    <?php if($v[2] > 0) {?>
+                    <option value="<?=$k?>" <?php if(isset($gets['select']) && $gets['select'] == $k) {?>selected="selected"<?php }?>><?=$v[0]?></option>
+                    <?php }?>
+                    <?php }?>
+      				</select>
+      				</div>
+
+      				<div class="col-sm-6">
+      					<input name="keywords" class="form-control" id="keywords" type="text" size="50" value="<?php echo isset($gets['keywords'])?$gets['keywords']:''?>">
+      				</div>
+    			</div>
+
+                <div class="form-group">
+    		    <div class="col-sm-12" align="right">
+                <button type="submit" class="btn btn-info"  >查询</button>
+                </div>
+                </div>
+    		</fieldset>
+
+</form>
+</div>
+
 
 <?php if(!empty($rows)){?>
 <form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process/'.$conf['contest_id'])?>">
@@ -37,9 +95,11 @@
 <th align='left' class='auto'>队号</th>
 <?php $i=1;?>
 <?php  foreach($conf['team_column'] as $k=>$v) {?>
+
 <?php if($i++ > 5) {break;}?>
 <th align='right' class='auto'><?php echo $v[0];?></th>
 <?php }?>
+
 <?php if($conf['fee'] > 0) {?>
 <th align='right' class='auto'>缴费</th>
 <?php }?>
@@ -91,19 +151,20 @@
 
 </tbody>
 </table>
+
 <div class='form-actions'>
 <?php if($conf['fee'] > 0) {?>
 <input class="btn btn-primary btn-info" name="batch_fee" type="submit" value="选中缴费" />
 <input class="btn btn-primary btn-info" name="batch_unfee" type="submit" value="选中不缴费" />
 <?php }?>
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
-<a class="btn btn-primary"  href="?act=export">导出全部团队信息</a>
-<a class="btn btn-primary"  href="?act=export&mem=1">导出全部团队和队员信息</a>
+<a class="btn btn-primary"  href="?act=export&<?=$url_query?>">导出全部团队信息</a>
+<a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>
 
 </div>
-
+</form>
 <?php } else{?>
-暂无竞赛
+暂无团队信息
 <?php }?>
 </div>
 <div align='center' class='inner'>
