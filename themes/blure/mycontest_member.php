@@ -123,11 +123,10 @@
 <?php }?>
 <?php if($conf['fee'] > 0) {?>
 <th class='auto'>
-<?php if($v['is_fee']) {?>
-<?php echo '是';?>
-<?php }else {if ($v['fee_image']) {?><a class="btn btn-primary btn-sm" href="/uploads/fee_images/<?php echo $v['fee_image'];?>" target="_blank">图</a><?php } else {?>
-    否
-<?php }}?>
+<?php if($v['is_fee']) {?>是<?php }else {?>否<?php }?>
+<?php if ($v['fee_image']) {?>
+<a class="btn btn-primary btn-sm" href="/uploads/fee_images/<?php echo $v['fee_image'];?>" target="_blank">图</a>
+<?php }?>
 </th>
 <?php }?>
 <td class='w100'>

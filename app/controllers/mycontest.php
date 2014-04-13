@@ -81,7 +81,7 @@ class Mycontest extends SB_controller{
         $uid = $this->session->userdata ('uid');
         $act = $this->input->get('act', true);
         $mem = $this->input->get('mem', true);
-        $limit = 2;
+        $limit = 100;
 
         $config = $this->pageConfig;
         $config['per_page'] = $limit;
