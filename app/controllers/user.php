@@ -216,6 +216,11 @@ class User extends SB_Controller{
         if(@$array['1'] === $checkCode ){
             if($_POST){
                 $password = $this->input->post('password');
+                $passwordc = $this->input->post('password_c');
+                if ($password != $passwordc) {
+                    return $this->myclass->notice('alert("密码不一致，请重试!");history.back();');;
+                }
+                $password = md5($password);
                 if($this->user_m->update_user(@$data['uid'], array('password'=>$password))){
                     $this->session->set_userdata(array ('uid' => $data['uid'], 'username' => $array['0'],'password' => $password, 'group_type' => $data['group_type'], 'gid' => $data['gid']));
                     redirect('/');
