@@ -3,7 +3,7 @@
  * 竞赛内容首页
  */
 
-class Mycontest extends SB_controller{
+class Contests extends Admin_Controller{
     function __construct (){
         parent::__construct();
         $this->load->model('contest_m');
@@ -15,7 +15,7 @@ class Mycontest extends SB_controller{
             redirect('user/login');
         }
     }
-    
+
     public function index($page = 1){
         $this->my($page);
     }
@@ -320,7 +320,6 @@ class Mycontest extends SB_controller{
             return show_error('查看错误', 404, '违法操作');
         }
         $tids = array_slice($this->input->post(), 0, -1);
-        $tids = array_map('intval', $tids);
         if(empty($tids)){
             $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.$refer.'";');
         }
@@ -337,46 +336,6 @@ class Mycontest extends SB_controller{
         if($this->input->post('batch_unfee')){
             if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>0))){
                 $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.$refer.'";');
-            }
-        }
-        
-        // 批量下载论文
-        if ($this->input->post('batch_down')) {
-            $this->load->model('team');
-            $tInfos = $this->team_m->get_by_team_id_cid($tids, $cid);
-            
-            $this->load->library('zip');
-            $small = $big = 0;
-            foreach ($tInfos as $t) {
-                if (empty($t['result_file'])) {
-                    continue;
-                }
-                
-                if ($small == 0 || $small > $t['team_number']) {
-                    $small = $t['team_number'];
-                }
-                if ($big == 0 || $big < $t['team_number']) {
-                    $big = $t['team_number'];
-                }
-                $file_dir = UPLOADPATH . '/paper/';
-                $file_name = $t['result_file'];
-                $show_name = $t['team_number'] . strrchr($file_name, '.');
-                
-                $realPath = $file_dir . $t['result_file'];
-                
-                if (FALSE !== ($data = @file_get_contents($realPath)))
-                {
-                    $this->zip->add_data($show_name, $data);
-                }
-
-            }
-            if ($this->zip->zipdata)
-            {
-                return $this->zip->download($this->_getDownName($small.'~'.$big.'.zip'));
-            }
-            else
-            {
-                $this->myclass->notice('alert("文件不存在！");window.location.href="'.$refer.'";');
             }
         }
     }

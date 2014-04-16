@@ -159,6 +159,25 @@ class Team_m extends SB_Model{
             return false;
         }
     }
+    
+    /**
+     * 批量获取team信息
+     */
+    public function get_by_team_id_cid($tids, $cid)
+    {
+        if (!is_array($tids)) {
+            $tids = array($tids);
+        }
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->where_in('team_id', $tids)->where('contest_id', $cid)->where('status',1);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
 
     /**
      * 获取详细的参赛列表
