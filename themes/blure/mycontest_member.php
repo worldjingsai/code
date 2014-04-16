@@ -159,7 +159,7 @@
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export&<?=$url_query?>">导出全部团队信息</a>
 <a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>
-
+<input class="btn btn-primary btn-info" name="batch_down" type="submit" value="选中下载作品" />
 </div>
 </form>
 <?php } else{?>

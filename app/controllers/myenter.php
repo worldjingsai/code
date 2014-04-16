@@ -135,7 +135,7 @@ class Myenter extends SB_controller{
                     return $this->myclass->notice('alert("题目类型不能为空!");window.location.href="'.site_url("myenter/result/${team_id}").'";');;
                 }
             }
-            
+
             if (empty($_FILES['userfile']['tmp_name'])) {
                 return $this->myclass->notice('alert("文件不能为空!");window.location.href="'.site_url("myenter/result/${team_id}").'";');;
             }
@@ -162,9 +162,7 @@ class Myenter extends SB_controller{
                 return $this->myclass->notice('alert("文件不存在或者不符合要求请修改!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
             }
         }
-        if ($data['team']['result_file']) {
-            $data['team']['result_file'] = '/uploads/result_file/' . $data['team']['result_file'];
-        }
+
         $data['title'] = '作品信息';
         $this->load->view('myenter_result', $data);
     }

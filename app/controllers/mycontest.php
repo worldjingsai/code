@@ -15,7 +15,7 @@ class Mycontest extends SB_controller{
             redirect('user/login');
         }
     }
-    
+
     public function index($page = 1){
         $this->my($page);
     }
@@ -287,16 +287,18 @@ class Mycontest extends SB_controller{
         if (empty($teamInfo['result_file'])) {
             return $this->myclass->notice('alert("未上交作品！");');
         }
-        $file_dir = UPLOADPATH . '/paper/';
+        $file_dir = UPLOADPATH . 'paper/';
         $file_name = $teamInfo['result_file'];
         $show_name = $teamInfo['team_number'] . strrchr($file_name, '.');
+
         $file = fopen($file_dir . $teamInfo['result_file'],"r"); // 打开文件
+
         // 输入文件标签
         Header("Content-type: application/octet-stream");
         Header("Accept-Ranges: bytes");
         Header("Accept-Length: ".filesize($file_dir . $file_name));
         Header("Content-Disposition: attachment; filename=" . $show_name);
-        // 输出文件内容
+
         echo fread($file,filesize($file_dir . $file_name));
         fclose($file);
         exit();
@@ -339,31 +341,31 @@ class Mycontest extends SB_controller{
                 $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.$refer.'";');
             }
         }
-        
+
         // 批量下载论文
         if ($this->input->post('batch_down')) {
-            $this->load->model('team');
+            $this->load->model('team_m');
             $tInfos = $this->team_m->get_by_team_id_cid($tids, $cid);
-            
+
             $this->load->library('zip');
             $small = $big = 0;
             foreach ($tInfos as $t) {
                 if (empty($t['result_file'])) {
                     continue;
                 }
-                
+
                 if ($small == 0 || $small > $t['team_number']) {
                     $small = $t['team_number'];
                 }
                 if ($big == 0 || $big < $t['team_number']) {
                     $big = $t['team_number'];
                 }
-                $file_dir = UPLOADPATH . '/paper/';
+                $file_dir = UPLOADPATH . 'paper/';
                 $file_name = $t['result_file'];
                 $show_name = $t['team_number'] . strrchr($file_name, '.');
-                
+
                 $realPath = $file_dir . $t['result_file'];
-                
+
                 if (FALSE !== ($data = @file_get_contents($realPath)))
                 {
                     $this->zip->add_data($show_name, $data);
@@ -372,11 +374,12 @@ class Mycontest extends SB_controller{
             }
             if ($this->zip->zipdata)
             {
-                return $this->zip->download($this->_getDownName($small.'~'.$big.'.zip'));
+                $this->zip->download($this->_getDownName($small.'~'.$big.'.zip'));
+                $this->zip->clear_data();
             }
             else
             {
-                $this->myclass->notice('alert("文件不存在！");window.location.href="'.$refer.'";');
+                $this->myclass->notice('alert("文件不存在或者文件为空！");window.location.href="'.$refer.'";');
             }
         }
     }
