@@ -344,8 +344,14 @@ class Contest extends SB_controller{
                     $this->member_column_m->add($memberColumn);
                 }
             }
+            $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $configs['session']);
+            
+            $str = '您已成功报名参赛<br/>参数队号：'.$teamInfo['team_number'].'<br/>在您的个人账户”我的竞赛”中可以查看到完整的报名信息<br/>';
+            if ($configs['fee'] > 0) {
+                $str .= '请尽快缴纳参赛费,并在您的个人账户”我的竞赛”中上传缴费的付款证明图片及查看是否已缴费的状态';
+            }
 
-            return show_json(0, '您已成功报名参赛,请尽快缴纳参赛费,并在您的个人账户”我的竞赛”中上传缴费的付款证明图片,同时在”我的竞赛”中可以查看到完整的报名信息,及是否已缴费的状态', array('return_url' => '/contest/user_apply/'.$contest_id, 'show_time'=>10000));
+            return show_json(0, '', array('return_url' => '/contest/user_apply/'.$contest_id, 'show_time'=>10000));
         }
         $data['teamInfo'] = $teamInfo;
         $data['teamColumn'] = $teamColumn;

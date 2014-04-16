@@ -121,10 +121,23 @@ class Myenter extends SB_controller{
                     'max_size' => '10240'
             );
 
-            $team_level = $this->input->post('team_level', true);
-            $problem_number = $this->input->post('problem_number', true);
-            if (empty($team_level) || empty($problem_number) || empty($_FILES['userfile']['tmp_name'])) {
-                return $this->myclass->notice('alert("内容填写不完整!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
+            $problem_number = $team_level = '';
+            $confr = $data['conf']['r'];
+            if (!empty($confr['r1'][2])) {
+                $team_level = $this->input->post('team_level', true);
+                if (empty($team_level)) {
+                    return $this->myclass->notice('alert("团队组别不能为空!");window.location.href="'.site_url("myenter/result/${team_id}").'";');;
+                }
+            }
+            if(!empty($confr['r2'][2])) {
+                $problem_number = $this->input->post('problem_number', true);
+                if (empty($problem_number)) {
+                    return $this->myclass->notice('alert("题目类型不能为空!");window.location.href="'.site_url("myenter/result/${team_id}").'";');;
+                }
+            }
+            
+            if (empty($_FILES['userfile']['tmp_name'])) {
+                return $this->myclass->notice('alert("文件不能为空!");window.location.href="'.site_url("myenter/result/${team_id}").'";');;
             }
 
             // 分成60份
