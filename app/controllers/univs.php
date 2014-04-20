@@ -20,14 +20,14 @@ class Univs extends SB_Controller{
         $args = func_get_args();
         $short_name = $args[0];
         $contest_url = isset($args[1]) ? $args[1] : '';
-        
+
         if($this->auth->is_login()){
             $data['is_login'] = true;
         }
         $univs_info = $this->univs_m->get_univs_info_by_univs_short_name($short_name);
 
         $univs_id = isset($univs_info['univs_id']) ? $univs_info['univs_id'] : 0;
-        
+
         // 如果有竞赛url或者不是一个学校，查看是否有这个是竞赛
         if(empty($univs_info)){
             // 查询是否有竞赛存在
@@ -39,7 +39,7 @@ class Univs extends SB_Controller{
             }
             $this->myclass->notice('alert("该高校或者竞赛不存在");window.location.href="'.site_url('/').'";');
         }
-        
+
         if ($contest_url) {
             $args = array_slice($args, 2);
             // 查询是否有竞赛存在
@@ -49,7 +49,7 @@ class Univs extends SB_Controller{
             }
             $this->myclass->notice('alert("该高校竞赛不存在");window.location.href="'.site_url('/').'";');
         }
-        
+
         // 显示学校信息
         $data['university'] = $univs_info;
         $schooleContests = $this->_schoolcList(intval($univs_info['univs_id']), 0);
@@ -90,7 +90,7 @@ class Univs extends SB_Controller{
         $this->display("contest/univs_contest_list.html");
     }
 
-    
+
     /**
      * 显示一个竞赛
      * args[0],栏目
@@ -101,14 +101,14 @@ class Univs extends SB_Controller{
         // 引入模型
         $this->load->model('article_m');
         $this->load->model('article_content_m');
-    
+
         $cid = $cInfo['contest_id'];
-        
+
         $pageStr = '';
         if (isset($args[1])) {
             $pageStr = $args[1];
         }
-        
+
         // 是否是分支赛事
         if (isset($args[0]) && $args[0] == 'branch') {
             $data = $this->_get_contest($cid);
@@ -116,7 +116,7 @@ class Univs extends SB_Controller{
             $data['son_contest'] = $subContest;
             $tpl = 'contest/son_contest_list.html';
             $data['col'] = 0;
-        
+
         } elseif (strpos($pageStr, '.html') !== FALSE) {
             $article_id = intval(str_replace('.html', '', $pageStr));
             $data = $this->_get_article($article_id);
@@ -125,23 +125,23 @@ class Univs extends SB_Controller{
             $data = $this->_get_contest($cid);
             $page = $pageStr ? intval($pageStr) : 1;
             $limit = $this->limit;
-            
+
             $colums = Contest_m::$columNames;
-        
+
             $col = isset($args[0]) ? $args[0] : Contest_m::COLUM_NOTICE;
             if (!$col || !isset($colums[$col])){
                 $col = Contest_m::COLUM_NOTICE;
             }
-            
+
             $start = ($page - 1) * $limit;
-        
+
             $article = $this->article_m->get_all_contest(Article_content_m::TYPE_CONTEST, $cid, $col, $start, $limit);
-            
+
             $data['col'] = $col;
             $data['article'] = $article;
             $tpl = 'contest/univs_contest_col_list.html';
         }
-        
+
         $this->tplData = $data;
         $this->display($tpl);
     }
@@ -165,7 +165,7 @@ class Univs extends SB_Controller{
         }
         $show_data['action'] = 'create';
         $show_data['university'] = $univs_info;
-        
+
         $data = array();
         if ($_POST) {
             $data['contest_name'] = $this->input->post('contest_name', true);
@@ -178,12 +178,15 @@ class Univs extends SB_Controller{
             $data['contest_end_time'] = $this->input->post('contest_end_time', true);
             $data['contest_bbs'] = $this->input->post('contest_bbs', true);
 
+            $data['old_url'] = $this->input->post('old_url', true);
+            $data['remark'] = $this->input->post('remark', true);
+
             $parent_url = $this->input->post('parent_url', true);
             $parentInfo = $this->_get_contest_by_uri($parent_url);
             if (!empty($parentInfo['contest_id'])) {
                 $data['parent_id'] = $parentInfo['contest_id'];
             }
-            
+
             $data['univs_id'] = $univs_id;
             $data['create_time'] = date('Y-m-d H:i:s');
 
@@ -208,7 +211,7 @@ class Univs extends SB_Controller{
             } else {
                 $contest_short = $univs_info['short_name'] . '/' . $data['contest_url'];
             }
-            
+
             redirect($contest_short);
         }
 
@@ -217,7 +220,7 @@ class Univs extends SB_Controller{
         $this->display("contest/create_1.html");
     }
 
-    
+
     /**
      * 获取parentID
      */
@@ -235,11 +238,11 @@ class Univs extends SB_Controller{
         } else {
             $contest_url = $uri;
         }
-        
+
         $cInfo = $this->contest_m->get_contest_by_short_name($univs_id, $contest_url);
         return $cInfo;
     }
-    
+
     /**
      * 显示一个文章
      * @param int $article_id
@@ -249,7 +252,7 @@ class Univs extends SB_Controller{
         $this->tplData = $data;
         $this->display('contest/contest_article.html');
     }
-    
+
     /**
      * 添加文章和编辑文章
      * @param int $contest_id
@@ -268,7 +271,7 @@ class Univs extends SB_Controller{
 
         $this->load->model('article_m');
         $this->load->model('article_content_m');
-        
+
         // 只有创建者可以编辑文章
         if ($_POST) {
             $col = intval($this->input->post('col'));

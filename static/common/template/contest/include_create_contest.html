@@ -95,7 +95,20 @@
                 <input type="text" class="text" name="contest_bbs" value="<%$tplData.contest.contest_bbs|default:''%>"/>
             </td>
         </tr>
-        
+                
+        <tr>
+            <th>原竞赛官网:</th>
+            <td  >
+                <input type="text" class="text" name="old_url" value="<%$tplData.contest.old_url|default:''%>"/>
+            </td>
+        </tr>
+                
+        <tr>
+            <th>备注:</th>
+            <td  >
+                <textarea name="remark" style="min-width:300px; min-height:100px;"><%$tplData.contest.remark|default:''%></textarea>
+            </td>
+        </tr>
         <tr class="center">
             <td colspan="2" >
                 <button type="submit" class="btn btn-primary" >提  交</button>
