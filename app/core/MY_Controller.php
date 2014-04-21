@@ -12,6 +12,75 @@ class Base_Controller extends CI_Controller{
         $this->load->library('smarty');
     }
 
+    /**
+     * 展示模板
+     * @param string $template 模板的相对路径
+     */
+    public function display($template){
+        if(!empty($this->user_info)){
+            $this->tplData['user_info'] = $this->user_info;
+        }
+        $this->tplData['is_login'] = $this->is_login;
+        $this->smarty->assign('tplData', $this->tplData);
+        $this->smarty->display($template);
+    }
+
+    /**
+     * 已Json格式返回数据
+     * @param array  $data 要返回给前端的数据
+     */
+    public function show_json($data){
+        if(!isset($data['error_code'])){
+            $data['err_code'] = Constants::$success;
+        }
+        if(!isset($data['err_msg'])){
+            $data['err_msg']  = Constants::$err_message[$data['err_code']];
+        }
+        echo json_encode($data);
+        return ;
+    }
+
+    /**
+     * 导出CSV格式的数据
+     * @param string $filename
+     * @param string $data
+     */
+    public function exportCsv($filename,$data)
+    {
+        $filename = $this->_getDownName($filename);
+        $data = mb_convert_encoding($data, 'GBK', "UTF8");
+        header("Content-type:text/csv");
+        header("Content-Disposition:attachment;filename=".$filename);
+        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
+        header('Expires:0');
+        header('Pragma:public');
+        echo $data;
+    }
+
+    /**
+     * 获取GB2312编码文字
+     */
+    public function _getDownName($name)
+    {
+        $name = strip_tags($name);
+        // google系
+        if (preg_match("/AppleWebKit/i", $_SERVER['HTTP_USER_AGENT'])) {
+            $name = htmlspecialchars($name);
+            // IE系
+        } elseif (preg_match("/MSIE/i", $_SERVER['HTTP_USER_AGENT'])) {
+            $name = urlencode($name);
+            $name = str_replace("+", "%20", $name);
+            // 火狐系不做处理
+        } elseif (preg_match("/FireFox/i", $_SERVER['HTTP_USER_AGENT'])) {
+            // $name = $name;
+
+            // 其他，360兼容模式
+        } else {
+            $name = urlencode($name);
+            $name = str_replace("+", "%20", $name);
+        }
+        return $name;
+    }
 
 }
 
@@ -202,91 +271,47 @@ class SB_Controller extends Base_Controller{
             $contest_short = $univs_info['short_name'] . '/' . $cInfo['contest_url'];
         }
         $data['contest_url'] = $contest_short;
-        
+
         if ($this->is_login && isset($config['session']) && $config['type'] == 2) {
             // 本人是否有报名信息
             $this->load->model('team_m');
             $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $config['session']);
-            
+
             $data['teamInfo'] = $teamInfo;
         }
 
         return $data;
     }
 
-    /**
-     * 展示模板
-     * @param string $template 模板的相对路径
-     */
-    public function display($template){
-        if(!empty($this->user_info)){
-            $this->tplData['user_info'] = $this->user_info;
-        }
-        $this->tplData['is_login'] = $this->is_login;
-        $this->smarty->assign('tplData', $this->tplData);
-        $this->smarty->display($template);
-    }
-
-    /**
-     * 已Json格式返回数据
-     * @param array  $data 要返回给前端的数据
-     */
-    public function show_json($data){
-        if(!isset($data['error_code'])){
-            $data['err_code'] = Constants::$success;
-        }
-        if(!isset($data['err_msg'])){
-            $data['err_msg']  = Constants::$err_message[$data['err_code']];
-        }
-        echo json_encode($data);
-        return ;
-    }
-
-    /**
-     * 导出CSV格式的数据
-     * @param string $filename
-     * @param string $data
-     */
-    public function exportCsv($filename,$data)
-    {
-        $filename = $this->_getDownName($filename);
-        $data = mb_convert_encoding($data, 'GBK', "UTF8");
-        header("Content-type:text/csv");
-        header("Content-Disposition:attachment;filename=".$filename);
-        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
-        header('Expires:0');
-        header('Pragma:public');
-        echo $data;
-    }
-    
-    /**
-     * 获取GB2312编码文字
-     */
-    public function _getDownName($name)
-    {
-        $name = strip_tags($name);
-        // google系
-        if (preg_match("/AppleWebKit/i", $_SERVER['HTTP_USER_AGENT'])) {
-            $name = htmlspecialchars($name);
-            // IE系
-        } elseif (preg_match("/MSIE/i", $_SERVER['HTTP_USER_AGENT'])) {
-            $name = urlencode($name);
-            $name = str_replace("+", "%20", $name);
-            // 火狐系不做处理
-        } elseif (preg_match("/FireFox/i", $_SERVER['HTTP_USER_AGENT'])) {
-            // $name = $name;
-    
-            // 其他，360兼容模式
-        } else {
-            $name = urlencode($name);
-            $name = str_replace("+", "%20", $name);
-        }
-        return $name;
-    }
 }
 
 
 class Admin_Controller extends Base_Controller{
+
+    public $pageConfig = array(
+            'uri_segment' => 4,
+            'use_page_numbers' => TRUE,
+            'base_url' => '',
+            'total_rows' => 0,
+            'per_page' => 20,
+            'prev_link' => '&larr;',
+            'prev_tag_open' => '<li class=\'prev\'>',
+            'prev_tag_close' => '</li',
+            'cur_tag_open' => '<li class=\'active\'><span>',
+            'cur_tag_close' => '</span></li>',
+            'num_tag_open' => '<li>',
+            'num_tag_close' => '</li>',
+            'next_link' => '&rarr;',
+            'next_tag_open' => '<li class=\'next\'>',
+            'next_tag_close' => '</li>',
+            'first_link' => '首页',
+            'first_tag_open' => '<li class=\'first\'>',
+            'first_tag_close' => '</li>',
+            'last_link' => '尾页',
+            'last_tag_open' => '<li class=\'last\'>',
+            'last_tag_close' => '</li>',
+            'num_links' => 10,
+    );
     function __construct(){
         parent::__construct();
         $this->load->database();

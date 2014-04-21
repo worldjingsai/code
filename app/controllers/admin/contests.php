@@ -28,10 +28,10 @@ class Contests extends Admin_Controller{
         $uid = $this->session->userdata ('uid');
 
         //分页
-        $limit = 20;
+        $limit = 50;
         $config = $this->pageConfig;
         $config['uri_segment'] = 3;
-        $config['base_url'] = site_url('mycontest/my/');
+        $config['base_url'] = site_url('admin/contest/my/');
         $config['total_rows'] = $this->contest_m->count_contest(0, $uid);
         $config['per_page'] = $limit;
 
@@ -43,18 +43,12 @@ class Contests extends Admin_Controller{
         $this->load->model('contest_regist_config_m');
         $this->load->model('team_m');
 
-        $rows = $this->contest_m->get_create_by_uid($uid, $start, $limit);
+        $rows = $this->contest_m->list_all($start, $limit);
 
         if ($rows) {
             foreach ($rows as &$row) {
                 $cid = $row['contest_id'];
-                $conf = $this->contest_regist_config_m->get_normal($cid);
-                if (!$conf) {
-                    $row['enter_members'] = 0;
-                } else {
-                    $number = $this->team_m->count_team($cid, $conf['session']);
-                    $row['enter_members'] = $number;
-                }
+
                 $row['type_name'] = Contest_m::$typeNames[$row['contest_type']];
                 $row['level_name'] = Contest_m::$leverNames[$row['contest_level']];
 
@@ -69,32 +63,59 @@ class Contests extends Admin_Controller{
         $this->load->view('mycontest', $data);
     }
 
+
+    /**
+     * 我创建的竞赛
+     */
+    public function contest($cid, $page = 1)
+    {
+        $this->load->model('contest_m');
+        $contest = $this->contest_m->get($cid);
+        $this->load->model('contest_regist_config_m');
+
+        $rows = $this->contest_regist_config_m->listByCid($cid);
+
+        $this->load->model('team_m');
+        if ($rows) {
+            foreach ($rows as &$row) {
+                $cid = $row['contest_id'];
+                $sid = $row['session'];
+
+                $number = $this->team_m->count_team($cid, $sid);
+                $row['enter_members'] = $number;
+            }
+        }
+        $data['title'] = '我的竞赛';
+        $data['rows'] = $rows;
+        $data['contest'] = $contest;
+        $this->load->view('contest_one', $data);
+    }
+
+
     /**
      * 根据cid获取参赛的队列表
-     * @param unknown $cid
+     * @param intval $cid
      * @param number $page
      */
-    public function my_team_list($cid, $page = 1) {
+    public function team_list($cid, $session, $page = 1) {
 
         $gets = $this->input->get(null, true);
 
         $uid = $this->session->userdata ('uid');
         $act = $this->input->get('act', true);
         $mem = $this->input->get('mem', true);
-        $limit = 100;
+        $limit = 50;
 
         $config = $this->pageConfig;
         $config['per_page'] = $limit;
-        $config['uri_segment'] = 4;
-        $config['base_url'] = site_url('mycontest/my_team_list/' . $cid . '/');
+        $config['uri_segment'] = 6;
+        $config['base_url'] = site_url('admin/contests/team_list/' . $cid . '/'.$session);
         $config['url_arguments'] = $gets;
-        $this->load->model('contest_regist_config_m');
+
         $this->load->model('team_m');
-        $conf = $this->contest_regist_config_m->get_normal($cid);
+        $this->load->model('contest_regist_config_m');
+        $conf = $this->contest_regist_config_m->get_by_cid_session($cid, $session);
         $contest = $this->contest_m->get($cid);
-        if ($uid != $contest['create_user_id']) {
-            return show_error('查看错误', 404);
-        }
 
         $is_fee = isset($gets['is_fee']) ? $gets['is_fee'] : '-1';
         $is_up_imag = isset($gets['fee_image']) ? $gets['fee_image'] : '-1';
@@ -228,7 +249,6 @@ class Contests extends Admin_Controller{
      * @param int $team_id
      */
     public function team_info($team_id) {
-        $uid = $this->session->userdata ('uid');
 
         $this->load->model('team_m');
         $this->load->model('team_column_m');
@@ -242,9 +262,6 @@ class Contests extends Admin_Controller{
             $teamColumn = $this->team_column_m->get($team_id);
             $memberColumn = $this->member_column_m->list_by_team_id($team_id);
             $contest = $this->contest_m->get($teamInfo['contest_id']);
-            if ($uid != $contest['create_user_id']) {
-                return show_error('查看错误', 404);
-            }
         } else {
             return show_error('团队不存在', 404);
         }
@@ -267,7 +284,6 @@ class Contests extends Admin_Controller{
      * @param int $team_id
      */
     public function result_file($team_id) {
-        $uid = $this->session->userdata ('uid');
 
         $this->load->model('team_m');
         $this->load->model('contest_regist_config_m');
@@ -277,9 +293,6 @@ class Contests extends Admin_Controller{
         if ($teamInfo) {
             $team_id = $teamInfo['team_id'];
             $contest = $this->contest_m->get($teamInfo['contest_id']);
-            if (($uid != $contest['create_user_id']) && ($uid != $teamInfo['create_user_id'])) {
-                return show_error('查看错误', 404);
-            }
         } else {
             return show_error('团队不存在', 404);
         }
@@ -307,48 +320,23 @@ class Contests extends Admin_Controller{
      */
     public function batch_process($cid = 0, $page=1)
     {
-        $uid = $this->session->userdata ('uid');
-
         $refer = $this->input->server('HTTP_REFERER', true);
 
         $refer = str_replace(';', '', $refer);
         if (preg_match('/.*batch_process.*/', $refer)) {
-            $refer = site_url('/mycontest/my_team_list/'.$cid.'/'.$page);
+            $refer = site_url('admin/contests/my/'.$page);
         }
-        $contest = $this->contest_m->get($cid);
-        if (empty($contest) || ($uid != $contest['create_user_id'])) {
-            return show_error('查看错误', 404, '违法操作');
-        }
-        $tids = array_slice($this->input->post(), 0, -1);
-        if(empty($tids)){
-            $this->myclass->notice('alert("请选择需要操作的队伍!");window.location.href="'.$refer.'";');
+
+        $cids = array_slice($this->input->post(), 0, -1);
+        if(empty($cids)){
+            $this->myclass->notice('alert("请选择需要操作的竞赛!");window.location.href="'.$refer.'";');
         }
         if($this->input->post('batch_del')){
-            if($this->db->where_in('fid',$tids)->delete('forums')){
-                $this->myclass->notice('alert("批量删除团队成功！");window.location.href="'.$refer.'";');
-            }
-        }
-        if($this->input->post('batch_fee')){
-            if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>1))){
-                $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.$refer.'";');
-            }
-        }
-        if($this->input->post('batch_unfee')){
-            if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_fee'=>0))){
-                $this->myclass->notice('alert("批量更新缴费状态成功！");window.location.href="'.$refer.'";');
+            if($this->db->where_in('contest_id',$cids)->update('contest', array('status' => 0))){
+                $this->db->where_in('contest_id',$cids)->update('university_contest', array('status' => 0));
+                $this->myclass->notice('alert("批量删除竞赛成功！");window.location.href="'.$refer.'";');
             }
         }
     }
 
-    public function ajax_search_team(){
-        $contest_id = intval($this->input->get('cid'));
-        $session    = intval($this->input->get('session'));
-        $is_fee     = intval($this->input->get('is_fee'));
-        $is_upload_fee_image = intval($this->input->get('is_upload_fee_image'));
-        $page       = intval($this->input->get('page'));
-        $limit      = 10;
-        $this->load->model('team_m');
-        $result['rows'] = $this->team_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_upload_fee_image,$page,$limit);
-        $this->load->view('search_team_result', $result);
-    }
 }

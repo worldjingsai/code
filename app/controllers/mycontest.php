@@ -318,7 +318,10 @@ class Mycontest extends SB_controller{
             $refer = site_url('/mycontest/my_team_list/'.$cid.'/'.$page);
         }
         $contest = $this->contest_m->get($cid);
-        if (empty($contest) || ($uid != $contest['create_user_id'])) {
+        if (empty($contest) ) {
+            return show_error('查看错误', 404, '违法操作');
+        }
+        if(($uid != $contest['create_user_id']) && !$this->auth->is_admin()) {
             return show_error('查看错误', 404, '违法操作');
         }
         $tids = array_slice($this->input->post(), 0, -1);

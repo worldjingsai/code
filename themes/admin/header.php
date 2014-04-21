@@ -1,7 +1,7 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 <div class="container">
 	<div class="navbar-header">
-		<a class="navbar-brand" href="<?php echo site_url()?>">Start<span class="green">BBS</span></a>
+		<a class="navbar-brand" href="<?php echo site_url()?>">环球<span class="red">竞赛</span>网</a>
 <!--<a class=".btn .btn-default navbar-btn collapsed" data-target=".navbar-collapse" data-toggle="collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a href="<?php echo site_url()?>" class="brand">Start<span class="green">BBS</span></a>-->
 	</div>
 
@@ -28,6 +28,7 @@
 			<li><a href="<?php echo site_url('settings/index')?>">个人设置</a></li>
 			<?php if($this->auth->is_admin()){ ?>
 			<li class=""><a href="<?php echo site_url('admin/login')?>">管理后台</a></li>
+			<li class=""><a href="<?php echo site_url('admin/contests/my')?>">竞赛管理</a></li>
 			<?php }?>
 			<li><a href="<?php echo site_url('user/logout')?>" data-method="delete" rel="nofollow">退出</a></li>
 			<?php }else{?>

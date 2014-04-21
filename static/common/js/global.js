@@ -21,7 +21,7 @@ $(function(){
 		$("#js_register").show("fast");
 	  });
 	
-	if(jQuery.validator.length > 0) {
+	if(jQuery.validator != undefined && jQuery.validator.length > 0) {
 		jQuery.validator.addMethod("regexPassword", function(value, element) {  
 		    return this.optional(element) || /^(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?=.*[A-Za-z]).*$/.test(value);  
 		}, "一个字母，一个数字");

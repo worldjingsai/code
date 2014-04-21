@@ -18,7 +18,7 @@ class Contest_m extends SB_Model{
 
     const TYPE_SCHOOL = 1;
     const TYPE_PUBLIC = 2;
-    
+
     const LEVEL_SCHOOL = 1;
     const LEVEL_PROVINCE = 2;
     const LEVEL_NATION = 3;
@@ -29,7 +29,7 @@ class Contest_m extends SB_Model{
     self::LEVEL_NATION => '全国竞赛',
     self::LEVEL_INTERNATION => '国际竞赛'
     );
-    
+
     static $typeNames = array(
         1 => '数学建模',
         2=>'ACM程序设计',
@@ -39,16 +39,16 @@ class Contest_m extends SB_Model{
         6=>'文体类竞赛',
         7=>'艺术类竞赛'
     );
-    
+
     const STATUS_NORMAL = 1;
     const STATUS_DEL = -6;
 
     public $tb = 'contest';
-    
+
     function __construct(){
         parent::__construct();
     }
-    
+
     function add($data){
         if($this->db->insert($this->tb, $data)){
             return $this->db->insert_id();
@@ -62,10 +62,10 @@ class Contest_m extends SB_Model{
         $query = $this->db->where('contest_id',$cid)->where('status',1)->get($this->tb);
         return $query->row_array();
     }
-    
+
     public function get_contest_by_short_name($univs_id, $short_name){
         $this->db->select('*');
-        
+
         if ($univs_id) {
             $query = $this->db->where('univs_id', $univs_id)->where('contest_url',$short_name)->where('status',1)->get($this->tb);;
         } else {
@@ -75,7 +75,7 @@ class Contest_m extends SB_Model{
         }
         return $query->row_array();
     }
-    
+
     /**
      * 更新一个竞赛
      * @param int $contest_id
@@ -112,9 +112,9 @@ class Contest_m extends SB_Model{
         $this->db->order_by('create_time','desc');
         $col = self::$leverNames;
         unset($col[self::LEVEL_SCHOOL]);
-        
+
         $this->db->where_in('contest_level', array_keys($col))->where('status',1);
-        
+
         $this->db->offset($offset);
         $this->db->limit($limit);
         $query = $this->db->get();
@@ -145,7 +145,42 @@ class Contest_m extends SB_Model{
             return false;
         }
     }
-    
+
+    /*
+     * 获取所有的竞赛明细
+    */
+    public function list_all($offset =0, $limit = 20){
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->order_by('create_time','desc');
+        $this->db->where('status',1);
+        $this->db->offset($offset);
+        $this->db->limit($limit);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     * 获取所有的竞赛明细
+    */
+    public function count_all(){
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->order_by('create_time','desc');
+        $this->db->where('status',1);
+
+        $query = $this->db->get();
+        if ($query->result()) {
+            return $query->num_rows();
+        } else {
+            return 0;
+        }
+    }
+
     /**
      * 获取创建的竞赛
      * @param unknown $page
@@ -165,7 +200,7 @@ class Contest_m extends SB_Model{
             return false;
         }
     }
-    
+
     /**
      * 获取参加的竞赛
      * @param unknown $page
@@ -185,7 +220,7 @@ class Contest_m extends SB_Model{
             return false;
         }
     }
-    
+
     /**
      * 检测某项竞赛在某个高校是否存在
      * @param  string $uri 输入的竞赛的URI
@@ -199,7 +234,7 @@ class Contest_m extends SB_Model{
        }
        return false;
     }
-    
+
     /**
      * 检测某项竞赛在全国是否存在
      * @param  string $uri 输入的竞赛的URI
@@ -216,7 +251,7 @@ class Contest_m extends SB_Model{
         }
         return false;
     }
-    
+
 
     /**
      * 获取栏目条目
@@ -227,7 +262,7 @@ class Contest_m extends SB_Model{
         $this->db->where('status', self::STATUS_NORMAL);
         if($cid){
             $this->db->where('create_user_id', $cid);
-        } 
+        }
         if($univs_id) {
             $this->db->where('univs_id', $univs_id);
         }
@@ -238,7 +273,7 @@ class Contest_m extends SB_Model{
             return 0;
         }
     }
-    
+
     /**
      * 获取子竞赛数
      */
@@ -256,7 +291,7 @@ class Contest_m extends SB_Model{
             return 0;
         }
     }
-    
+
     /**
      * 获取子竞赛数
      */
@@ -267,7 +302,7 @@ class Contest_m extends SB_Model{
         $this->db->join('university b', 'b.univs_id = a.univs_id');
         $this->db->order_by('create_time','desc');
         $this->db->where('a.parent_id',$cid)->where('a.status',1);
-        
+
         $query = $this->db->get();
         if($query->num_rows() > 0){
             return $query->result_array();
