@@ -7,7 +7,7 @@
 <meta name="description" content="<%$tplData.contest.contest_name|strip_tags%>全国大学生竞赛联盟">
 <link rel="shortcut icon" href="/favicon.ico">
 
-<link  rel='stylesheet' type='text/css' href='/static/common/css/jingsai.css?v=0409' >
+<link  rel='stylesheet' type='text/css' href='/static/common/css/jingsai.css?v=0430' >
 <link  rel='stylesheet' type='text/css' href='/static/common/css/jquery-ui-1.10.4.custom.min.css' >
 <script src="/static/common/js/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script src="/static/common/js/jquery.validate.js?v=1.0" type="text/javascript"></script>
@@ -35,17 +35,28 @@
   	<div class="bdshare">
 	<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a><a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
 	</div>
+	
   	<h1 class="contest_h1"><%$tplData.contest.contest_name%></h1>
   	<div class="time" id="lxftime" endtime="<%$tplData.contest.contest_start_time%>" showdetailtime="no"></div>
-  	<div class="bm"><%if !empty($tplData.reconf.type) && $tplData.reconf.type==2%>
+  	<div class="bm">
+  	<%if !empty($tplData.reconf.type) && $tplData.reconf.type==2%>
   	<%if !empty($tplData.teamInfo) && $tplData.teamInfo.team_id%>
   	<div class="team_info">报名队号：<%$tplData.teamInfo.team_number%></div>
   	<a class="btn btn-warning" href="/contest/user_apply/<%$tplData.contest.contest_id%>">查看&编辑队伍信息</a>
-  	<%else%>
+  	<%elseif !empty($tplData.show_enter) %>
   	<a class="enter" href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a>
   	<%/if%><%/if%>
   	</div>
   	
+  	<%if !empty($tplData.show_result)%>
+  	<div class="up_result">
+  	<%if  !empty($tplData.teamInfo) && $tplData.teamInfo.team_id%>
+  	<a class="btn btn-warning" href="/myenter/result/<%$tplData.teamInfo.team_id|default:''%>">上传作品</a>
+    <%elseif empty($tplData.user_info.username)%>
+    <a class="btn btn-warning" href="/user/login">上传作品</a>
+    <%/if%>
+    </div>
+    <%/if%>
   	<%if $tplData.contest.sons_num > 0%><div class="fsbm"><a href="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a></div><%/if%>
   	<div class="contest_time">
   	<div class="enterbm"><span class="icon"></span>报名时间：<%if $tplData.contest.regist_start_time != '0000-00-00 00:00:00'%><%$tplData.contest.regist_start_time|truncate:16:'':true%><%else%>还未设置<%/if%>

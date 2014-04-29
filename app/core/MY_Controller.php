@@ -246,6 +246,18 @@ class SB_Controller extends Base_Controller{
         $config = $this->contest_regist_config_m->get_normal($cid);
         $data['reconf'] = $config;
 
+        if (!empty($data['reconf']['type']) && $data['reconf']['type']==2) {
+            $t = date('Y-m-d H:i:s');
+            if ($t >= $cInfo['regist_start_time'] && $t <= $cInfo['regist_end_time']) {
+                $data['show_enter'] = true;
+            }
+
+            $et = date('Y-m-d H:i:s', strtotime('-2 hours'));
+            if ($t >= $cInfo['contest_start_time'] && $et <= $cInfo['contest_end_time']) {
+                $data['show_result'] = true;
+            }
+        }
+
         $univs_id = $cInfo['univs_id'];
         if (!empty($cInfo['parent_id'])){
             $pInfo = $this->contest_m->get($cInfo['parent_id']);

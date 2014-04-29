@@ -10,9 +10,9 @@ class Myenter extends SB_controller{
         $this->load->model('univs_m');
         $this->load->library('myclass');
         $this->load->model('user_m');
-
-        if(!$this->auth->is_login ()){
-            redirect('user/login');
+        if (!$this->is_login) {
+            $this->myclass->notice('alert("您还未登录请登录后再操作");window.location.href="/user/login";');
+            return 0;
         }
     }
 
@@ -106,7 +106,7 @@ class Myenter extends SB_controller{
      * 上传作品
      * @param int $team_id
      */
-    public function result($team_id) {
+    public function result($team_id = '') {
         $uid = $this->session->userdata ('uid');
 
         $data = $this->_get_team($team_id);

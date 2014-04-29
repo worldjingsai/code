@@ -25,14 +25,12 @@ class Contests extends Admin_Controller{
      */
     public function my($page = 1)
     {
-        $uid = $this->session->userdata ('uid');
-
         //分页
         $limit = 50;
         $config = $this->pageConfig;
-        $config['uri_segment'] = 3;
-        $config['base_url'] = site_url('admin/contest/my/');
-        $config['total_rows'] = $this->contest_m->count_contest(0, $uid);
+        $config['uri_segment'] = 4;
+        $config['base_url'] = site_url('admin/contests/my/');
+        $config['total_rows'] = $this->contest_m->count_contest(0, 0);
         $config['per_page'] = $limit;
 
         $this->load->library('pagination');
