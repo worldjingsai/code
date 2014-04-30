@@ -19,4 +19,8 @@ class Other extends SB_Controller{
     public function frands(){
         $this->display("other/frands.html");
     }
+
+    public function help(){
+        $this->display("other/help.html");
+    }
 }

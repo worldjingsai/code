@@ -37,7 +37,7 @@
 		      </div>
 		</form>
           <ul class="nav navbar-nav navbar-right">
- 
+
 	        <?php if($this->session->userdata('uid')){ ?>
 			<li><a href="<?php echo site_url('user/info/'.$this->session->userdata('uid').'')?>"><?php echo $this->session->userdata('username');?></a></li>
 			<li><a href="<?php echo site_url('settings/index')?>">个人设置</a></li>
@@ -51,9 +51,10 @@
             <li><a href="<?php echo site_url('user/login')?>">登录</a></li>
             <!-- li><a style="padding-top: 11px;overflow:hidden;" href="<?php echo site_url("qq_login")?>"><img src="<?php echo base_url("static/common/images/qq_login.png");?>" /></a></li> -->
             <?php }?>
+            <li><a href="<?php echo site_url('other/help')?>" target="_blank">帮助</a></li>
           </ul>
         </div><!--/.nav-collapse -->
-        
+
 </div>
 </div>
 
