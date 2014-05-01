@@ -156,7 +156,7 @@ class Myenter extends SB_controller{
                 $filearray = array('result_file' => $file, 'problem_number' => $problem_number, 'team_level' => $team_level, 'result_time' => date('Y-m-d H:i:s'));
                 $this->db->where('team_id',$team_id)->update('team', $filearray);
                 $data['msg'] = '文件上传成功!';
-                header("location:/myenter/result/${team_id}");
+                return $this->myclass->notice('alert("恭喜你作品上传成功!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
                 exit();
             } else {
                 return $this->myclass->notice('alert("文件不存在或者不符合要求请修改!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
