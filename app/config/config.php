@@ -54,5 +54,7 @@ $config['admin_folder']		= 'admin';
 
 $config['time_zone'] = date_default_timezone_get();
 
+$config['is_use_qiniu'] = true;
+
 /* End of file config.php */
 /* Location: ./application/config/config.php */

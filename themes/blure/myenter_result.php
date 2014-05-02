@@ -4,6 +4,10 @@
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
 <title><?php echo $title?> - 我的竞赛 - <?php echo $settings['site_name']?></title>
 <?php $this->load->view('header-meta');?>
+<link href="<?php echo base_url('static/common/css/jquery-ui-1.10.4.custom.min.css');?>" media="screen" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?php echo base_url('static/common/js/jquery-1.10.2.min.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url('static/common/js/jquery-ui-1.10.4.custom.min.js');?>"></script>
+
 </head>
 <body id="startbbs">
 <?php $this->load->view('header');?>
@@ -90,13 +94,22 @@
     			<div class="form-group">
       				<label class="col-sm-2 control-label" for="avatar_file">选择作品</label>
       				<div class="col-sm-5">
-       					<input type="file" id="avatar_file" name="userfile" />
+       					<input type="file" id="file" name="userfile" />
       				</div>
+      				<div id="progressbar" ><div class="progress-label"></div></div>
+      				<?php if (!empty($qiniu['is_used'])) {?>
+					<input type="hidden" id="token" name="token"  value="<?php  echo $qiniu['up_token'];?>">
+					<input type="hidden" id="key" name="key"  value="<?php  echo $qiniu_key?>">
+					<?php }?>
     			</div>
 
     			<div class="form-group">
 	    			<div class="col-sm-offset-2 col-sm-9">
+	    			<?php if (!empty($qiniu['is_used'])) {?>
+	    			<input type="button" id="btn_upload" name="upload" class="btn btn-sm btn-primary" value="上传新作品"></input>
+	    			<?php } else {?>
     				<button type="submit" name="upload" class="btn btn-sm btn-primary">上传新作品</button>
+    				<?php }?>
     				</div>
     			</div>
     		</fieldset>
@@ -106,12 +119,6 @@
 <?php } else{?>
 暂无团队
 <?php }?>
-</div>
-
-<div>
-<ul class='pagination'>
-<?php echo isset($pagination) ? $pagination : '';?>
-</ul>
 </div>
 
 </div>
@@ -125,6 +132,10 @@ $(document).ready(function(){
   $("#checkall").bind('click',function(){
   $("input:checkbox").prop("checked",$(this).prop("checked"));//全选
   });
+
 });
 </script>
+<?php if (!empty($qiniu['is_used'])) {?>
+<script type="text/javascript" src="<?php echo base_url('static/common/js/qiniuResult.js');?>"></script>
+<?php }?>
 </body></html>

@@ -159,7 +159,8 @@
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export&<?=$url_query?>">导出全部团队信息</a>
 <a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>
-<input class="btn btn-primary btn-info" name="batch_down" type="submit" value="选中下载作品" />
+<input id="btn_down" class="btn btn-primary btn-info" name="batch_down" type="submit" value="选中下载作品" />
+<p id="down_notice" class="alert alert-warning red" style="display: none">批量下载可能时间较长请耐心等待</p>
 </div>
 </form>
 <?php } else{?>
@@ -184,6 +185,15 @@ $(document).ready(function(){
   $("#checkall").bind('click',function(){
   $("input:checkbox").prop("checked",$(this).prop("checked"));//全选
   });
+  $("input:checkbox").on('change', function(){
+	    //$("#btn_down").attr('disabled', false);
+	    $("#down_notice").hide();
+	  })
+  $("#btn_down").on('click', function(){
+	    //$("#btn_down").attr('disabled', true);
+	    $("#down_notice").show();
+	    return true;
+	})
 });
 </script>
 </body></html>

@@ -291,17 +291,41 @@ class Mycontest extends SB_controller{
         $file_name = $teamInfo['result_file'];
         $show_name = $teamInfo['team_number'] . strrchr($file_name, '.');
 
-        $file = fopen($file_dir . $teamInfo['result_file'],"r"); // 打开文件
+        $fileName = $file_dir . $teamInfo['result_file'];
 
-        // 输入文件标签
-        Header("Content-type: application/octet-stream");
-        Header("Accept-Ranges: bytes");
-        Header("Accept-Length: ".filesize($file_dir . $file_name));
-        Header("Content-Disposition: attachment; filename=" . $show_name);
+        // 本地文件
+        if (file_exists($fileName)) {
+            $file = fopen($file_dir . $teamInfo['result_file'],"r"); // 打开文件
 
-        echo fread($file,filesize($file_dir . $file_name));
-        fclose($file);
-        exit();
+            // 输入文件标签
+            Header("Content-type: application/octet-stream");
+            Header("Accept-Ranges: bytes");
+            Header("Accept-Length: ".filesize($file_dir . $file_name));
+            Header("Content-Disposition: attachment; filename=" . $show_name);
+
+            echo fread($file,filesize($file_dir . $file_name));
+            fclose($file);
+            exit();
+
+        // 七牛文件
+        } else {
+            $isQiniu = $this->config->item('is_use_qiniu');
+            $qiniu = array('is_used' => $isQiniu);
+            if ($isQiniu) {
+                $this->config->load('qiniu');
+
+                $params =array(
+                        'accesskey'=>$this->config->item('accesskey'),
+                        'secretkey'=>$this->config->item('secretkey'),
+                        'bucket'=>$this->config->item('bucket'),
+                        'file_domain'=>$this->config->item('file_domain'),
+                );
+                $this->load->library('qiniu_lib',$params);
+                $url = $this->qiniu_lib->getDownUrl($file_name, $show_name);
+
+                header('location:'.$url);
+            }
+        }
     }
 
     /**
@@ -347,6 +371,7 @@ class Mycontest extends SB_controller{
 
         // 批量下载论文
         if ($this->input->post('batch_down')) {
+            set_time_limit(0);
             $this->load->model('team_m');
             $tInfos = $this->team_m->get_by_team_id_cid($tids, $cid);
 
@@ -369,12 +394,43 @@ class Mycontest extends SB_controller{
 
                 $realPath = $file_dir . $t['result_file'];
 
+                // 转存到本地
+                if (!file_exists($realPath)) {
+                    $isQiniu = $this->config->item('is_use_qiniu');
+                    $qiniu = array('is_used' => $isQiniu);
+                    if ($isQiniu) {
+                        $this->config->load('qiniu');
+
+                        $params =array(
+                                'accesskey'=>$this->config->item('accesskey'),
+                                'secretkey'=>$this->config->item('secretkey'),
+                                'bucket'=>$this->config->item('bucket'),
+                                'file_domain'=>$this->config->item('file_domain'),
+                        );
+                        $this->load->library('qiniu_lib',$params);
+                        $url = $this->qiniu_lib->getDownUrl($file_name, $show_name);
+
+                        $puts = @file_get_contents($url);
+                        if ($puts) {
+
+                            // 分成60份
+                            $pos = strrpos($t['result_file'], '/');
+                            $tdir = substr($t['result_file'], 0, $pos);
+                            $dir = $file_dir . $tdir;
+
+                            if(!is_dir($dir)){
+                                mkdir($dir,0777,true);
+                            }
+                            @file_put_contents($realPath, $puts);
+                        }
+                    }
+                }
                 if (FALSE !== ($data = @file_get_contents($realPath)))
                 {
                     $this->zip->add_data($show_name, $data);
                 }
-
             }
+
             if ($this->zip->zipdata)
             {
                 $this->zip->download($this->_getDownName($small.'~'.$big.'.zip'));

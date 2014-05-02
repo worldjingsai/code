@@ -107,20 +107,35 @@ class Myenter extends SB_controller{
      * @param int $team_id
      */
     public function result($team_id = '') {
+
+        $isQiniu = $this->config->item('is_use_qiniu');
+        $qiniu = array('is_used' => $isQiniu);
+        if ($isQiniu) {
+            $this->config->load('qiniu');
+
+            $params =array(
+                    'accesskey'=>$this->config->item('accesskey'),
+                    'secretkey'=>$this->config->item('secretkey'),
+                    'bucket'=>$this->config->item('bucket'),
+                    'file_domain'=>$this->config->item('file_domain').'/',
+            );
+            $this->load->library('qiniu_lib',$params);
+            $qiniu['up_token'] = $this->qiniu_lib->upToken;
+        }
+
         $uid = $this->session->userdata ('uid');
 
         $data = $this->_get_team($team_id);
-        if (!$data) {
-            return ;
-        }
-        if($_POST){
-            $config = array(
-                    'allowed_types' => '*',
-                    'upload_path' => UPLOADPATH.'paper/',
-                    'encrypt_name' => true,
-                    'max_size' => '10240'
-            );
+        $data['qiniu'] = $qiniu;
+        list($usec, $sec) = explode(" ", microtime());
+        $dir = $data['contest']['contest_id'] . '/' . $team_id % 60;
+        $data['qiniu_key'] = $dir .'/'. $team_id . md5(mt_rand() . $sec);
 
+        if (!$data || $data['team']['create_user_id'] != $uid) {
+             return $this->myclass->notice('alert("没有权限!");window.location.href="'.site_url("/").'";');
+        }
+
+        if($_POST){
             $problem_number = $team_level = '';
             $confr = $data['conf']['r'];
             if (!empty($confr['r1'][2])) {
@@ -136,30 +151,47 @@ class Myenter extends SB_controller{
                 }
             }
 
-            if (empty($_FILES['userfile']['tmp_name'])) {
-                return $this->myclass->notice('alert("文件不能为空!");window.location.href="'.site_url("myenter/result/${team_id}").'";');;
-            }
-
-            // 分成60份
-            $dir = $data['contest']['contest_id'] . '/' . $team_id % 60;
-            $config['upload_path'] = $config['upload_path'] . $dir . '/';
-            if(!is_dir($config['upload_path'])){
-                mkdir($config['upload_path'],0777,true);
-            }
-
-            $this->load->library('upload', $config);
-
-            if ($this->upload->do_upload()) {
-
-                $image_data_temp = $this->upload->data();
-                $file = $dir . '/' . $image_data_temp['file_name'];
+            // 七牛上传，直接保存文件
+            if ($isQiniu) {
+                $file = $this->input->post('upload_file', true);
                 $filearray = array('result_file' => $file, 'problem_number' => $problem_number, 'team_level' => $team_level, 'result_time' => date('Y-m-d H:i:s'));
                 $this->db->where('team_id',$team_id)->update('team', $filearray);
                 $data['msg'] = '文件上传成功!';
-                return $this->myclass->notice('alert("恭喜你作品上传成功!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
-                exit();
+                show_json(0, '恭喜你作品上传成功');
+                exit;
+            // 本地上传
             } else {
-                return $this->myclass->notice('alert("文件不存在或者不符合要求请修改!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
+                $config = array(
+                        'allowed_types' => '*',
+                        'upload_path' => UPLOADPATH.'paper/',
+                        'encrypt_name' => true,
+                        'max_size' => '10240'
+                );
+                if (empty($_FILES['userfile']['tmp_name'])) {
+                    return $this->myclass->notice('alert("文件不能为空!");window.location.href="'.site_url("myenter/result/${team_id}").'";');;
+                }
+
+                // 分成60份
+                $dir = $data['contest']['contest_id'] . '/' . $team_id % 60;
+                $config['upload_path'] = $config['upload_path'] . $dir . '/';
+                if(!is_dir($config['upload_path'])){
+                    mkdir($config['upload_path'],0777,true);
+                }
+
+                $this->load->library('upload', $config);
+
+                if ($this->upload->do_upload()) {
+
+                    $image_data_temp = $this->upload->data();
+                    $file = $dir . '/' . $image_data_temp['file_name'];
+                    $filearray = array('result_file' => $file, 'problem_number' => $problem_number, 'team_level' => $team_level, 'result_time' => date('Y-m-d H:i:s'));
+                    $this->db->where('team_id',$team_id)->update('team', $filearray);
+                    $data['msg'] = '文件上传成功!';
+                    return $this->myclass->notice('alert("恭喜你作品上传成功!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
+                    exit();
+                } else {
+                    return $this->myclass->notice('alert("文件不存在或者不符合要求请修改!");window.location.href="'.site_url("myenter/result/${team_id}").'";');
+                }
             }
         }
 

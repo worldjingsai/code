@@ -1,7 +1,7 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 /**
- * ÆßÅ£´æ´¢½Ó¿ÚÀà£¬ÒÑ·â×°¡£
- * ÓÉÉÕ±ý¸Ä½ø¡£
+ * ï¿½ï¿½Å£ï¿½æ´¢ï¿½Ó¿ï¿½ï¿½à£¬ï¿½Ñ·ï¿½×°ï¿½ï¿½
+ * ï¿½ï¿½ï¿½Õ±ï¿½Ä½ï¿½
  * @author startbbs@126.com
  *
  */
@@ -12,11 +12,11 @@ class Qiniu_lib
 	public $secretKey;
 	public $bucket;
 	public $file_path;
-	
+
 
 	function __construct($params)
 	{
-		/** ÊµÀý»¯*/
+		/** Êµï¿½ï¿½*/
 		$this->ci =& get_instance();
 		require_once("qiniu/io.php");
 		require_once("qiniu/rs.php");
@@ -26,14 +26,31 @@ class Qiniu_lib
 		$this->secretKey = $params['secretkey'];
 		$this->bucket =  $params['bucket'];
 		$this->file_domain = $params['file_domain'];
-		
+
 		$key='test.png';
 		Qiniu_SetKeys($this->accessKey, $this->secretKey);
 		$putPolicy = new Qiniu_RS_PutPolicy($this->bucket);
+		if (empty($params['file_size'])) {
+		    $putPolicy->FsizeLimit = 10485760;
+
+		}
+
 		$this->upToken = $putPolicy->Token(null);
 
 		$this->putExtra = new Qiniu_PutExtra();
-		$this->putExtra->Crc32 = 1;		
+		$this->putExtra->Crc32 = 1;
+	}
+
+	public function getDownUrl($key, $fileName = '') {
+	    Qiniu_SetKeys($this->accessKey, $this->secretKey);
+	    $baseUrl = Qiniu_RS_MakeBaseUrl($this->file_domain, $key);
+	    $baseUrl .= '?download';
+	    if ($fileName) {
+	        $baseUrl .= '/'.$fileName;
+	    }
+	    $getPolicy = new Qiniu_RS_GetPolicy();
+	    $privateUrl = $getPolicy->MakeRequest($baseUrl, null);
+	    return $privateUrl;
 	}
 
 	public function uploadfile($file_path)
@@ -103,7 +120,7 @@ class Qiniu_lib
 	//	return $this->fileHandle($url);
 	//}
 
-	//// $operator = stat|move|copy|delete 
+	//// $operator = stat|move|copy|delete
 	//// $client->batch('stat',array('square:test/test5.txt','square:test/test13.png'));
 	//public function batch($operator,$files)
 	//{
@@ -139,7 +156,7 @@ class Qiniu_lib
 	//	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 	//	    'Authorization: QBox '.$accessToken,
 	//    ));
-		
+
 	//    curl_setopt($ch, CURLOPT_URL, $url);
 	//    curl_setopt($ch, CURLOPT_POST, true);
 	//    // If $data is an array, the Content-Type header will be set to multipart/form-data
