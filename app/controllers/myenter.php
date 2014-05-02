@@ -126,14 +126,15 @@ class Myenter extends SB_controller{
         $uid = $this->session->userdata ('uid');
 
         $data = $this->_get_team($team_id);
+
+        if (!$data || $data['team']['create_user_id'] != $uid) {
+            return $this->myclass->notice('alert("没有权限!");window.location.href="'.site_url("/").'";');
+        }
+
         $data['qiniu'] = $qiniu;
         list($usec, $sec) = explode(" ", microtime());
         $dir = $data['contest']['contest_id'] . '/' . $team_id % 60;
         $data['qiniu_key'] = $dir .'/'. $team_id . md5(mt_rand() . $sec);
-
-        if (!$data || $data['team']['create_user_id'] != $uid) {
-             return $this->myclass->notice('alert("没有权限!");window.location.href="'.site_url("/").'";');
-        }
 
         if($_POST){
             $problem_number = $team_level = '';

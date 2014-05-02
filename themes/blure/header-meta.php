@@ -6,7 +6,7 @@
 <meta content="authenticity_token" name="csrf-param" />
 <meta content="suTN1ExyGAX0WFd5f9EbmfgGT0VH6+QlmmtHwG2u16I=" name="csrf-token" />
 <link href="<?php echo base_url('static/common/css/bootstrap.css');?>" media="screen" rel="stylesheet" type="text/css" />
-<link href="<?php echo base_url('static/common/css/mystyle.css');?>" media="screen" rel="stylesheet" type="text/css" />
+<link href="<?php echo base_url('static/common/css/mystyle.css?v=0502');?>" media="screen" rel="stylesheet" type="text/css" />
 <link href="/apple-touch-icon.png" rel="apple-touch-icon" />
 <script type="text/javascript">
 var baseurl='<?php echo base_url()?>';

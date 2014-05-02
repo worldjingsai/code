@@ -69,7 +69,7 @@ a.red{color:red;}
 .contest_h1{padding-top:100px;line-height:90px; color:#3300FF; font-size:50px;letter-spacing:10px; font-family:"华文中宋", "Microsoft Yahei", "新宋体"; text-align:center;}
 
 .contest_header .show_top{height:500px; position:relative;}
-.show_top .bdshare{position:absolute; right:10px; top:10px;}
+.show_top .bdshare{position:absolute; right:10px; top:10px; width: 190px}
 .show_top .time{color: #FFFFFF; font-family: "微软雅黑"; font-size: 15px; position:absolute; right:400px; top:350px;}
 .show_top .time b {font-size: 35px;color: #FFFFFF;font-family: "Times New Roman", Times, serif;}
 .show_top .bm {position:absolute; right:210px; top:330px;}
