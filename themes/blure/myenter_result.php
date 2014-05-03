@@ -85,7 +85,7 @@
       					<?php }?>
       					</p>
 
-       					<p class="alert alert-info">
+       					<p class="alert alert-danger">
        						<strong>注意</strong> 支持 5M 以内的 doc / docx / pdf / rar / zip  文件.<br/>
        						<strong>无法上传</strong> 请下载最新的 <a href="http://rj.baidu.com/soft/detail/14917.html" target="_blank">IE10及以上IE浏览器</a> / <a href="http://baoku.360.cn/soft/show/appid/100923" target="_blank">360浏览器</a> / <a href="http://baoku.360.cn/soft/show/appid/105189" target="_blank">谷歌浏览器 </a>等.
 	      				</p>
