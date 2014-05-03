@@ -298,19 +298,46 @@ class Contests extends Admin_Controller{
         if (empty($teamInfo['result_file'])) {
             return $this->myclass->notice('alert("未上交作品！");');
         }
-        $file_dir = UPLOADPATH . '/paper/';
+
+        $file_dir = UPLOADPATH . 'paper/';
         $file_name = $teamInfo['result_file'];
         $show_name = $teamInfo['team_number'] . strrchr($file_name, '.');
-        $file = fopen($file_dir . $teamInfo['result_file'],"r"); // 打开文件
-        // 输入文件标签
-        Header("Content-type: application/octet-stream");
-        Header("Accept-Ranges: bytes");
-        Header("Accept-Length: ".filesize($file_dir . $file_name));
-        Header("Content-Disposition: attachment; filename=" . $show_name);
-        // 输出文件内容
-        echo fread($file,filesize($file_dir . $file_name));
-        fclose($file);
-        exit();
+
+        $fileName = $file_dir . $teamInfo['result_file'];
+
+        // 本地文件
+        if (file_exists($fileName)) {
+            $file = fopen($file_dir . $teamInfo['result_file'],"r"); // 打开文件
+
+            // 输入文件标签
+            Header("Content-type: application/octet-stream");
+            Header("Accept-Ranges: bytes");
+            Header("Accept-Length: ".filesize($file_dir . $file_name));
+            Header("Content-Disposition: attachment; filename=" . $show_name);
+
+            echo fread($file,filesize($file_dir . $file_name));
+            fclose($file);
+            exit();
+
+            // 七牛文件
+        } else {
+            $isQiniu = $this->config->item('is_use_qiniu');
+            $qiniu = array('is_used' => $isQiniu);
+            if ($isQiniu) {
+                $this->config->load('qiniu');
+
+                $params =array(
+                        'accesskey'=>$this->config->item('accesskey'),
+                        'secretkey'=>$this->config->item('secretkey'),
+                        'bucket'=>$this->config->item('bucket'),
+                        'file_domain'=>$this->config->item('file_domain'),
+                );
+                $this->load->library('qiniu_lib',$params);
+                $url = $this->qiniu_lib->getDownUrl($file_name, $show_name);
+
+                header('location:'.$url);
+            }
+        }
     }
 
     /**

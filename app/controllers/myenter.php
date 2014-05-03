@@ -173,7 +173,7 @@ class Myenter extends SB_controller{
                 }
 
                 // 分成60份
-                $dir = $data['contest']['contest_id'] . '/' . $team_id % 60;
+                $dir = $data['contest']['contest_id'] . '/' . ($team_id % 60);
                 $config['upload_path'] = $config['upload_path'] . $dir . '/';
                 if(!is_dir($config['upload_path'])){
                     mkdir($config['upload_path'],0777,true);
