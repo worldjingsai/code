@@ -131,12 +131,22 @@ class Myenter extends SB_controller{
             return $this->myclass->notice('alert("没有权限!");window.location.href="'.site_url("/").'";');
         }
 
+        // 增加两小时过后不可更改
+
         $data['qiniu'] = $qiniu;
         list($usec, $sec) = explode(" ", microtime());
         $dir = $data['contest']['contest_id'] . '/' . $team_id % 60;
         $data['qiniu_key'] = $dir .'/'. $team_id . md5(mt_rand() . $sec);
 
         if($_POST){
+            if(empty($data['show_result'])) {
+                $msg="竞赛已经结束，不可更改作品!";
+                if ($isQiniu) {
+                    return show_json(500, $msg);
+                } else {
+                    return $this->myclass->notice('alert("'. $msg .'");window.location.href="'.site_url("myenter/result/${team_id}").'";');
+                }
+            }
             $problem_number = $team_level = '';
             $confr = $data['conf']['r'];
             if (!empty($confr['r1'][2])) {
@@ -268,9 +278,22 @@ class Myenter extends SB_controller{
                 $configs['m'] = json_decode($configs['member_column'], true);
                 $configs['r'] = json_decode($configs['result_column'], true);
             }
+
             $data['team'] = $teamInfo;
             $data['conf'] = $configs;
             $data['contest'] = $contest;
+
+            if (!empty($data['conf']['type']) && $data['conf']['type']==2) {
+                $t = date('Y-m-d H:i:s');
+                if ($t >= $contest['regist_start_time'] && $t <= $contest['regist_end_time']) {
+                    $data['show_enter'] = true;
+                }
+
+                $et = date('Y-m-d H:i:s', strtotime('-2 hours'));
+                if ($t >= $contest['contest_start_time'] && $et <= $contest['contest_end_time']) {
+                    $data['show_result'] = true;
+                }
+            }
             return $data;
         } else {
             return show_error('团队不存在', 404);

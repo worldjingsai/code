@@ -92,6 +92,15 @@
       				</div>
     			</div>
 
+    			<?php if (empty($show_result)) {?>
+    			<div class="form-group">
+	    			<div class="col-sm-offset-2 col-sm-9">
+       					<p class="alert alert-info">
+       						竞赛已经结束，不可更改作品
+	      				</p>
+    				</div>
+    			</div>
+    			<?php } else {?>
     			<div class="form-group">
       				<label class="col-sm-2 control-label" for="avatar_file">选择作品</label>
       				<div class="col-sm-5">
@@ -113,6 +122,7 @@
     				<?php }?>
     				</div>
     			</div>
+    			<?php }?>
     		</fieldset>
     	</form>
 	</div>

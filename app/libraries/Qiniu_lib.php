@@ -46,7 +46,7 @@ class Qiniu_lib
 	    $baseUrl = Qiniu_RS_MakeBaseUrl($this->file_domain, $key);
 	    $baseUrl .= '?download';
 	    if ($fileName) {
-	        $baseUrl .= '/'.$fileName;
+	        $baseUrl .= '/'.urlencode($fileName);
 	    }
 	    $getPolicy = new Qiniu_RS_GetPolicy();
 	    $privateUrl = $getPolicy->MakeRequest($baseUrl, null);
