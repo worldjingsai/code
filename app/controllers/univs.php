@@ -215,6 +215,7 @@ class Univs extends SB_Controller{
             redirect($contest_short);
         }
 
+        $show_data['show_more'] = $this->input->get('show_more', true);
         $show_data['contest'] = array();
         $this->tplData = $show_data;
         $this->display("contest/create_1.html");

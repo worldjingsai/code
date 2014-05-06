@@ -95,7 +95,7 @@
                 <input type="text" class="text" name="contest_bbs" value="<%$tplData.contest.contest_bbs|default:''%>"/>
             </td>
         </tr>
-                
+        <%if !empty($tplData.show_more)%>
         <tr>
             <th>原竞赛官网:</th>
             <td  >
@@ -109,6 +109,7 @@
                 <textarea name="remark" style="min-width:300px; min-height:100px;"><%$tplData.contest.remark|default:''%></textarea>
             </td>
         </tr>
+        <%/if%>
         <tr class="center">
             <td colspan="2" >
                 <button type="submit" class="btn btn-primary" >提  交</button>

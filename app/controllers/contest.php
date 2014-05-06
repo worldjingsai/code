@@ -106,6 +106,7 @@ class Contest extends SB_controller{
 
         $data['col'] = 0;
 
+        $data['show_more'] = $this->input->get('show_more', true);
         $this->tplData = $data;
         $this->display('contest/create_contest.html');
 
