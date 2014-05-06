@@ -45,7 +45,10 @@
   	<a class="btn btn-warning" href="/contest/user_apply/<%$tplData.contest.contest_id%>">查看&编辑队伍信息</a>
   	<%elseif !empty($tplData.show_enter) %>
   	<a class="enter" href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a>
-  	<%/if%><%/if%>
+  	<%/if%>
+  	<%elseif !empty($tplData.contest.old_url)%>
+  	<a class="enter" href="<%$tplData.contest.old_url%>" target="_blank"><em>报名</em></a>
+  	<%/if%>
   	</div>
   	
   	<%if !empty($tplData.show_result)%>
