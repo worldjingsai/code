@@ -42,7 +42,7 @@ class Create extends Admin_Controller{
         // 创建一个管理员
         // cumcm+省简称字母
         $uInfo = array(
-                'username' => cumcm.$prov['short_pinyin']
+                'username' => 'cumcm'.$prov['short_pinyin']
         );
         $uid = $this->_reg($uInfo);
         if (!$uid) {
@@ -69,13 +69,16 @@ class Create extends Admin_Controller{
         $data['create_user_id'] = $uid;
 
         $cid = $this->_create_contest($data);
-
+        
+        $content = mb_convert_encoding($prov['provs_name'], 'GBK', 'UTF8') . ',www.worldjingsai.com/'.$data['contest_url'] . ',cumcm'.$prov['short_pinyin'] . ',cumcm'.$prov['short_pinyin'] . '123' . "\n";
+        
         // 第一步查出这个省下面的学校 cumcmid字段不为空的
-        // 如果结果为空 查询这个省下面的前20所学校
+        // 如果结果为空 查询这个省下面的前30所学校
 
         $this->load->model('univs_m');
         $this->db->select('*');
-        $query = $this->db->where('provs_id', 5)->where('cumcmid!=""',null, false)->get('university');
+        $query = $this->db->where('provs_id', 5)->where('cumcmid!=0',null, false)->get('university');
+        
         if($query->num_rows() > 0){
 
         } else {
@@ -86,14 +89,15 @@ class Create extends Admin_Controller{
         }
         $schools = $query->result_array();
 
+        // 开始创建学校的竞赛
         foreach ($schools as $s) {
             // 创建一个管理员
             // 校赛区账户名：cumcm+学校简称
             $uInfo = array(
-                    'username' => cumcm.$s['short_name']
+                    'username' => 'cumcm'.$s['short_name']
             );
             $uid = $this->_reg($uInfo);
-            // 创建一个总竞赛
+            // 创建一个学校竞赛
             $data = array();
             $univsName = $s['univs_name'];
             $data['contest_name'] = "2014年“高教社杯”全国大学生数学建模竞赛${univsName}报名官网";
@@ -105,8 +109,24 @@ class Create extends Admin_Controller{
             $data['create_user_id'] = $uid;
 
             $scid = $this->_create_contest($data);
-
+            if ($scid) {
+                $this->_createRegConf($scid, $uid);;
+            }
+            
+            // 创建报名信息
+            $content .= mb_convert_encoding($s['univs_name'], 'GBK', 'UTF8') . ',www.worldjingsai.com/'.$s['short_name'] . '/cumcm,' . $uInfo['username'] . ',' . $uInfo['username'] . '123' . "\n";
+            
         }
+        
+        file_put_contents($prov['short_pinyin'].'cumcm.csv', $content);
+        // 输入文件标签
+        Header("Content-type: application/octet-stream");
+        Header("Accept-Ranges: bytes");
+        Header("Accept-Length: ".filesize($prov['short_pinyin'].'cumcm.csv'));
+        Header("Content-Disposition: attachment; filename=" . $prov['short_pinyin'].'cumcm.csv');
+        
+        echo file_get_contents($prov['short_pinyin'].'cumcm.csv');
+        exit();
     }
 
     protected function _create_contest($data = array())
@@ -127,19 +147,16 @@ class Create extends Admin_Controller{
         // 检查是否存在
         $type = $data['contest_level'];
         $uri = $data['contest_url'];
-        $bol = true;
-        if($type == 1){ // 校内级别
-            $univs_id = $data['univs_id'];
-            $bol      = $this->contest_m->check_contest_exist_in_univs($uri, $univs_id);
-        }elseif($type == 2 || $type == 3 || $type == 4){ // 全国级别
-            $bol = $this->contest_m->check_contest_exist_in_nation($uri);
+        $univs_id = $data['univs_id'];
+        if($type == 2 || $type == 3 || $type == 4) {
+            $univs_id = '';
+        }
+        $contest = $this->contest_m->get_contest_by_short_name($univs_id, $uri);
+        
+        if ($contest) {
+            $contest_id = $contest['contest_id'];
+            $this->contest_m->update($contest_id, $data);
         } else {
-            return false;
-        }
-        if ($bol) {
-            return '竞赛已经存在';
-        }
-
             $contest_id = $this->contest_m->add($data);
             $this->load->model('univs_contest_m');
             if($contest_id){
@@ -149,7 +166,9 @@ class Create extends Admin_Controller{
                 );
                 $this->univs_contest_m->add($addData);
             }
-            return $contest_id;
+        }
+        
+        return $contest_id;
     }
 
     /**
@@ -170,12 +189,120 @@ class Create extends Admin_Controller{
 
         $check_username = $this->user_m->check_username($data['username']);
         if(!empty($check_username)){
-            return false;
+            return $check_username['uid'];
         }
         $uid = 0;
         if($this->user_m->reg($data)){
             $uid = $this->db->insert_id();
         }
         return $uid;
+    }
+    
+    /**
+     * 创建一个报名信息
+     */
+    protected function _createRegConf($cid, $uid)
+    {
+        $this->load->model('contest_regist_config_m');
+        
+            // 团队的配置信息  t字段名 b备注  c是否有效
+            $t = array('参数组别', '队员1姓名', '队员2姓名', '队员3姓名', '教师姓名', '教师性别', '教师职称', '教师电话', '教师Email', '');
+            $b = array('本科组|专科组', '', '', '', '', '', '', '', '', '');
+            $c = array(1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
+        
+            // 成员的配置信息  u字段名 d备注  s是否有效
+            $u = array('姓名', '性别', '专业', '入学年份', '电话', 'Email', '', '', '', '');
+            $d = array('', '男|女', '', '例:2012', '', '', '', '', '', '', '');
+            $s = array(1, 1, 1, 1, 1, 1, '', '', '', '');
+        
+            // 结果配置信息  o选项信息  i是否有效
+            $o = '本科组|专科组';
+            $ii = 'A|B|C|D';
+        
+            $i = 1;
+            $teamColumn = array();
+            foreach($t as $k => $v) {
+                if (!empty($c[$k]) && !empty($v)) {
+                    $isValid = 1;
+                } else {
+                    $isValid = 0;
+                }
+                $teamColumn["t$i"] = array($v, $b[$k], $isValid);
+                $i++;
+            }
+        
+            $i = 1;
+            $memberColumn = array();
+            foreach($u as $k => $v) {
+                if (!empty($s[$k]) && !empty($v)) {
+                    $isValid = 1;
+                } else {
+                    $isValid = 0;
+                }
+                $memberColumn["m$i"] = array($v, $d[$k], $isValid);
+                $i++;
+            }
+        
+            $resultColumn = array();
+            if (isset($o[0])) {
+                if (!empty($ii[0])) {
+                    $isValid = 1;
+                } else {
+                    $isValid = 0;
+                }
+                $resultColumn["r1"] = array('团队组别', $o[0], $isValid);
+            }
+        
+            if (isset($o[1])) {
+                if (!empty($ii[1])) {
+                    $isValid = 1;
+                } else {
+                    $isValid = 0;
+                }
+                $resultColumn["r2"] = array('题目选择', $o[1], $isValid);
+            }
+            $id = $cid;
+            $session = '1';
+            $baseNumber = 0;
+            $minMember = 1;
+            $maxMember = 3;
+            $fee = 0;
+            $configData = array(
+                    'contest_id' =>$cid,
+                    'session' => $session,
+                    'type' => Contest_regist_config_m::TYPE_REGIST,
+                    'article_url' => '',
+                    'base_number' => $baseNumber,
+                    'min_member' => $minMember,
+                    'max_member' => $maxMember,
+                    'fee' => $fee,
+                    'team_column' => json_encode($teamColumn),
+                    'member_column' => json_encode($memberColumn),
+                    'result_column' => json_encode($resultColumn),
+                    'create_time' => date('Y-m-d H:i:s'),
+                    'create_user_id' => $uid,
+                    'status' => Contest_regist_config_m::STATUS_NORMAL
+            );
+
+            // 如果有是更新
+            $oldConfig = array();
+            if ($id) {
+                $oldConfig = $this->contest_regist_config_m->get_by_cid_session($id, $session);
+            }
+            if ($oldConfig && $oldConfig['contest_id'] == $id && $oldConfig['session'] == $session) {
+                if ($oldConfig['status'] != Contest_regist_config_m::STATUS_NORMAL) {
+                    $this->contest_regist_config_m->updateExpire($id);
+                }
+                if ($oldConfig['current_number'] < $configData['base_number']) {
+                    $configData['current_number'] = $configData['base_number'];
+                }
+                $this->contest_regist_config_m->update($id, $configData);
+                // 新增
+            } else {
+                $configData['current_number'] = $configData['base_number'];
+                $this->contest_regist_config_m->updateExpire($id);
+                $this->contest_regist_config_m->add($configData);
+            }
+            
     }
 }

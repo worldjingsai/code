@@ -292,11 +292,27 @@ class Contest extends SB_controller{
 
         $configs = $this->contest_regist_config_m->get_normal($contest_id);
         if ($configs) {
-            $configs['t'] = json_decode($configs['team_column'], true);
-            $configs['m'] = json_decode($configs['member_column'], true);
+            $ct = json_decode($configs['team_column'], true);
+            foreach ($ct as &$t) {
+                if (!empty($t[1]) && (strpos($t[1], '|') !== false)) {
+                    $t[1] = explode('|', $t[1]);
+                }
+            }
+            unset($t);
+            $mt = json_decode($configs['member_column'], true);
+            foreach ($mt as &$t) {
+                if (!empty($t[1]) && (strpos($t[1], '|') !== false)) {
+                    $t[1] = explode('|', $t[1]);
+                }
+            }
+            
+            $configs['t'] = $ct;
+            $configs['m'] = $mt;
         } else {
             return $this->myclass->notice('alert("竞赛没有报名系统");window.location.href="history.back();";');
         }
+        
+        
         $data['reconf'] = $configs;
 
         // 本人是否有报名信息

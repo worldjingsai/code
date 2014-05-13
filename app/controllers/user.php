@@ -46,7 +46,8 @@ class User extends SB_Controller{
         }
         if($_POST && $this->validate_reg_form()){
             $password = $this->input->post('password',true);
-            $ip = $this->myclass->get_ip();
+            //$ip = $this->myclass->get_ip();
+            $ip = '';
             $data = array(
                 'username' => strip_tags($this->input->post('username')),
                 'password' => md5($password),

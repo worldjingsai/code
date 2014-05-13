@@ -158,6 +158,7 @@ function  friendly_date( $from ){
 	} 
 
 	function get_ip() {
+	    return '114.215.198.25';
 		$url = 'http://iframe.ip138.com/ic.asp';
 		if(function_exists('curl_init')){
 			$ch = curl_init($url);
