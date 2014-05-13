@@ -39,16 +39,6 @@ class Create extends Admin_Controller{
             echo '省份还没有简称请添加';
             return false;
         }
-        // 创建一个管理员
-        // cumcm+省简称字母
-        $uInfo = array(
-                'username' => 'cumcm'.$prov['short_pinyin']
-        );
-        $uid = $this->_reg($uInfo);
-        if (!$uid) {
-            echo '注册错误';
-            return false;
-        }
 
         // 创建一个总竞赛
         $provName = $prov['provs_name'];
@@ -66,8 +56,20 @@ class Create extends Admin_Controller{
 
         $data['parent_id'] = 0;
         $data['univs_id'] = $tunivs['univs_id'];
+        
+        // 创建一个管理员
+        // cumcm+省简称字母
+        $uInfo = array(
+                'username' => 'cumcm'.$prov['short_pinyin'],
+                'univs_id' => $tunivs['univs_id']
+        );
+        $uid = $this->_reg($uInfo);
+        if (!$uid) {
+            echo '注册错误';
+            return false;
+        }
+        
         $data['create_user_id'] = $uid;
-
         $cid = $this->_create_contest($data);
         
         $content = mb_convert_encoding($prov['provs_name'], 'GBK', 'UTF8') . ',www.worldjingsai.com/'.$data['contest_url'] . ',cumcm'.$prov['short_pinyin'] . ',cumcm'.$prov['short_pinyin'] . '123' . "\n";
@@ -94,7 +96,8 @@ class Create extends Admin_Controller{
             // 创建一个管理员
             // 校赛区账户名：cumcm+学校简称
             $uInfo = array(
-                    'username' => 'cumcm'.$s['short_name']
+                    'username' => 'cumcm'.$s['short_name'],
+                    'univs_id' => $s['univs_id']
             );
             $uid = $this->_reg($uInfo);
             // 创建一个学校竞赛
@@ -118,14 +121,13 @@ class Create extends Admin_Controller{
             
         }
         
-        file_put_contents($prov['short_pinyin'].'cumcm.csv', $content);
         // 输入文件标签
         Header("Content-type: application/octet-stream");
         Header("Accept-Ranges: bytes");
-        Header("Accept-Length: ".filesize($prov['short_pinyin'].'cumcm.csv'));
+        Header("Accept-Length: ".strlen($content));
         Header("Content-Disposition: attachment; filename=" . $prov['short_pinyin'].'cumcm.csv');
         
-        echo file_get_contents($prov['short_pinyin'].'cumcm.csv');
+        echo $content;
         exit();
     }
 
@@ -179,8 +181,8 @@ class Create extends Admin_Controller{
         $username = $data['username'] ;
         $password = $username.'123';
         $data['password'] = md5($password);
-        $data['email']='admin@worldjingsai.com';
-        $data['tel']   = '13000000000';
+        $data['email']='';
+        $data['tel']   = '';
         $data['ip'] = '';
         $data['group_type'] = 2;
         $data['gid'] = 3;
@@ -216,8 +218,8 @@ class Create extends Admin_Controller{
             $s = array(1, 1, 1, 1, 1, 1, '', '', '', '');
         
             // 结果配置信息  o选项信息  i是否有效
-            $o = '本科组|专科组';
-            $ii = 'A|B|C|D';
+            $o = array('本科组|专科组', 'A|B|C|D');
+            $ii = array(1, 1);
         
             $i = 1;
             $teamColumn = array();
@@ -296,7 +298,8 @@ class Create extends Admin_Controller{
                 if ($oldConfig['current_number'] < $configData['base_number']) {
                     $configData['current_number'] = $configData['base_number'];
                 }
-                $this->contest_regist_config_m->update($id, $configData);
+                //var_dump($configData['result_column'])
+                $this->contest_regist_config_m->update($oldConfig['id'], $configData);
                 // 新增
             } else {
                 $configData['current_number'] = $configData['base_number'];
