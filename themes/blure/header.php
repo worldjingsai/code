@@ -39,7 +39,7 @@
           <ul class="nav navbar-nav navbar-right">
 
 	        <?php if($this->session->userdata('uid')){ ?>
-			<li><a href="<?php echo site_url('user/info/'.$this->session->userdata('uid').'')?>"><?php echo $this->session->userdata('username');?></a></li>
+			<li><a href="<?php echo site_url('user/info/'.$this->session->userdata('uid').'')?>"><?php echo sb_substr($this->session->userdata('username'), 16);?></a></li>
 			<li><a href="<?php echo site_url('settings/index')?>">个人设置</a></li>
 			<li><a href="<?php echo site_url('mycontest/index')?>">我的竞赛</a></li>
 			<?php if($this->auth->is_admin()){ ?>

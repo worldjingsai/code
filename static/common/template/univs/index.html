@@ -29,7 +29,7 @@
                <ul >
               <%if $tplData.publicContests%>
               <%foreach from=$tplData.publicContests item item=value key=key%>
-                <li ><a  class="stitle" target="_blank" href="/<%$value.contest_url%>"><%$value.contest_name|strip_tags%></a> <span><%$value.create_time|truncate:10:''%></span></li>
+                <li ><a  class="stitle" target="_blank" href="/<%$value.contest_url%>" title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags%></a> <span><%$value.create_time|truncate:10:''%></span></li>
               <%/foreach%>
               <%/if%>
               </ul>

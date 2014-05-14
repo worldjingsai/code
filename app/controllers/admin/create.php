@@ -76,7 +76,7 @@ class Create extends Admin_Controller{
         $data['create_user_id'] = $uid;
         $cid = $this->_create_contest($data);
         
-        $content = mb_convert_encoding($prov['provs_name'], 'GBK', 'UTF8') . ',www.worldjingsai.com/'.$data['contest_url'] . ',cumcm'.$prov['short_pinyin'] . ',cumcm'.$prov['short_pinyin'] . '123' . "\n";
+        $content = mb_convert_encoding($prov['provs_name'], 'GBK', 'UTF8') . ',' . $cumcmsq . ',www.worldjingsai.com/'.$data['contest_url'] . ',cumcm'.$prov['short_pinyin'] . ',cumcm'.$prov['short_pinyin'] . '123' . "\n";
         
         // 第一步查出这个省下面的学校 cumcmid字段不为空的
         // 如果结果为空 查询这个省下面的前30所学校
@@ -90,8 +90,8 @@ class Create extends Admin_Controller{
         } else {
             $this->db->select('*');
             $this->db->order_by('univs_id','asc');
-            $this->db->limit(30, 0);
-            $query = $this->db->where('provs_id', 5)->get('university');
+            //$this->db->limit(1, 0);
+            $query = $this->db->where('provs_id', $pid)->get('university');
         }
         $schools = $query->result_array();
 
@@ -100,9 +100,13 @@ class Create extends Admin_Controller{
             // 创建一个管理员
             // 校赛区账户名：cumcm+学校简称
             $uInfo = array(
-                    'username' => 'cumcm'.$s['short_name'],
+                    'username' => substr('cumcm'.$s['short_name'], 0, 20),
                     'univs_id' => $s['univs_id']
             );
+            if (empty($s['short_name'])) {
+                $content .= mb_convert_encoding($s['univs_name'] . ',' . '没有简称跳过', 'GBK', 'UTF8') ."\n";
+                continue;
+            }
             $uid = $this->_reg($uInfo);
             // 创建一个学校竞赛
             $data = array();
@@ -122,16 +126,15 @@ class Create extends Admin_Controller{
                     $sqremark = $provName . '赛区编号:' . $cumcmsq;
                 }
                 if ($s['cumcmid']) {
-                    $xxremark = $univsName . '编号:' . $s['cumcmid'];
+                    $scumcmid = $s['cumcmid'];
                 } else {
-                    $xxremark = $univsName . '编号:' . ($s['univs_id'] - $pid*1000);
+                    $scumcmid = $s['univs_id'] - $pid*1000;
                 }
+                $xxremark = $univsName . '编号:' . $scumcmid;
                 $this->_createRegConf($scid, $uid, $sqremark, $xxremark, $univsName);
+                // 创建报名信息
+                $content .= mb_convert_encoding($s['univs_name'], 'GBK', 'UTF8') . ',' .$scumcmid. ',www.worldjingsai.com/'.$s['short_name'] . '/cumcm,' . $uInfo['username'] . ',' . $uInfo['username'] . '123' . "\n";
             }
-            
-            // 创建报名信息
-            $content .= mb_convert_encoding($s['univs_name'], 'GBK', 'UTF8') . ',www.worldjingsai.com/'.$s['short_name'] . '/cumcm,' . $uInfo['username'] . ',' . $uInfo['username'] . '123' . "\n";
-            
         }
         
         // 输入文件标签

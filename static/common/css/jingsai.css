@@ -42,6 +42,7 @@ a.red{color:red;}
 .top a{ color:#FF3; margin:auto 0; font-size:14px; height:40px; line-height:40px;}
 .top a:hover{color: #00FF00}
 .top .doc{margin:auto 5px;}
+.top .user_info{float:left; width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}
 
 /* 浮动定义 */
 .FL{float:left;}
@@ -83,9 +84,9 @@ a.red{color:red;}
 .show_top .fsbm a {background-image: url(../images/fs.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
 .show_top .fsbm a:hover {background-position: 0 100%;text-decoration: none;}
 
-.show_top .zsbm {position:absolute; left:0px; top:330px;}
+.show_top .zsbm {position:absolute; right:0px; top:330px;}
 .show_top .zsbm em {font-size: 1px; visibility: hidden;}
-.show_top .zsbm a {background-image: url(../images/zs.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
+.show_top .zsbm a {background-image: url(../images/ss.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
 .show_top .zsbm a:hover {background-position: 0 100%;text-decoration: none;}
 
 .show_top .contest_time{position:absolute; right:10px; bottom:50px;}
