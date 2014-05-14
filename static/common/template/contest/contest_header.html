@@ -60,7 +60,14 @@
     <%/if%>
     </div>
     <%/if%>
-  	<%if $tplData.contest.sons_num > 0%><div class="fsbm"><a href="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a></div><%/if%>
+    
+  	<%if $tplData.contest.sons_num > 0%>
+  	<div class="fsbm"><a href="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a></div>
+  	<%/if%>
+  	<%if !empty($tplData.contest.parent_url) %>
+  	<div class="zsbm"><a href="/<%$tplData.contest.parent_url%>"><em>总赛入口</em></a></div>
+  	<%/if%>
+  	
   	<div class="contest_time">
   	<div class="enterbm"><span class="icon"></span>报名时间：<%if $tplData.contest.regist_start_time != '0000-00-00 00:00:00'%><%$tplData.contest.regist_start_time|truncate:16:'':true%><%else%>还未设置<%/if%>
   	~ <%if $tplData.contest.regist_end_time != '0000-00-00 00:00:00'%><%$tplData.contest.regist_end_time|truncate:16:'':true%><%else%>还未设置<%/if%></div>

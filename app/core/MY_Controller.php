@@ -253,7 +253,7 @@ class SB_Controller extends Base_Controller{
             }
 
             $et = date('Y-m-d H:i:s', strtotime('-2 hours'));
-            if ($et <= $cInfo['contest_end_time']) {
+            if ($t >= $cInfo['contest_start_time'] && $et <= $cInfo['contest_end_time']) {
                 $data['show_result'] = true;
             }
         }

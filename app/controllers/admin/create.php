@@ -23,9 +23,13 @@ class Create extends Admin_Controller{
     /**
      * 创建省赛cumcm
      */
-    public function cumcm($pid = '5')
+    public function cumcm($pid = '', $cumcmsq = '')
     {
 
+        if (empty($pid) || empty($cumcmsq)) {
+            echo "赛区编号不能为空！";
+            return false;
+        }
         $cid = 0;
         $this->db->select('*');
         $query = $this->db->where('provs_id', $pid)->get('province');
@@ -79,7 +83,7 @@ class Create extends Admin_Controller{
 
         $this->load->model('univs_m');
         $this->db->select('*');
-        $query = $this->db->where('provs_id', 5)->where('cumcmid!=0',null, false)->get('university');
+        $query = $this->db->where('provs_id', $pid)->where('cumcmid!=0',null, false)->get('university');
         
         if($query->num_rows() > 0){
 
@@ -113,7 +117,16 @@ class Create extends Admin_Controller{
 
             $scid = $this->_create_contest($data);
             if ($scid) {
-                $this->_createRegConf($scid, $uid);;
+                $sqremark = $xxremark = '';
+                if ($cumcmsq) {
+                    $sqremark = $provName . '赛区编号:' . $cumcmsq;
+                }
+                if ($s['cumcmid']) {
+                    $xxremark = $univsName . '编号:' . $s['cumcmid'];
+                } else {
+                    $xxremark = $univsName . '编号:' . ($s['univs_id'] - $pid*1000);
+                }
+                $this->_createRegConf($scid, $uid, $sqremark, $xxremark, $univsName);
             }
             
             // 创建报名信息
@@ -203,13 +216,13 @@ class Create extends Admin_Controller{
     /**
      * 创建一个报名信息
      */
-    protected function _createRegConf($cid, $uid)
+    protected function _createRegConf($cid, $uid, $sqremark = '', $xxremark='', $xxmc = '')
     {
         $this->load->model('contest_regist_config_m');
         
             // 团队的配置信息  t字段名 b备注  c是否有效
-            $t = array('参数组别', '队员1姓名', '队员2姓名', '队员3姓名', '教师姓名', '教师性别', '教师职称', '教师电话', '教师Email', '');
-            $b = array('本科组|专科组', '', '', '', '', '', '', '', '', '');
+            $t = array('参数组别', '区号', '学校编号', '学校名称', '教师姓名', '教师性别', '教师职称', '教师电话', '教师Email', '');
+            $b = array('本科组|专科组', $sqremark, $xxremark, $xxmc, '', '男|女', '', '', '', '');
             $c = array(1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
         
             // 成员的配置信息  u字段名 d备注  s是否有效

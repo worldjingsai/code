@@ -96,7 +96,7 @@
     			<div class="form-group">
 	    			<div class="col-sm-offset-2 col-sm-9">
        					<p class="alert alert-info">
-       						竞赛已经结束，不可更改作品
+       						竞赛未开始或者已经结束，不可提交作品
 	      				</p>
     				</div>
     			</div>

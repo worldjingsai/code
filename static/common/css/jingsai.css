@@ -83,6 +83,11 @@ a.red{color:red;}
 .show_top .fsbm a {background-image: url(../images/fs.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
 .show_top .fsbm a:hover {background-position: 0 100%;text-decoration: none;}
 
+.show_top .zsbm {position:absolute; left:0px; top:330px;}
+.show_top .zsbm em {font-size: 1px; visibility: hidden;}
+.show_top .zsbm a {background-image: url(../images/zs.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
+.show_top .zsbm a:hover {background-position: 0 100%;text-decoration: none;}
+
 .show_top .contest_time{position:absolute; right:10px; bottom:50px;}
 .show_top .contest_time {height:35px; color: #FFFFFF; font-family: "微软雅黑"; font-size: 15px;line-height:34px;}
 .show_top .contest_time .enterbm .icon{background:url(../images/iconv.png) no-repeat -35px 0;height:31px;width:31px;display: block; float:left;}

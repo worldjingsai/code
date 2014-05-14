@@ -290,7 +290,7 @@ class Myenter extends SB_controller{
                 }
 
                 $et = date('Y-m-d H:i:s', strtotime('-2 hours'));
-                if ($et <= $contest['contest_end_time']) {
+                if ($t >= $contest['contest_start_time'] && $et <= $contest['contest_end_time']) {
                     $data['show_result'] = true;
                 }
             }
