@@ -42,7 +42,7 @@ a.red{color:red;}
 .top a{ color:#FF3; margin:auto 0; font-size:14px; height:40px; line-height:40px;}
 .top a:hover{color: #00FF00}
 .top .doc{margin:auto 5px;}
-.top .user_info{float:left; width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}
+.top .user_info{float:left; max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}
 
 /* 浮动定义 */
 .FL{float:left;}

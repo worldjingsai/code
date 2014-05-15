@@ -300,7 +300,7 @@ class Contest_m extends SB_Model{
         $this->db->select('a.*, b.*');
         $this->db->from($this->tb .' a');
         $this->db->join('university b', 'b.univs_id = a.univs_id');
-        $this->db->order_by('create_time','desc');
+        $this->db->order_by('a.univs_id','asc');
         $this->db->where('a.parent_id',$cid)->where('a.status',1);
 
         $query = $this->db->get();
