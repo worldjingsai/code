@@ -105,7 +105,13 @@ class Contest_regist_config_m extends SB_Model{
             $this->db->update($this->tb, $data);
             $res =  $this->db->affected_rows();
         } while(!$res);
-        return $nextNumber;
+
+        $number = $nextNumber;
+        if(!empty($conf['number_width']) && strlen($number)<$conf['number_width']);
+        {
+            $number = str_pad($number, $conf['number_width'], '0', STR_PAD_LEFT);
+        }
+        return $number;
     }
 
     /**
