@@ -305,14 +305,14 @@ class Contest extends SB_controller{
                     $t[1] = explode('|', $t[1]);
                 }
             }
-            
+
             $configs['t'] = $ct;
             $configs['m'] = $mt;
         } else {
             return $this->myclass->notice('alert("竞赛没有报名系统");window.location.href="history.back();";');
         }
-        
-        
+
+
         $data['reconf'] = $configs;
 
         // 本人是否有报名信息
@@ -362,7 +362,7 @@ class Contest extends SB_controller{
                 }
             }
             $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $configs['session']);
-            
+
             $str = '您已成功报名参赛<br/>参数队号：'.$teamInfo['team_number'].'<br/>在右上角您的个人账户”我的竞赛”中可以查看到完整的报名信息<br/>';
             if ($configs['fee'] > 0) {
                 $str .= '请尽快缴纳参赛费,并在右上角您的个人账户”我的竞赛”中上传缴费的付款证明图片及查看是否已缴费的状态';

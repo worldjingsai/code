@@ -60,7 +60,7 @@ class Create extends Admin_Controller{
 
         $data['parent_id'] = 0;
         $data['univs_id'] = $tunivs['univs_id'];
-        
+
         // 创建一个管理员
         // cumcm+省简称字母
         $uInfo = array(
@@ -72,19 +72,19 @@ class Create extends Admin_Controller{
             echo '注册错误';
             return false;
         }
-        
+
         $data['create_user_id'] = $uid;
         $cid = $this->_create_contest($data);
-        
+
         $content = mb_convert_encoding($prov['provs_name'], 'GBK', 'UTF8') . ',' . $cumcmsq . ',www.worldjingsai.com/'.$data['contest_url'] . ',cumcm'.$prov['short_pinyin'] . ',cumcm'.$prov['short_pinyin'] . '123' . "\n";
-        
+
         // 第一步查出这个省下面的学校 cumcmid字段不为空的
         // 如果结果为空 查询这个省下面的前30所学校
 
         $this->load->model('univs_m');
         $this->db->select('*');
         $query = $this->db->where('provs_id', $pid)->where('cumcmid!=0',null, false)->get('university');
-        
+
         if($query->num_rows() > 0){
 
         } else {
@@ -131,18 +131,20 @@ class Create extends Admin_Controller{
                     $scumcmid = $s['univs_id'] - $pid*1000;
                 }
                 $xxremark = $univsName . '编号:' . $scumcmid;
-                $this->_createRegConf($scid, $uid, $sqremark, $xxremark, $univsName);
+                // 队号基础就是省id和学校id然后000
+                $baseNumber = $cumcmsq*1000000+$scumcmid*1000;
+                $this->_createRegConf($scid, $uid, $sqremark, $xxremark, $univsName, $baseNumber);
                 // 创建报名信息
                 $content .= mb_convert_encoding($s['univs_name'], 'GBK', 'UTF8') . ',' .$scumcmid. ',www.worldjingsai.com/'.$s['short_name'] . '/cumcm,' . $uInfo['username'] . ',' . $uInfo['username'] . '123' . "\n";
             }
         }
-        
+
         // 输入文件标签
         Header("Content-type: application/octet-stream");
         Header("Accept-Ranges: bytes");
         Header("Accept-Length: ".strlen($content));
         Header("Content-Disposition: attachment; filename=" . $prov['short_pinyin'].'cumcm.csv');
-        
+
         echo $content;
         exit();
     }
@@ -170,7 +172,7 @@ class Create extends Admin_Controller{
             $univs_id = '';
         }
         $contest = $this->contest_m->get_contest_by_short_name($univs_id, $uri);
-        
+
         if ($contest) {
             $contest_id = $contest['contest_id'];
             $this->contest_m->update($contest_id, $data);
@@ -185,7 +187,7 @@ class Create extends Admin_Controller{
                 $this->univs_contest_m->add($addData);
             }
         }
-        
+
         return $contest_id;
     }
 
@@ -215,28 +217,28 @@ class Create extends Admin_Controller{
         }
         return $uid;
     }
-    
+
     /**
      * 创建一个报名信息
      */
-    protected function _createRegConf($cid, $uid, $sqremark = '', $xxremark='', $xxmc = '')
+    protected function _createRegConf($cid, $uid, $sqremark = '', $xxremark='', $xxmc = '', $baseNumber = 0)
     {
         $this->load->model('contest_regist_config_m');
-        
+
             // 团队的配置信息  t字段名 b备注  c是否有效
-            $t = array('参数组别', '区号', '学校编号', '学校名称', '教师姓名', '教师性别', '教师职称', '教师电话', '教师Email', '');
-            $b = array('本科组|专科组', $sqremark, $xxremark, $xxmc, '', '男|女', '', '', '', '');
-            $c = array(1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
-        
+            $t = array('参数组别', '学校名称', '教师姓名', '教师性别', '教师职称', '教师电话', '教师Email', '', '', '');
+            $b = array('本科组|专科组', $xxmc, '', '男|女', '', '', '', '', '', '');
+            $c = array(1, 1, 1, 1, 1, 1, 1, 0, 0, 0);
+
             // 成员的配置信息  u字段名 d备注  s是否有效
             $u = array('姓名', '性别', '专业', '入学年份', '电话', 'Email', '', '', '', '');
             $d = array('', '男|女', '', '例:2012', '', '', '', '', '', '', '');
             $s = array(1, 1, 1, 1, 1, 1, '', '', '', '');
-        
+
             // 结果配置信息  o选项信息  i是否有效
             $o = array('本科组|专科组', 'A|B|C|D');
             $ii = array(1, 1);
-        
+
             $i = 1;
             $teamColumn = array();
             foreach($t as $k => $v) {
@@ -248,7 +250,7 @@ class Create extends Admin_Controller{
                 $teamColumn["t$i"] = array($v, $b[$k], $isValid);
                 $i++;
             }
-        
+
             $i = 1;
             $memberColumn = array();
             foreach($u as $k => $v) {
@@ -260,7 +262,7 @@ class Create extends Admin_Controller{
                 $memberColumn["m$i"] = array($v, $d[$k], $isValid);
                 $i++;
             }
-        
+
             $resultColumn = array();
             if (isset($o[0])) {
                 if (!empty($ii[0])) {
@@ -270,7 +272,7 @@ class Create extends Admin_Controller{
                 }
                 $resultColumn["r1"] = array('团队组别', $o[0], $isValid);
             }
-        
+
             if (isset($o[1])) {
                 if (!empty($ii[1])) {
                     $isValid = 1;
@@ -281,7 +283,6 @@ class Create extends Admin_Controller{
             }
             $id = $cid;
             $session = '1';
-            $baseNumber = 0;
             $minMember = 1;
             $maxMember = 3;
             $fee = 0;
@@ -291,6 +292,7 @@ class Create extends Admin_Controller{
                     'type' => Contest_regist_config_m::TYPE_REGIST,
                     'article_url' => '',
                     'base_number' => $baseNumber,
+                    'number_width' => 8,
                     'min_member' => $minMember,
                     'max_member' => $maxMember,
                     'fee' => $fee,
@@ -322,6 +324,6 @@ class Create extends Admin_Controller{
                 $this->contest_regist_config_m->updateExpire($id);
                 $this->contest_regist_config_m->add($configData);
             }
-            
+
     }
 }
