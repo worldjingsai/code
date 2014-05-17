@@ -310,4 +310,25 @@ class Contest_m extends SB_Model{
             return false;
         }
     }
+    
+    
+    /**
+     * 获取创建的竞赛
+     * @param unknown $page
+     * @param unknown $limit
+     */
+    public function get_by_parentid($pid, $page, $limit)
+    {
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->order_by('create_time','desc');
+        $this->db->where('parent_id',$pid)->where('status',1);
+        $this->db->limit($limit,$page);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            return $query->result_array();
+        } else {
+            return false;
+        }
+    }
 }

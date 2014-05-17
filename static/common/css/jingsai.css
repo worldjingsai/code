@@ -269,5 +269,27 @@ box-shadow: inset 2px 2px 2px rgba(0,0,0,.1);overflow: auto;padding: 4px 10px;ba
 .member_control .add-icon {margin-top:2px;}
 .apply_teble .number{width:40px; text-align:center;}
 
+.choose-a-school {
+	overflow-x:hidden;
+	overflow-y:auto;
+	height:300px;
+}
+.choose-a-school a {
+	height:20px;
+	line-height:20px;
+	text-decoration:none;
+	float:left;
+	width:170px;
+	margin:4px 12px;
+	padding-left:10px;
+	background:url(../images/dot.gif) no-repeat 0 9px;
+}
+
+.choose-a-school a:hover {
+	background:#005EAC;
+	color:#fff;
+}
+
+
 .footer .version{ text-align:center; line-height:20px; height:80px; margin-top:20px; border-top: #999999 2px solid; }
 

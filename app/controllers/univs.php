@@ -114,8 +114,10 @@ class Univs extends SB_Controller{
             $data = $this->_get_contest($cid);
             $subContest = $this->contest_m->list_subcontest($cid);
             $data['son_contest'] = $subContest;
-            $tpl = 'contest/son_contest_list.html';
-            $data['col'] = 0;
+            $tpl = 'contest/ajax_son_contest_list.html';
+            $this->tplData = $data;
+            $str = $this->fetch($tpl);
+            return show_json(0, '', array('html' => $str));
 
         } elseif (strpos($pageStr, '.html') !== FALSE) {
             $article_id = intval(str_replace('.html', '', $pageStr));

@@ -16,7 +16,7 @@
 <div class='box'>
 
 <div class='cell' style="border-bottom-style: none;">
-<a href="<?php echo site_url('mycontest/my');?>">我的竞赛</a> <span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('myenter/enter');?>">我的参加的竞赛</a>
+<a href="<?php echo site_url('myenter/enter');?>">我的参加的竞赛</a>
 <span class="chevron">&nbsp;›&nbsp;</span> <?php echo $team['team_number']?>
     <ul class="nav nav-tabs" style="margin-top:10px;">
     <li ><a href="<?php echo site_url('myenter/team/'.$team['team_id']);?>">团队</a></li>

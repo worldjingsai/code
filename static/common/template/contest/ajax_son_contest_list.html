@@ -1,0 +1,11 @@
+<div class="choose-a-school">
+<%if $tplData.son_contest%>
+<%foreach from=$tplData.son_contest item=value key=key name=foo%>
+<%if $value.contest_level<=1%>
+<a href="/<%$value.short_name%>/<%$value.contest_url%>" class="school_close"  title="<%$value.contest_name|strip_tags%>"><%$value.univs_name%></a>
+<%else%>
+<a href="/<%$value.contest_url%>" class="school_close"  title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags%></a>
+<%/if%>
+<%/foreach%>
+<%/if%>
+</div>

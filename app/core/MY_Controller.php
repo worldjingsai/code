@@ -26,6 +26,19 @@ class Base_Controller extends CI_Controller{
     }
 
     /**
+     * 展示模板
+     * @param string $template 模板的相对路径
+     */
+    public function fetch($template){
+        if(!empty($this->user_info)){
+            $this->tplData['user_info'] = $this->user_info;
+        }
+        $this->tplData['is_login'] = $this->is_login;
+        $this->smarty->assign('tplData', $this->tplData);
+        return $this->smarty->fetch($template);
+    }
+
+    /**
      * 已Json格式返回数据
      * @param array  $data 要返回给前端的数据
      */

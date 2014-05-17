@@ -16,9 +16,13 @@
 <div class='box'>
 <div class='cell'>
 <a href="<?php echo site_url('mycontest/index');?>">我的创建的竞赛</a>
-<span class="chevron">&nbsp;›&nbsp;</span> <?php echo sb_substr(strip_tags($contest['contest_name']), 19)?>
+<span class="chevron">&nbsp;›&nbsp;</span> <a href="<?php echo site_url('mycontest/sons/'.$cinfo['contest_id']);?>" title="<?php echo strip_tags($cinfo['contest_name']);?>"><?php echo sb_substr(strip_tags($cinfo['contest_name']), 19)?></a>
+<span class="chevron">&nbsp;›&nbsp;</span> 子竞赛会员信息
 </div>
 
+<div class="cell">
+<div align='right' class='inner'><a href="<?php echo site_url('mycontest/sons/'.$parent_cid_str);?>" class="btn btn-sm btn-primary">返回</a></div>
+</div>
 <div class='cell'>
 <?php if (empty($conf)) {?>
 没有报名系统
@@ -26,7 +30,7 @@
 
 <div class="cell">
 
-<form method="get"  class="form-horizontal" action="<?php echo site_url('mycontest/my_team_list/'.$conf['contest_id'])?>">
+<form method="get"  class="form-horizontal" action="<?php echo site_url('mycontest/sons_team_list/'.$current_cid_str)?>">
   			<fieldset>
 
   			    <div class="form-group">
@@ -138,17 +142,7 @@
 <td class='w100'>
 <a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>" class="btn btn-primary btn-sm">详情</a>
 <?php if ($v['result_file']) {?><a href="<?php echo site_url('mycontest/result_file/'.$v['team_id']);?>" class="btn btn-primary btn-sm">作品</a><?php }?>
-<!--  <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
-<a href="<?php echo site_url('admin/topics/del/'.$v['fid'].'/'.$v['cid'].'/'.$v['uid']);?>" class="btn btn-sm btn-danger" data-confirm="真的要删除吗？" data-method="delete" rel="nofollow">删除</a>
-<?php if($v['is_top']==0){?>
-<a href="<?php echo site_url('admin/topics/set_top/'.$v['fid']).'/'.$v['is_top'];?>" class="btn btn-primary btn-sm">置顶</a>
-<?php } else {?>
-<a href="<?php echo site_url('admin/topics/set_top/'.$v['fid']).'/'.$v['is_top'];?>" class="btn btn-primary btn-sm">取消置顶</a>
-<?php } ?>
-<?php if($v['is_hidden']==1){?>
-<a href="<?php echo site_url('admin/topics/approve/'.$v['fid']);?>" class="btn btn-primary btn-sm">审</a>
-<?php } ?>
--->
+
 </td>
 </tr>
 <?php } ?>
@@ -158,10 +152,7 @@
 </table>
 
 <div class='form-actions'>
-<?php if($conf['fee'] > 0) {?>
-<input class="btn btn-primary btn-info" name="batch_fee" type="submit" value="选中缴费" />
-<input class="btn btn-primary btn-info" name="batch_unfee" type="submit" value="选中不缴费" />
-<?php }?>
+
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export&<?=$url_query?>">导出全部团队信息</a>
 <a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>

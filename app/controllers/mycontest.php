@@ -62,13 +62,114 @@ class Mycontest extends SB_controller{
                     $univs = $this->univs_m->get_univs_info_by_univs_id($row['univs_id']);
                     $row['contest_url'] = $univs['short_name'] . '/' . $row['contest_url'];
                 }
+                // 计算子竞赛的数量
+                $row['sons'] = $this->contest_m->count_subcontest($cid);
             }
         }
         $data['title'] = '我的竞赛';
         $data['rows'] = $rows;
         $this->load->view('mycontest', $data);
     }
+    
 
+    /**
+     * 我创建的竞赛的子竞赛
+     * $cid是一条链路 id_sid_ssid...
+     */
+    public function sons($cid, $page = 1)
+    {
+        
+        if (empty($cid)  || !preg_match('/^(\d|_)*$/', $cid)) {
+            $this->myclass->notice('alert("没有选择竞赛");window.location.href="/mycontest/my";');
+            return 0;
+        }
+        $uid = $this->session->userdata('uid');
+    
+        // 验证权限
+        $cids = array();
+        if (strpos($cid, '_') !== false) {
+            $cids = explode('_', $cid);
+            $ancestorcid = $cids[0];
+        } else {
+            $ancestorcid = $cid;
+        }
+        
+        $cinfo = $this->contest_m->get($ancestorcid);
+        if ($cinfo['create_user_id'] != $uid) {
+            $this->myclass->notice('alert("没有权限");window.location.href="/mycontest/my";');
+            return 0;
+        }
+        
+        // 逐层判断是否是父id
+        $isFather = true;
+        $old = $ancestorcid;
+        if (!empty($cids)) {
+            
+            $son = next($cids);
+            while ($son) {
+                $scinfo = $this->contest_m->get($son);
+                if ($scinfo['parent_id'] != $old) {
+                    $isFather = false;
+                    break;
+                }
+                $old = $son;
+                $son = next($cids);
+            }
+        }
+        if (!$isFather) {
+            $this->myclass->notice('alert("没有权限");window.location.href="/mycontest/my";');
+            return 0;
+        }
+        //分页
+        $limit = 20;
+        $config = $this->pageConfig;
+        $config['uri_segment'] = 4;
+        $config['base_url'] = site_url('mycontest/sons/'.$cid);
+        $config['total_rows'] = $this->contest_m->count_subcontest($old);
+        $config['per_page'] = $limit;
+    
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
+    
+        $start = ($page-1)*$limit;
+        $data['pagination'] = $this->pagination->create_links();
+        $this->load->model('contest_regist_config_m');
+        $this->load->model('team_m');
+    
+        $rows = $this->contest_m->get_by_parentid($old, $start, $limit);
+    
+        if ($rows) {
+            foreach ($rows as &$row) {
+                $tcid = $row['contest_id'];
+                $conf = $this->contest_regist_config_m->get_normal($tcid);
+                if (!$conf) {
+                    $row['enter_members'] = 0;
+                } else {
+                    $number = $this->team_m->count_team($tcid, $conf['session']);
+                    $row['enter_members'] = $number;
+                }
+                $row['type_name'] = Contest_m::$typeNames[$row['contest_type']];
+                $row['level_name'] = Contest_m::$leverNames[$row['contest_level']];
+    
+                if ($row['contest_level'] <= Contest_m::LEVEL_SCHOOL) {
+                    $univs = $this->univs_m->get_univs_info_by_univs_id($row['univs_id']);
+                    $row['contest_url'] = $univs['short_name'] . '/' . $row['contest_url'];
+                }
+                // 计算子竞赛的数量
+                $row['sons'] = $this->contest_m->count_subcontest($tcid);
+            }
+        }
+        
+        $pos = strrpos($cid, '_');
+        $data['parent_cid_str'] = substr($cid, 0, $pos);
+        $data['current_cid_str'] = $cid;
+        $data['cinfo'] = $cinfo;
+        $data['title'] = '我的竞赛';
+        $data['rows'] = $rows;
+        $this->load->view('mycontest_son', $data);
+    }
+
+    
     /**
      * 根据cid获取参赛的队列表
      * @param unknown $cid
@@ -222,7 +323,203 @@ class Mycontest extends SB_controller{
         $this->load->view('mycontest_member', $data);
     }
 
+    /**
+     * 根据cid获取参赛的队列表
+     * @param unknown $cid
+     * @param number $page
+     */
+    public function sons_team_list($cid, $page = 1)
+    {
 
+        if (empty($cid)  || !preg_match('/^(\d|_)*$/', $cid)) {
+            $this->myclass->notice('alert("没有选择竞赛");window.location.href="/mycontest/my";');
+            return 0;
+        }
+        $uid = $this->session->userdata('uid');
+        
+        // 验证权限
+        $cids = array();
+        if (strpos($cid, '_') !== false) {
+            $cids = explode('_', $cid);
+            $ancestorcid = $cids[0];
+        } else {
+            $ancestorcid = $cid;
+        }
+        
+        $cinfo = $this->contest_m->get($ancestorcid);
+        if ($cinfo['create_user_id'] != $uid) {
+            $this->myclass->notice('alert("没有权限");window.location.href="/mycontest/my";');
+            return 0;
+        }
+        $data['cinfo'] = $cinfo;
+        // 逐层判断是否是父id
+        $isFather = true;
+        $old = $ancestorcid;
+        if (!empty($cids)) {
+        
+            $son = next($cids);
+            while ($son) {
+                $scinfo = $this->contest_m->get($son);
+                if ($scinfo['parent_id'] != $old) {
+                    $isFather = false;
+                    break;
+                }
+                $old = $son;
+                $son = next($cids);
+            }
+        }
+        if (!$isFather) {
+            $this->myclass->notice('alert("没有权限");window.location.href="/mycontest/my";');
+            return 0;
+        }
+        
+        $gets = $this->input->get(null, true);
+    
+        $act = $this->input->get('act', true);
+        $mem = $this->input->get('mem', true);
+        $limit = 100;
+    
+        $data['current_cid_str'] = $cid;
+        $pos = strrpos($cid, '_');
+        $data['parent_cid_str'] = substr($cid, 0, $pos);
+        $cid = $old;
+        $config = $this->pageConfig;
+        $config['per_page'] = $limit;
+        $config['uri_segment'] = 4;
+        $config['base_url'] = site_url('mycontest/my_team_list/' . $cid . '/');
+        $config['url_arguments'] = $gets;
+        $this->load->model('contest_regist_config_m');
+        $this->load->model('team_m');
+        $conf = $this->contest_regist_config_m->get_normal($cid);
+        $contest = $this->contest_m->get($cid);
+    
+        $is_fee = isset($gets['is_fee']) ? $gets['is_fee'] : '-1';
+        $is_up_imag = isset($gets['fee_image']) ? $gets['fee_image'] : '-1';
+        $is_result = isset($gets['is_result']) ? $gets['is_result'] :'-1';
+        $tk = isset($gets['select']) ? $gets['select'] : '';
+        $tv = isset($gets['keywords']) ? $gets['keywords'] :'';
+        $config['total_rows'] = 0;
+        if ($conf) {
+            $config['total_rows'] = $this->team_m->count_detail_by_cid_session($conf['contest_id'], $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv);
+        }
+    
+        $this->load->library('pagination');
+        $this->pagination->initialize($config);
+    
+        $start = ($page-1)*$limit;
+        $data['pagination'] = $this->pagination->create_links();
+    
+        // 获取数据
+        $rows = array();
+        if($conf) {
+            $conf['team_column'] = json_decode($conf['team_column'], true);
+            $conf['member_column'] = json_decode($conf['member_column'], true);
+            if ($act == 'export') {
+                $start = 0;
+                $limit = $config['total_rows'];
+            }
+            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv);
+        }
+    
+        // 导出团队信息
+        if ($act == 'export') {
+            $start = 0;
+            $limit = $config['total_rows'];
+            if(!empty($rows)){
+                $title = '"队号"';
+                $mk = $sk = array();
+    
+                foreach($conf['team_column'] as $k=>$v) {
+                    if ($v[2] > 0) {
+    
+                        $sk[$k] = $k;
+                        $title .= ',"'.$v[0].'"';
+                    }
+                }
+                if (!empty($conf['fee'])) {
+                    $title .= ',"是否缴费"';
+                    $title .= ',"是否上传缴费图片"';
+                }
+                $title .= ',"团队组别","团队选题","是否上传作品"';
+    
+                // 导出团队信息
+                if ($mem) {
+                    for($i=1; $i<=$conf['max_member']; $i++) {
+                        foreach($conf['member_column'] as $k=>$v) {
+                            if ($v[2] > 0) {
+                                $mk[$k] = $k;
+                                $title .= ',"队员'.$i.$v[0].'"';
+                            }
+                        }
+                    }
+                    $mt = array();
+                    foreach($rows as $k=>$v){
+                        $mt[$v['team_id']] = $v['team_id'];
+                    }
+    
+                    $this->load->model('member_column_m');
+                    $members = $this->member_column_m->listByTeamIds($mt);
+                    $showMembers = array();
+                    foreach ($members as $tmpm) {
+                        $showMembers[$tmpm['team_id']][] = $tmpm;
+                    }
+                }
+                $title.="\r\n";
+                $content = '';
+                foreach($rows as $k=>$v){
+                    $content .= '"'.$v['team_number'].'"';
+                    foreach($sk as $kk) {
+                        $content .= ',"'.$v[$kk].'"';
+                    }
+                    // 是否缴费
+                    if (!empty($conf['fee'])) {
+                        if ($v['is_fee'] >= 1) {
+                            $content .= ',"是"';
+                        } else {
+                            $content .= ',"否"';
+                        }
+                        if ($v['fee_image']) {
+                            $content .= ',"是"';
+                        } else {
+                            $content .= ',"否"';
+                        }
+                    }
+                    $content.= ',"'.$v['team_level'] .'","'.$v['problem_number'].'"';
+                    if ($v['result_file']) {
+                        $content .= ',"是"';
+                    } else {
+                        $content .= ',"否"';
+                    }
+                    if ($mem) {
+                        foreach($showMembers[$v['team_id']] as $mv) {
+                            foreach ($mk as $kk) {
+                                $content .= ',"'.$mv[$kk].'"';
+                            }
+                        }
+                    }
+                    $content.="\r\n";
+                }
+                $fname = $contest['contest_name'];
+                if ($mem) {
+                    $fname .= '_团队和队员信息表';
+                } else {
+                    $fname .= '_团队信息表';
+                }
+                return $this->exportCsv($fname . '.csv' , $title.$content);
+            } else {
+                $this->myclass->notice('alert("没有报名团队");window.location.href="'.site_url("/mycontest/my_team_list/$cid").'";');
+            }
+        }
+        $data['gets'] = $gets;
+        $data['url_query'] = http_build_query((array)$gets);
+        $data['title'] = '我的竞赛';
+        $data['rows'] = $rows;
+        $data['contest'] = $contest;
+        $data['conf'] = $conf;
+        $this->load->view('mycontest_sons_member', $data);
+    }
+    
+    
     /**
      * 显示一个团队信息
      * @param int $team_id
@@ -243,7 +540,10 @@ class Mycontest extends SB_controller{
             $memberColumn = $this->member_column_m->list_by_team_id($team_id);
             $contest = $this->contest_m->get($teamInfo['contest_id']);
             if ($uid != $contest['create_user_id']) {
-                return show_error('查看错误', 404);
+                $see = $this->_cheak_uid_by_pid($teamInfo['contest_id']);
+                if (!$see) {
+                    return show_error('没有权限', 404);
+                }
             }
         } else {
             return show_error('团队不存在', 404);
@@ -275,11 +575,27 @@ class Mycontest extends SB_controller{
         $teamInfo = $this->team_m->get($team_id);
         $teamColumn = $memberColumn = array();
         if ($teamInfo) {
+            $see = false;
             $team_id = $teamInfo['team_id'];
             $contest = $this->contest_m->get($teamInfo['contest_id']);
-            if (($uid != $contest['create_user_id']) && ($uid != $teamInfo['create_user_id'])) {
-                return show_error('查看错误', 404);
+            if (($uid == $contest['create_user_id']) || ($uid = $teamInfo['create_user_id'])) {
+                $see = true;
             }
+            if (!$see) {
+                $tmpPid = $contest['parent_id'];
+                while($tmpPid) {
+                    $tmpc = $this->contest_m->get($tmpPid);
+                    if ($tmpc['create_user_id'] == $uid) {
+                        $see = true;
+                        break;
+                    }
+                    $tmpPid = $tmpc['parent_id'];
+                }
+            }
+            if (!$see) {
+                return show_error('没有查看的权限', 404);
+            }
+
         } else {
             return show_error('团队不存在', 404);
         }
@@ -345,9 +661,18 @@ class Mycontest extends SB_controller{
         if (empty($contest) ) {
             return show_error('查看错误', 404, '违法操作');
         }
-        if(($uid != $contest['create_user_id']) && !$this->auth->is_admin()) {
-            return show_error('查看错误', 404, '违法操作');
+        
+        $see = false;
+        if (($uid == $contest['create_user_id']) && $this->auth->is_admin()) {
+            $see = true;
         }
+        if (!$see) {
+            $see = $this->_cheak_uid_by_pid($cid);
+        }
+        if (!$see) {
+            return show_error('没有查看的权限', 404);
+        }
+        
         $tids = array_slice($this->input->post(), 0, -1);
         $tids = array_map('intval', $tids);
         if(empty($tids)){
@@ -453,5 +778,32 @@ class Mycontest extends SB_controller{
         $this->load->model('team_m');
         $result['rows'] = $this->team_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_upload_fee_image,$page,$limit);
         $this->load->view('search_team_result', $result);
+    }
+    
+    /**
+     * 根据contestid查看是否有权限
+     */
+    private function _cheak_uid_by_pid($cid) {
+        if (!$cid) {
+            return false;
+        }
+        $contest = $this->contest_m->get($cid);
+        $uid = $this->session->userdata('uid');
+        $see = false;
+        if (($uid == $contest['create_user_id']) && $this->auth->is_admin()) {
+            $see = true;
+        }
+        if (!$see) {
+            $tmpPid = $contest['parent_id'];
+            while($tmpPid) {
+                $tmpc = $this->contest_m->get($tmpPid);
+                if ($tmpc['create_user_id'] == $uid) {
+                    $see = true;
+                    break;
+                }
+                $tmpPid = $tmpc['parent_id'];
+            }
+        }
+        return $see;
     }
 }

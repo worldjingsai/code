@@ -58,20 +58,20 @@ function ajaxFormSuccess(responseText, statusText) {
 }
 
 // 
-function ajax_message($msg) {
+function ajax_message($msg, width) {
 	if ($('#ajaxMessage').length == 0) {
 		var div = '<div class="" id="ajaxMessage" ></div>';
 		$(document.body).append(div); 
-		$('#ajaxMessage').dialog({
-		    autoOpen: true,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
-		    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
-		    width: 300,
-		    modal:true,//这个就是遮罩效果   
-		    resizable:false,
-		    dialogClass: 'alert'
-		});
 	}
 	$('#ajaxMessage').html($msg);
+	$('#ajaxMessage').dialog({
+	    autoOpen: true,//如果设置为true，则默认页面加载完毕后，就自动弹出对话框；相反则处理hidden状态。 
+	    bgiframe: true, //解决ie6中遮罩层盖不住select的问题  
+	    width: width||300,
+	    modal:true,//这个就是遮罩效果   
+	    resizable:false,
+	    dialogClass: 'alert'
+	});
 }
 
 $(document).ready(function(){
@@ -287,6 +287,47 @@ $(document).ready(function(){
 	    }; 
 	    // bind form using 'ajaxForm' 
 	    $('.js_comment').ajaxForm(options); 
+	}
+	
+	if($('.js_branch').length > 0) {
+		$('.js_branch').on('click', function(){
+			$url = $('.js_branch').attr('uri');
+			$.ajax({
+				url: $url,
+				type: 'GET',
+				data:'',
+				dataType: 'json',
+				timeout: 1000,
+				beforeSend:function(){
+					ajax_message('查询中...');
+				},
+				error: function(){ajax_message('查询错误');},
+				success: function(result){
+					console.log(result);
+					if(result.code==0)
+						ajax_message(result.data.html, 900);
+					}
+				});
+		});
+		
+		/*$.ajax({
+			url: $("#selfPostForm").attr('action'),
+			type: 'POST',
+			data:selfFormData,
+			dataType: 'json',
+			timeout: 1000,
+			error: function(){alert('Error loading PHP document');},
+			success: function(result){alert(result.message); location.reload();}
+			});
+		$(".js_comment").validate({});
+		
+		var options = {
+	    		beforeSubmit: ajaxFormStart,  // pre-submit callback
+	            success:      ajaxFormSuccess, // post-submit callback 
+	            dataType:     'json'
+	    }; 
+	    // bind form using 'ajaxForm' 
+	    $('.js_comment').ajaxForm(options); */
 	}
 	
 });
