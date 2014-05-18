@@ -39,10 +39,9 @@ class Contest extends SB_controller{
         }else{
             $bol = true;
         }
-        if($bol)
-        {
+        if($bol){
             echo "false";
-        } else {
+        }else{
             echo "true";
         }
         return ;
@@ -64,13 +63,13 @@ class Contest extends SB_controller{
                 return 0;
             }
             $univs_id = $univsInfo['univs_id'];
-        } else {
+        }else{
             $contest_url = $uri;
         }
 
         $cInfo = $this->contest_m->get_contest_by_short_name($univs_id, $contest_url);
         // 如果是更新竞赛，并且都没有变化就返回成功
-        if (empty($cInfo)) {
+        if(empty($cInfo)) {
             echo "false";
         } else {
             echo "true";
@@ -95,21 +94,20 @@ class Contest extends SB_controller{
      * @param intval $contest_id
      */
     public function upContest($contest_id) {
-        if (!$contest_id) {
+        if(!$contest_id){
             return show_error('竞赛不存在');
         }
-
         $data = $this->_get_contest($contest_id);
-        if (empty($data)){
+        if(empty($data)){
             return show_error('不存在的竞赛');
         }
-
+        if($this->user_inf['uid'] != $data['reconf']['create_user_id']){
+            return show_error('非法操作，无权限编辑此赛事!');
+        }
         $data['col'] = 0;
-
         $data['show_more'] = $this->input->get('show_more', true);
         $this->tplData = $data;
         $this->display('contest/create_contest.html');
-
     }
 
     /**
