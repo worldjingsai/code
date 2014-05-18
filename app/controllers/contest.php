@@ -101,7 +101,7 @@ class Contest extends SB_controller{
         if(empty($data)){
             return show_error('不存在的竞赛');
         }
-        if($this->user_inf['uid'] != $data['reconf']['create_user_id']){
+        if($this->user_info['uid'] != $data['reconf']['create_user_id']){
             return show_error('非法操作，无权限编辑此赛事!');
         }
         $data['col'] = 0;
