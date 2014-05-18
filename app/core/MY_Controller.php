@@ -58,8 +58,7 @@ class Base_Controller extends CI_Controller{
      * @param string $filename
      * @param string $data
      */
-    public function exportCsv($filename,$data)
-    {
+    public function exportCsv($filename,$data){
         $filename = $this->_getDownName($filename);
         $data = mb_convert_encoding($data, 'GBK', "UTF8");
         header("Content-type:text/csv");
@@ -73,11 +72,10 @@ class Base_Controller extends CI_Controller{
     /**
      * 获取GB2312编码文字
      */
-    public function _getDownName($name)
-    {
+    public function _getDownName($name){
         $name = strip_tags($name);
         // google系
-        if (preg_match("/AppleWebKit/i", $_SERVER['HTTP_USER_AGENT'])) {
+        if(preg_match("/AppleWebKit/i", $_SERVER['HTTP_USER_AGENT'])) {
             $name = htmlspecialchars($name);
             // IE系
         } elseif (preg_match("/MSIE/i", $_SERVER['HTTP_USER_AGENT'])) {
