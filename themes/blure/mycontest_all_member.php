@@ -23,10 +23,7 @@
 <?php if (empty($conf)) {?>
 没有报名系统
 <?php } else {?>
-    <ul class="nav nav-tabs" style="margin-top:10px;">
-    <li class="active"><a href="#">团队信息</a></li>
-    <li><a href="<?php echo site_url('mycontest/my_team_list_delete/'.$contest['contest_id']);?>">取消报名团队</a></li>
-    </ul>
+
 <div class="cell">
 
 <form method="get"  class="form-horizontal" action="<?php echo site_url('mycontest/my_team_list/'.$conf['contest_id'])?>">

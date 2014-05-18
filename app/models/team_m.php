@@ -12,6 +12,7 @@ class Team_m extends SB_Model{
 
     const STATUS_NORMAL = 1;
     const STATUS_DEL = -1;
+    const STATUS_CANCLE = -2;
 
     public $tb = 'team';
 
@@ -29,7 +30,7 @@ class Team_m extends SB_Model{
 
     public function get($id){
         $this->db->select('*');
-        $query = $this->db->where('team_id',$id)->where('status',1)->get($this->tb);
+        $query = $this->db->where('team_id',$id)->get($this->tb);
         return $query->row_array();
     }
 
@@ -159,7 +160,7 @@ class Team_m extends SB_Model{
             return false;
         }
     }
-    
+
     /**
      * 批量获取team信息
      */
@@ -186,13 +187,16 @@ class Team_m extends SB_Model{
      * @param  int $is_fee 是否已经付费
      * @param  int $is_upload_fee_image 是否上传缴费证明
      */
-    public function get_detail_by_cid_session($cid, $session, $page, $limit, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = '')
+    public function get_detail_by_cid_session($cid, $session, $page, $limit, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = '', $status = 1)
     {
         $this->db->select('a.*, b.*');
         $this->db->from($this->tb .' a');
         $this->db->join('team_column b', 'b.team_id = a.team_id');
         $this->db->order_by('create_time','desc');
-        $this->db->where('a.contest_id',$cid)->where('a.session', $session)->where('a.status',1);
+        if (!is_array($cid)) {
+            $cid = array($cid);
+        }
+        $this->db->where_in('a.contest_id',$cid)->where('a.session', $session)->where('a.status',$status);
         if($is_fee != -1){
             $this->db->where('a.is_fee',$is_fee);
         }
@@ -230,12 +234,15 @@ class Team_m extends SB_Model{
     /**
      * 根据contestid和sessionid获取参数总数
      */
-    public function count_detail_by_cid_session($cid, $session, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = ''){
+    public function count_detail_by_cid_session($cid, $session, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = '', $status=1){
         $this->db->select('a.team_id');
         $this->db->from($this->tb .' a');
         $this->db->join('team_column b', 'b.team_id = a.team_id');
 
-        $this->db->where('a.contest_id',$cid)->where('a.session', $session)->where('a.status',1);
+        if (!is_array($cid)) {
+            $cid = array($cid);
+        }
+        $this->db->where_in('a.contest_id',$cid)->where('a.session', $session)->where('a.status',$status);
         if($is_fee != -1){
             $this->db->where('a.is_fee',$is_fee);
         }

@@ -310,8 +310,8 @@ class Contest_m extends SB_Model{
             return false;
         }
     }
-    
-    
+
+
     /**
      * 获取创建的竞赛
      * @param unknown $page
@@ -330,5 +330,48 @@ class Contest_m extends SB_Model{
         } else {
             return false;
         }
+    }
+
+    /**
+     * 获取创建的竞赛
+     */
+    public function get_ids_by_parentid($pid)
+    {
+        $this->db->select('*');
+        $this->db->from($this->tb);
+        $this->db->where('parent_id',$pid)->where('status',1);
+        $query = $this->db->get();
+        if($query->num_rows() > 0){
+            $result = $query->result_array();
+            $ids = array();
+            foreach ($result as $r) {
+                $ids[$r['contest_id']] = $r['contest_id'];
+            }
+            return $ids;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 根据cid递归获取所有的子竞赛id
+     */
+    public function get_all_son_ids($cid, &$ids = array())
+    {
+        if (!$cid) {
+            return array();
+        }
+
+        if ($this->count_subcontest($cid)) {
+            $sonids = $this->get_ids_by_parentid($cid);
+            $sons = $sonids;
+            $ids = array_merge($ids, $sonids);
+
+            foreach ($sons as $i)
+            {
+                $this->get_all_son_ids($i, $ids);
+            }
+        }
+        return $ids ? $ids : array();
     }
 }

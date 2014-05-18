@@ -28,7 +28,8 @@
 <th align='left' class='auto'>竞赛类型</th>
 <th align='left' class='auto'>竞赛级别</th>
 <th align='right' class='auto'>创建日期</th>
-<th align='right' class='auto'>报名队数</th>
+<th align='right' class='auto'>队数</th>
+
 <th align='right' class='auto'>子竞赛</th>
 
 

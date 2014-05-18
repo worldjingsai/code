@@ -385,6 +385,31 @@ class Contest extends SB_controller{
     }
 
     /**
+     * 取消报名信息
+     */
+    public function user_cancle($team_id = 0) {
+        $team_id = intval($team_id);
+        if (!$team_id) {
+            $code = 0;
+        }
+        $message = '';
+        if ($team_id) {
+             $this->load->model('team_m');
+            $uid=$this->session->userdata('uid');
+            $t = $this->team_m->get($team_id);
+            if ($t['create_user_id'] == $uid) {
+                $res = $this->team_m->update($team_id, array('status' => team_m::STATUS_CANCLE));
+                if ($res) {
+                    $code = 0;
+                } else {
+                    $code = 500;
+                    $message = '更新错误';
+                }
+            }
+        }
+        return show_json($code, $message);
+    }
+    /**
      * 显示图片
      */
     public function user_pay_img($team_id) {

@@ -151,6 +151,54 @@ $(document).ready(function(){
 		})
 	};
 	
+	
+	if ($(".js_cancle").length > 0) {
+		$(".js_cancle").on('click', function(){
+			var url = $(".js_cancle").attr('uri');
+			if ($('#promptMessage').length == 0) {
+				var div = '<div class="" id="promptMessage" ></div>';
+				$(document.body).append(div); 
+			} else {
+				$('#promptMessage').dialog('open');
+			}
+			$('#promptMessage').html("<span class='red' >确定要取消本竞赛的报名吗？!!</span><br/>取消报名后如果还想报名需要重新填写报名信息。");
+			$('#promptMessage').dialog({
+			    autoOpen: true,
+			    bgiframe: true, 
+			    width: 400,
+			    modal:true,
+			    resizable:false,
+			    dialogClass: 'prompt',
+			    title:'提示信息',
+			    buttons : {
+			    	"确定" : function(){
+			    		$.ajax({
+							url: url,
+							type: "GET",
+							dataType:"json",
+							success: function(responseText){
+								if (responseText.code == 0) {
+									if (responseText.message != '') {
+										$('#promptMessage').html(responseText.message);
+									}
+									$('#promptMessage').dialog("close");
+									window.location.reload();
+								} else {
+									$('#promptMessage').html('返回错误' + responseText.message);
+								}
+						    },
+						    error : function() {
+						    	$('#promptMessage').html('系统错误，请重试!');
+						    }
+						});
+			    		},
+			    	"取消" : function(){$( this ).dialog( "close" );return false;}
+			    }
+			});
+			
+		})
+	};
+	
 	if ($("#create_apply").length > 0) {
 		$("#create_apply").validate({
 			rules: {

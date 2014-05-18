@@ -56,7 +56,7 @@
 	<div class="DivH10"></div>
 	<div class="team_info">
 	<p class="rg_info">团队信息</p>
-	<input type="hidden" name="team_id" value="<%$tplData.team_id|default:''%>"/>
+	<input type="hidden" name="team_id" value="<%$tplData.teamInfo.team_id|default:''%>"/>
     <table class="">
         <colgroup>
             <col width="150">
@@ -128,8 +128,12 @@
 	<div class="member_control">
 	<a href="javascript:;" class="btn btn-small btn-success js_add_data" ><span class="ui-icon ui-icon-circle-plus FL add-icon "></span><span class="FL">增加队员</span></a>
     <a href="javascript:;" class="btn btn-small btn-danger js_del_data" ><span class="ui-icon ui-icon-circle-minus FL add-icon "></span><span class="FL">减少队员</span></a>
+
+    <div class="DivH10"></div>
 	        <div class="t-c">
-                <button type="submit" class="btn btn-primary" >完成</button>  
+                <button type="submit" class="btn btn-primary"  name="submit">提交报名信息</button>  
+                <a class="btn FR js_cancle" href="javascripy:;" uri="/contest/user_cancle/<%$tplData.teamInfo.team_id|default:''%>">取消报名</a>  
+                
             </div>
     </div>
 	</form>
