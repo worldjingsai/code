@@ -19,6 +19,10 @@ class User extends SB_Controller{
     }
     public function info ($uid){
         $data = $this->user_m->get_user_by_id($uid);
+        // 用户所在学校信息
+        $univs_id = intval($data['univs_id']);
+        $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
+        $data['univs_info'] = $univs_info;
         //用户大头像
         $this->load->model('upload_m');
         $data['big_avatar']=$this->upload_m->get_avatar_url($uid, 'big');
@@ -35,8 +39,8 @@ class User extends SB_Controller{
         $this->load->view('userinfo', $data);
 
     }
+    
     public function reg(){
-
         //加载form类，为调用错误函数,需view前加载
         $this->load->helper('form');
         $data['title'] = '注册新用户';

@@ -96,8 +96,7 @@ class Univs extends SB_Controller{
      * args[0],栏目
      * args[1],分页
      */
-    protected function _show_contest($cInfo, $args)
-    {
+    protected function _show_contest($cInfo, $args){
         // 引入模型
         $this->load->model('article_m');
         $this->load->model('article_content_m');
@@ -105,7 +104,7 @@ class Univs extends SB_Controller{
         $cid = $cInfo['contest_id'];
 
         $pageStr = '';
-        if (isset($args[1])) {
+        if(isset($args[1])) {
             $pageStr = $args[1];
         }
 
