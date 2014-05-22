@@ -94,6 +94,10 @@ class Contest extends SB_controller{
      * @param intval $contest_id
      */
     public function upContest($contest_id) {
+        if (!$this->is_login) {
+            $this->myclass->notice('alert("请登录后再操作");window.location.href="/user/login";');
+            return 0;
+        }
         if(!$contest_id){
             return show_error('竞赛不存在');
         }
@@ -101,7 +105,7 @@ class Contest extends SB_controller{
         if(empty($data)){
             return show_error('不存在的竞赛');
         }
-        if($this->user_info['uid'] != $data['reconf']['create_user_id']){
+        if($this->user_info['uid'] != $data['contest']['create_user_id'] && !$this->auth->is_admin()){
             return show_error('非法操作，无权限编辑此赛事!');
         }
         $data['col'] = 0;
@@ -127,7 +131,9 @@ class Contest extends SB_controller{
         if (empty($data)){
             return show_error('不存在的竞赛');
         }
-
+        if($this->user_info['uid'] != $data['contest']['create_user_id'] && !$this->auth->is_admin()){
+            return show_error('非法操作，无权限编辑此赛事!');
+        }
         $data['col'] = 0;
 
         $this->load->model('contest_regist_config_m');

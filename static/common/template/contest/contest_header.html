@@ -86,9 +86,11 @@
 		<%/foreach%>
 	    <li><a target="_blank" href="<%if $tplData.contest.contest_bbs|default:0%><%$tplData.contest.contest_bbs%><%else%>/forum/flist/<%$tplData.contest.contest_type%><%/if%>">论坛</a></li>
 	</ul>
+	<%if $tplData.contest.contest_url != 'cumcm'%>
 	<%if !empty($user.uid) && $user.uid == $tplData.contest.create_user_id%>
 	<span class="btn btn-success FR"><a href="/contest/upContest/<%$tplData.contest.contest_id%>">更新竞赛</a></span>
   	<span class="btn btn-success FR"><a href="/contest/create_apply/<%$tplData.contest.contest_id%>">报名系统</a></span>
+  	<%/if%>
   	<%/if%>
   	<div style="clear:both;"></div>
    </div>
