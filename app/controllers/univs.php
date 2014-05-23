@@ -351,7 +351,7 @@ class Univs extends SB_Controller{
      * 显示所有的竞赛列表
      */
     protected function _cList($offset){
-        $limit = 20;
+        $limit = 50;
         $offset = $this->input->get('page');
         if(empty($offset)){
             $offset = 0;
