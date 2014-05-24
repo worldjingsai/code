@@ -5,7 +5,7 @@
 <span style='font-size: 12px; color: #666;'>
 </span>
 <div class='sep3'></div>
-<span style='font-size: 12px;'><a target="_blank" href="http://mgmcm.worldjingsai.com">MathorCup全球大学生数学建模挑战赛</a></span>
+<span style='font-size: 12px;'><a target="_blank" href="http://www.mcm.edu.cn">2014全国大学生数学建模竞赛</a></span>
 
 </div>
 </div>
