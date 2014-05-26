@@ -41,14 +41,20 @@
   	<div class="time" id="lxftime" endtime="<%$tplData.contest.contest_start_time%>" showdetailtime="no"></div>
   	<div class="bm">
   	<%if !empty($tplData.reconf.type) && $tplData.reconf.type==2%>
-  	<%if !empty($tplData.teamInfo) && $tplData.teamInfo.team_id%>
-  	<div class="team_info">报名队号：<%$tplData.teamInfo.team_number%></div>
-  	<a class="btn btn-warning" href="/contest/user_apply/<%$tplData.contest.contest_id%>">查看&编辑队伍信息</a>
-  	<%elseif !empty($tplData.show_enter) %>
-  	<a class="enter" href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a>
-  	<%/if%>
+	  	<%if !empty($tplData.teamInfo) && $tplData.teamInfo.team_id%>
+	  	<div class="team_info">报名队号：<%$tplData.teamInfo.team_number%></div>
+	  	<a class="btn btn-warning" href="/contest/user_apply/<%$tplData.contest.contest_id%>">查看&编辑队伍信息</a>
+	  	<%elseif !empty($tplData.show_enter) %>
+	  	<a class="enter" href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a>
+	  	<%/if%>
   	<%elseif !empty($tplData.contest.old_url)%>
   	<a class="enter" href="<%$tplData.contest.old_url%>" target="_blank"><em>报名</em></a>
+  	<%elseif $tplData.contest.sons_num > 0%>
+  		<%if $tplData.contest.contest_level == 3%>
+  		<a class="js_branch ssfs" href="javascript:;" uri="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a>
+  		<%elseif $tplData.contest.contest_level == 2%>
+  		<a class="js_branch xsfs" href="javascript:;" uri="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a>
+  		<%/if%>
   	<%/if%>
   	</div>
   	
@@ -62,11 +68,12 @@
     </div>
     <%/if%>
     
-  	<%if $tplData.contest.sons_num > 0%>
-  	<div class="fsbm "><a class="js_branch" href="javascript:;" uri="/<%$tplData.contest_url%>/branch"><em>分赛入口</em></a></div>
-  	<%/if%>
   	<%if !empty($tplData.contest.parent_url) %>
-  	<div class="zsbm"><a href="/<%$tplData.contest.parent_url%>"><em>总赛入口</em></a></div>
+  		<%if $tplData.contest.contest_level == 1%>
+  		<div class="zsbm"><a class="sszs" href="/<%$tplData.contest.parent_url%>"><em>总赛入口</em></a></div>
+  		<%elseif $tplData.contest.contest_level == 2%>
+  		<div class="zsbm"><a class="gszs" href="/<%$tplData.contest.parent_url%>"><em>总赛入口</em></a></div>
+  		<%/if%>
   	<%/if%>
   	
   	<div class="contest_time">

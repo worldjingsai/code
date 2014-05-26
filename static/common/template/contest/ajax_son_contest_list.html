@@ -4,7 +4,7 @@
 <%if $value.contest_level<=1%>
 <a href="/<%$value.short_name%>/<%$value.contest_url%>" class="school_close"  title="<%$value.contest_name|strip_tags%>"><%$value.univs_name%></a>
 <%else%>
-<a href="/<%$value.contest_url%>" class="school_close"  title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags|replace:$contest.contest_name:''%></a>
+<a href="/<%$value.contest_url%>" class="school_close"  title="<%$value.contest_name|strip_tags%>"><%$value.contest_name|strip_tags|replace:$tplData.contest.contest_name:''%></a>
 <%/if%>
 <%/foreach%>
 <%/if%>

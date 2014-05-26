@@ -77,6 +77,11 @@ a.red{color:red;}
 .show_top .bm em {font-size: 1px; visibility: hidden;}
 .show_top .bm a.enter {background-image: url(../images/a1.png);height: 66px;width: 188px;display: block;text-decoration: none;}
 .show_top .bm a.enter:hover {background-image: url(../images/a2.png);text-decoration: none;}
+.show_top .bm a.ssfs {background-image: url(../images/ssfs.png);height: 62px;width: 188px;display: block;text-decoration: none;}
+.show_top .bm a.ssfs:hover {background-position: 0 100%;text-decoration: none;}
+.show_top .bm a.xsfs {background-image: url(../images/xsfs.png);height: 62px;width: 188px;display: block;text-decoration: none;}
+.show_top .bm a.xsfs:hover {background-position: 0 100%;text-decoration: none;}
+
 .show_top .bm .team_info {color: #F3F334; font-size: 14px; background:transparent;}
 
 .show_top .fsbm {position:absolute; right:0px; top:330px;}
@@ -86,7 +91,8 @@ a.red{color:red;}
 
 .show_top .zsbm {position:absolute; right:0px; top:330px;}
 .show_top .zsbm em {font-size: 1px; visibility: hidden;}
-.show_top .zsbm a {background-image: url(../images/ss.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
+.show_top .zsbm a.sszs {background-image: url(../images/sszs.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
+.show_top .zsbm a.gszs {background-image: url(../images/gszs.png); background-repeat: no-repeat; height: 62px;width: 196px;display: block;text-decoration: none;}
 .show_top .zsbm a:hover {background-position: 0 100%;text-decoration: none;}
 
 .show_top .contest_time{position:absolute; right:10px; bottom:50px;}
