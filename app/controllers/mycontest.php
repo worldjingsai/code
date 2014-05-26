@@ -636,7 +636,7 @@ class Mycontest extends SB_controller{
         }
 
         $see = false;
-        if (($uid == $contest['create_user_id']) && $this->auth->is_admin()) {
+        if (($uid == $contest['create_user_id']) || $this->auth->is_admin()) {
             $see = true;
         }
         if (!$see) {
