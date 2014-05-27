@@ -351,7 +351,6 @@ $(document).ready(function(){
 				},
 				error: function(){ajax_message('查询错误');},
 				success: function(result){
-					console.log(result);
 					if(result.code==0)
 						ajax_message(result.data.html, 900);
 					}
