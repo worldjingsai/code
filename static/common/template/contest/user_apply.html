@@ -16,7 +16,9 @@
                
 			   <div class="rg_title">报名竞赛-报名人员限制<%$tplData.reconf.min_member%>~<%$tplData.reconf.max_member%>人</div>
 			   <div class="rg_data">
-			  
+			   
+    <form id="js_user_apply" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
+
 			<div class="sys_info">
        <p class="rg_info">系统信息</p>
        <table class="">
@@ -29,7 +31,15 @@
         <tr>
             <th>参赛队号:</th>
             <td>
-                <%if !empty($tplData.teamInfo)%><%$tplData.teamInfo.team_number%><%else%>还未生成，提交报名后会自动生成队号<%/if%>
+                <%if !empty($tplData.reconf.is_defined_number)%>
+                <input class="text" id="team_number" type="text" value="<%$tplData.teamInfo.team_number|default:''%>"  name="team_number" chkurl="/data/contest/chknumber"
+                contest_id="<%$tplData.contest.contest_id|default:''%>" session="<%$tplData.reconf.session|default:''%>"
+                >
+                <%else%>
+                <%if !empty($tplData.teamInfo)%><%$tplData.teamInfo.team_number%>
+                
+                <%else%>还未生成，提交报名后会自动生成队号<%/if%>
+                <%/if%>
             </td>
         </tr>
         <%if $tplData.reconf.fee%>
@@ -51,7 +61,6 @@
         </tbody>
         </table>
     </div>
-			<form id="js_user_apply" action="/contest/user_apply/<%$tplData.contest.contest_id%>" method="post" class="dialog-box">
 
 	<div class="DivH10"></div>
 	<div class="team_info">

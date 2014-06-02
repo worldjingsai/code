@@ -311,8 +311,31 @@ $(document).ready(function(){
 	});
 	
 	if ($("#js_user_apply").length > 0) {
+		if( $("#team_number").length > 0) {
 		$("#js_user_apply").validate({
+				rules: {
+					team_number: {
+						required: true,
+						remote: {
+							url: $("#team_number").attr("chkurl"),
+							type:"post",
+							data:{"team_number":function() { 
+								return $("#team_number").val(); 
+								},
+								"contest_id":$("#team_number").attr("contest_id"),
+								"session":$("#team_number").attr("session")
+							}
+						}
+					}
+				},
+				messages: {
+					team_number: {
+						required: "竞赛队号不能为空",
+						remote:"此队号已存在请修改"
+					}
+				}
 		});
+		}
 		
 		var options = {
 	    		beforeSubmit: ajaxFormStart,  // pre-submit callback

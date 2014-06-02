@@ -34,9 +34,10 @@ class Team_m extends SB_Model{
         return $query->row_array();
     }
 
-    public function get_by_team_number($team_number){
+    public function get_by_team_number($team_number, $contest_id, $session){
         $this->db->select('*');
-        $query = $this->db->where('team_number',$team_number)->get($this->tb);
+        $query = $this->db->where('team_number',$team_number)->where('contest_id', $contest_id)
+        ->where('session', $session)->get($this->tb);
         return $query->row_array();
     }
 

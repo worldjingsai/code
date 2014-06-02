@@ -47,6 +47,41 @@ class Contest extends SB_controller{
         return ;
     }
 
+
+    /**
+     * 检测竞赛的Number是否被占用
+     */
+    public function ajax_chknumber(){
+        $cid = intval($this->input->post('contest_id'));
+        $session  = intval($this->input->post('session'));
+        $team_number = $this->input->post('team_number', true);
+        $uid = $this->user_info['uid'];
+
+        if (empty($cid) || empty($session) || empty($team_number)) {
+            echo "false";
+            return;
+        }
+
+        $this->load->model('team_m');
+        // 如果是更新竞赛，并且都没有变化就返回成功
+        if ($team_number) {
+            $tInfo = $this->team_m->get_by_team_number($team_number, $cid, $session);
+            if (empty($tInfo)) {
+                echo "true";
+                return;
+            } else if (!empty($tInfo) && ($tInfo['create_user_id'] === $uid) ) {
+                echo "true";
+                return ;
+            } else {
+                echo "false";
+                return ;
+            }
+        }
+        echo "false";
+        return ;
+    }
+
+
     /**
      * 检测父URL是否存在
      */
@@ -339,6 +374,18 @@ class Contest extends SB_controller{
                     'create_user_id' =>$this->user_info['uid'],
                     'status' => Team_m::STATUS_NORMAL,
             );
+            if ($configs['is_defined_number']) {
+                $team_number = $this->input->post('team_number', true);
+                if (empty($team_number)) {
+                    return show_json(100, '参赛队号不能为空', array('return_url' => '/contest/user_apply/'.$contest_id, 'show_time'=>1000));
+                } else {
+                    $tInfo = $this->team_m->get_by_team_number($team_number, $contest_id, $configs['session']);
+                    if ($tInfo && $tInfo['create_user_id'] != $this->user_info['uid']) {
+                        return show_json(200, '参赛队号重复请重新填写', array('return_url' => '/contest/user_apply/'.$contest_id, 'show_time'=>1000));
+                    }
+                }
+                $teamData['team_number'] = $team_number;
+            }
             $teamColumn = $team;
             $teamColumn['team_id'] = $team_id;
 
@@ -347,7 +394,9 @@ class Contest extends SB_controller{
                 $this->team_m->update($team_id, $teamData);
                 $this->team_column_m->update($team_id, $teamColumn);
             } else {
-                $team_number = $this->contest_regist_config_m->get_team_number($contest_id);
+                if (empty($configs['is_defined_number'])) {
+                    $team_number = $this->contest_regist_config_m->get_team_number($contest_id);
+                }
                 $teamData['contest_id'] = $contest_id;
                 $teamData['session'] = $configs['session'];
                 $teamData['team_number'] = $team_number;
