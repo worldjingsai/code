@@ -5,8 +5,8 @@
 
 class Team_m extends SB_Model{
 
-    const IS_VALID_YES = 1;
-    const IS_VALID_NO = 0;
+    const IS_VALID_YES = 0;
+    const IS_VALID_NO = -1;
     const IS_ENTER_YES = 1;
     const IS_ENTER_NO = 0;
 
@@ -188,7 +188,7 @@ class Team_m extends SB_Model{
      * @param  int $is_fee 是否已经付费
      * @param  int $is_upload_fee_image 是否上传缴费证明
      */
-    public function get_detail_by_cid_session($cid, $session, $page, $limit, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = '', $status = 1)
+    public function get_detail_by_cid_session($cid, $session, $page, $limit, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = '', $status = 1, $is_valid=-1)
     {
         $this->db->select('a.*, b.*');
         $this->db->from($this->tb .' a');
@@ -215,6 +215,9 @@ class Team_m extends SB_Model{
                 $this->db->where('a.result_file','');
             }
         }
+        if ($is_valid != -1) {
+            $this->db->where('a.is_valid',$is_valid);
+        }
         if ($tvalue !== '') {
             if ($tkey == 'team_number') {
                 $this->db->where('a.team_number', $tvalue);
@@ -235,7 +238,7 @@ class Team_m extends SB_Model{
     /**
      * 根据contestid和sessionid获取参数总数
      */
-    public function count_detail_by_cid_session($cid, $session, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = '', $status=1){
+    public function count_detail_by_cid_session($cid, $session, $is_fee=-1, $is_upfee_image=-1, $is_result=-1, $tkey='', $tvalue = '', $status=1, $is_valid=-1){
         $this->db->select('a.team_id');
         $this->db->from($this->tb .' a');
         $this->db->join('team_column b', 'b.team_id = a.team_id');
@@ -260,6 +263,9 @@ class Team_m extends SB_Model{
             } else {
                 $this->db->where('a.result_file','');
             }
+        }
+        if ($is_valid != -1) {
+            $this->db->where('a.is_valid',$is_valid);
         }
         if ($tvalue !== '') {
             if ($tkey == 'team_number') {

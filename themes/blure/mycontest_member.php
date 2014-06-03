@@ -32,6 +32,20 @@
 <form method="get"  class="form-horizontal" action="<?php echo site_url('mycontest/my_team_list/'.$conf['contest_id'])?>">
   			<fieldset>
 
+
+  			    <?php if($conf['is_checked']) {?>
+  			    <div class="form-group">
+      				<label class="col-sm-2 control-label" >是否审核通过</label>
+      				<div class="col-sm-2">
+       					<select name="is_checked" class="form-control" >
+                        <option value="-1">全部</option>
+                        <option value="1" <?php if(isset($gets['is_checked']) && $gets['is_checked'] == 1) {?>selected="selected"<?php }?>>已通过</option>
+                        <option value="0" <?php if(isset($gets['is_checked']) && $gets['is_checked'] == 0) {?>selected="selected"<?php }?>>未通过</option>
+                        </select>
+      				</div>
+      			</div>
+                <?php }?>
+                
   			    <div class="form-group">
   			    <?php if($conf['fee'] > 0) {?>
       				<label class="col-sm-2 control-label" >是否缴费</label>
@@ -112,6 +126,11 @@
 <?php if($conf['fee'] > 0) {?>
 <th align='right' class='auto'>缴费</th>
 <?php }?>
+
+<?php if($conf['is_checked']) {?>
+<th align='right' class='auto'>审核</th>
+<?php }?>
+
 <th class='w100'>操作</th>
 </tr>
 </thead>
@@ -138,6 +157,13 @@
 <?php }?>
 </th>
 <?php }?>
+
+<?php if($conf['is_checked']) {?>
+<th class='auto'>
+<?php if($v['is_valid']) {?>是<?php }else {?>否<?php }?>
+</th>
+<?php }?>
+
 <td class='w100'>
 <a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>" class="btn btn-primary btn-sm">详情</a>
 <?php if ($v['result_file']) {?><a href="<?php echo site_url('mycontest/result_file/'.$v['team_id']);?>" class="btn btn-primary btn-sm">作品</a><?php }?>
@@ -165,6 +191,11 @@
 <input class="btn btn-primary btn-info" name="batch_fee" type="submit" value="选中缴费" />
 <input class="btn btn-primary btn-info" name="batch_unfee" type="submit" value="选中不缴费" />
 <?php }?>
+<?php if($conf['is_checked']) {?>
+<input class="btn btn-primary btn-info" name="batch_check" type="submit" value="选中审核通过" />
+<input class="btn btn-primary btn-warning" name="batch_uncheck" type="submit" value="选中审核不通过" />
+<?php }?>
+
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export&<?=$url_query?>">导出全部团队信息</a>
 <a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>

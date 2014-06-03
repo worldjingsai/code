@@ -197,14 +197,15 @@ class Mycontest extends SB_controller{
             return show_error('查看错误', 404);
         }
 
-        $is_fee = isset($gets['is_fee']) ? $gets['is_fee'] : '-1';
-        $is_up_imag = isset($gets['fee_image']) ? $gets['fee_image'] : '-1';
-        $is_result = isset($gets['is_result']) ? $gets['is_result'] :'-1';
+        $is_fee = isset($gets['is_fee']) ? intval($gets['is_fee']) : '-1';
+        $is_up_imag = isset($gets['fee_image']) ? intval($gets['fee_image']) : '-1';
+        $is_result = isset($gets['is_result']) ? intval($gets['is_result']) :'-1';
+        $is_valid = isset($gets['is_checked']) ? intval($gets['is_checked']) : '-1';
         $tk = isset($gets['select']) ? $gets['select'] : '';
         $tv = isset($gets['keywords']) ? $gets['keywords'] :'';
         $config['total_rows'] = 0;
         if ($conf) {
-            $config['total_rows'] = $this->team_m->count_detail_by_cid_session($conf['contest_id'], $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv);
+            $config['total_rows'] = $this->team_m->count_detail_by_cid_session($conf['contest_id'], $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
         }
 
         $this->load->library('pagination');
@@ -455,11 +456,12 @@ class Mycontest extends SB_controller{
         $is_fee = isset($gets['is_fee']) ? $gets['is_fee'] : '-1';
         $is_up_imag = isset($gets['fee_image']) ? $gets['fee_image'] : '-1';
         $is_result = isset($gets['is_result']) ? $gets['is_result'] :'-1';
+        $is_valid = isset($gets['is_checked']) ? intval($gets['is_checked']) : '-1';
         $tk = isset($gets['select']) ? $gets['select'] : '';
         $tv = isset($gets['keywords']) ? $gets['keywords'] :'';
         $config['total_rows'] = 0;
         if ($conf) {
-            $config['total_rows'] = $this->team_m->count_detail_by_cid_session($conf['contest_id'], $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv);
+            $config['total_rows'] = $this->team_m->count_detail_by_cid_session($conf['contest_id'], $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
         }
 
         $this->load->library('pagination');
@@ -477,7 +479,7 @@ class Mycontest extends SB_controller{
                 $start = 0;
                 $limit = $config['total_rows'];
             }
-            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv);
+            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
         }
 
         // 导出团队信息
@@ -667,6 +669,19 @@ class Mycontest extends SB_controller{
             }
         }
 
+        // 审核通过
+        if($this->input->post('batch_check')){
+            if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_valid'=>1))){
+                $this->myclass->notice('alert("批量更新审核状态成功！");window.location.href="'.$refer.'";');
+            }
+        }
+        // 审核不通过
+        if($this->input->post('batch_uncheck')){
+            if($this->db->where_in('team_id',$tids)->where('contest_id', $cid)->update('team', array('is_valid'=>0))){
+                $this->myclass->notice('alert("批量更新审核状态成功！");window.location.href="'.$refer.'";');
+            }
+        }
+        
         // 批量下载论文
         if ($this->input->post('batch_down')) {
             set_time_limit(0);
@@ -805,6 +820,9 @@ class Mycontest extends SB_controller{
                 $title .= ',"是否缴费"';
                 $title .= ',"是否上传缴费图片"';
             }
+            if (!empty($conf['is_checked'])) {
+                $title .= ',"是否审核通过"';
+            }
             $title .= ',"团队组别","团队选题","是否上传作品"';
 
             // 导出团队信息
@@ -844,6 +862,14 @@ class Mycontest extends SB_controller{
                         $content .= ',"否"';
                     }
                     if ($v['fee_image']) {
+                        $content .= ',"是"';
+                    } else {
+                        $content .= ',"否"';
+                    }
+                }
+                // 是否审核
+                if (!empty($conf['is_checked'])) {
+                    if ($v['is_valid']) {
                         $content .= ',"是"';
                     } else {
                         $content .= ',"否"';

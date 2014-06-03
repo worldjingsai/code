@@ -394,9 +394,12 @@ class Contest extends SB_controller{
                 $this->team_m->update($team_id, $teamData);
                 $this->team_column_m->update($team_id, $teamColumn);
             } else {
+                
+                // 是否需要自定义队号
                 if (empty($configs['is_defined_number'])) {
                     $team_number = $this->contest_regist_config_m->get_team_number($contest_id);
                 }
+
                 $teamData['contest_id'] = $contest_id;
                 $teamData['session'] = $configs['session'];
                 $teamData['team_number'] = $team_number;
