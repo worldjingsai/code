@@ -303,7 +303,7 @@ if ( ! function_exists('config_item'))
 */
 if ( ! function_exists('show_error'))
 {
-	function show_error($message, $status_code = 500, $heading = 'An Error Was Encountered')
+	function show_error($message, $status_code = 500, $heading = '友情提示')
 	{
 		$_error =& load_class('Exceptions', 'core');
 		echo $_error->show_error($heading, $message, 'error_general', $status_code);

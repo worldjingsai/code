@@ -194,7 +194,7 @@ class Mycontest extends SB_controller{
         $conf = $this->contest_regist_config_m->get_normal($cid);
         $contest = $this->contest_m->get($cid);
         if ($uid != $contest['create_user_id']) {
-            return show_error('查看错误', 404);
+            return header('location:/mycontest/my');
         }
 
         $is_fee = isset($gets['is_fee']) ? intval($gets['is_fee']) : '-1';
@@ -223,7 +223,7 @@ class Mycontest extends SB_controller{
                 $start = 0;
                 $limit = $config['total_rows'];
             }
-            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv);
+            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
         }
 
         // 导出团队信息
@@ -264,7 +264,7 @@ class Mycontest extends SB_controller{
         $conf = $this->contest_regist_config_m->get_normal($cid);
         $contest = $this->contest_m->get($cid);
         if ($uid != $contest['create_user_id']) {
-            return show_error('查看错误', 404);
+            return header('location:/mycontest/my');
         }
 
         $is_fee = isset($gets['is_fee']) ? $gets['is_fee'] : '-1';
@@ -334,7 +334,7 @@ class Mycontest extends SB_controller{
         $conf = $this->contest_regist_config_m->get_normal($cid);
         $contest = $this->contest_m->get($cid);
         if ($uid != $contest['create_user_id']) {
-            return show_error('查看错误', 404);
+            return header('location:/mycontest/my');
         }
 
         $is_fee = isset($gets['is_fee']) ? $gets['is_fee'] : '-1';
@@ -517,11 +517,11 @@ class Mycontest extends SB_controller{
             if ($uid != $contest['create_user_id']) {
                 $see = $this->_cheak_uid_by_pid($teamInfo['contest_id']);
                 if (!$see) {
-                    return show_error('没有权限', 404);
+                    return header('location:/mycontest/my');
                 }
             }
         } else {
-            return show_error('团队不存在', 404);
+            return header('location:/mycontest/my');
         }
         $configs = $this->contest_regist_config_m->get_normal($teamInfo['contest_id']);
         if ($configs) {
@@ -568,11 +568,11 @@ class Mycontest extends SB_controller{
                 }
             }
             if (!$see) {
-                return show_error('没有查看的权限', 404);
+                return header('location:/mycontest/my');
             }
 
         } else {
-            return show_error('团队不存在', 404);
+            return header('location:/mycontest/my');
         }
 
         if (empty($teamInfo['result_file'])) {

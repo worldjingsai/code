@@ -58,6 +58,10 @@ p {
 	<div id="container">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
+		<p> <a href="/">返回首页</a> 3秒钟自动跳转</p>
 	</div>
+	<script type="text/javascript">
+	setTimeout(function(){window.location.href='/'}, 3000);
+	</script>
 </body>
 </html>
