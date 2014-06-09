@@ -7,6 +7,7 @@ class Contest_regist_config_m extends SB_Model{
 
     const TYPE_ARTICLE  = 1;  // 文章形式
     const TYPE_REGIST   = 2;  // 报名系统方式
+    const TYPE_TEMPLATE = 3; // 模板报名方式，子竞赛需要继承此模板
     const STATUS_NORMAL = 1;  // 正常
     const STATUS_EXPIRE = -1;  // 失效
 

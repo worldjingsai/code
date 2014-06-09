@@ -66,7 +66,7 @@
         <tr>
             <td><input type="text" name="t[]" value="<%$item.0|default:''%>"></td>
             <td><input type="text" name="b[]" value="<%$item.1|default:''%>"></td>
-            <td class="t-c"><input type="checkbox" name="c[]" <%if !empty($item.2)%>checked <%/if%> value="1"></td>
+            <td class="t-c"><input type="checkbox" name="c[<%$item@index%>]" <%if !empty($item.2)%>checked <%/if%> value="1"></td>
         </tr>
         <%/foreach%>
         </table>
@@ -86,7 +86,7 @@
         <tr>
             <td><input type="text" name="u[]" value="<%$item.0|default:''%>"></td>
             <td><input type="text" name="d[]" value="<%$item.1|default:''%>"></td>
-            <td class="t-c"><input type="checkbox" name="s[]" <%if !empty($item.2)%>checked <%/if%> value="1"></td>
+            <td class="t-c"><input type="checkbox" name="s[<%$item@index%>]" <%if !empty($item.2)%>checked <%/if%> value="1"></td>
         </tr>
         <%/foreach%>
         

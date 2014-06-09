@@ -193,7 +193,7 @@ class Team_m extends SB_Model{
         $this->db->select('a.*, b.*');
         $this->db->from($this->tb .' a');
         $this->db->join('team_column b', 'b.team_id = a.team_id');
-        $this->db->order_by('create_time','desc');
+        $this->db->order_by('team_number', 'ASC');
         if (!is_array($cid)) {
             $cid = array($cid);
         }
