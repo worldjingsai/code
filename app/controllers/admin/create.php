@@ -175,6 +175,7 @@ class Create extends Admin_Controller{
 
         if ($contest) {
             $contest_id = $contest['contest_id'];
+            unset($data['parent_id']);  // 不更新父ID字段
             $this->contest_m->update($contest_id, $data);
         } else {
             $contest_id = $this->contest_m->add($data);

@@ -76,9 +76,9 @@ function ajax_message($msg, width) {
 
 $(document).ready(function(){
 
-	if($("#content-form").length > 0) {
+	if($("#content_form").length > 0) {
 		// validate the comment form when it is submitted
-		$("#content-form").validate({
+		$("#content_form").validate({
 			rules: {
 				title: "required"
 			},
@@ -86,15 +86,14 @@ $(document).ready(function(){
 				title: "标题不能为空"
 			}
 		});
-		
 	    var options = {
 	    		beforeSubmit: ajaxFormStart,  // pre-submit callback
 	            success:      ajaxFormSuccess, // post-submit callback 
 	            dataType:     'json'
 	    }; 
 
-	    // bind form using 'ajaxForm' 
-	    $('#content-form').ajaxForm(options); 
+	    $('#content_form').ajaxForm(options); 
+
 	};
 	if ($("#lxftime").length > 0){
 		lxfEndtime();
