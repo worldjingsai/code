@@ -255,9 +255,8 @@ class SB_Controller extends Base_Controller{
             return show_error('不存在的竞赛');
         }
         $config = $this->contest_regist_config_m->get_normal($cid);
-        $data['reconf'] = $config;
 
-        if (!empty($data['reconf']['type']) && $data['reconf']['type']==2) {
+        if (!empty($config['type']) && $config['type']==2) {
             $t = date('Y-m-d H:i:s');
             if ($t >= $cInfo['regist_start_time'] && $t <= $cInfo['regist_end_time']) {
                 $data['show_enter'] = true;
@@ -267,7 +266,9 @@ class SB_Controller extends Base_Controller{
             if ($t >= $cInfo['contest_start_time'] && $et <= $cInfo['contest_end_time']) {
                 $data['show_result'] = true;
             }
+
         }
+        $data['reconf'] = $config;
 
         $univs_id = $cInfo['univs_id'];
         if (!empty($cInfo['parent_id'])){

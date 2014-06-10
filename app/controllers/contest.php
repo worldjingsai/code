@@ -347,6 +347,13 @@ class Contest extends SB_controller{
 
             $configs['t'] = $ct;
             $configs['m'] = $mt;
+
+            if ($configs['is_defined_number']) {
+                if(!empty($configs['number_width']) );
+                {
+                    $configs['base_number'] = str_pad($configs['base_number'], $configs['number_width'], '0', STR_PAD_LEFT);
+                }
+            }
         } else {
             return $this->myclass->notice('alert("竞赛没有报名系统");window.location.href="history.back();";');
         }
@@ -394,7 +401,7 @@ class Contest extends SB_controller{
                 $this->team_m->update($team_id, $teamData);
                 $this->team_column_m->update($team_id, $teamColumn);
             } else {
-                
+
                 // 是否需要自定义队号
                 if (empty($configs['is_defined_number'])) {
                     $team_number = $this->contest_regist_config_m->get_team_number($contest_id);

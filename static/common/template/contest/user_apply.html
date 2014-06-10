@@ -32,9 +32,9 @@
             <th>参赛队号:</th>
             <td>
                 <%if !empty($tplData.reconf.is_defined_number)%>
-                <input class="text" id="team_number" type="text" value="<%$tplData.teamInfo.team_number|default:''%>"  name="team_number" chkurl="/data/contest/chknumber"
-                contest_id="<%$tplData.contest.contest_id|default:''%>" session="<%$tplData.reconf.session|default:''%>"
-                >
+                <input class="text" id="team_number" type="text" value="<%$tplData.teamInfo.team_number|default:$tplData.reconf.base_number%>"  name="team_number" chkurl="/data/contest/chknumber"
+                contest_id="<%$tplData.contest.contest_id|default:''%>" session="<%$tplData.reconf.session|default:''%>" >
+                <%if $tplData.contest.contest_url == 'cumcm'%><br/><span class="notice"> 共8位，请将后3位改为学校分配的编号，前5位不变！</span><%/if%>
                 <%else%>
                 <%if !empty($tplData.teamInfo)%><%$tplData.teamInfo.team_number%>
                 
