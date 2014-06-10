@@ -43,7 +43,8 @@ class Mcm extends Admin_Controller{
         // 创建一个总竞赛
         $provName = $prov['provs_name'];
         $data = array();
-        $data['contest_name'] = "2014年${provName}宁夏回族自治区大学生数学建模竞赛";
+        $data['contest_name'] = "2014年宁夏回族自治区大学生数学建模竞赛";
+
         // 省赛区域名: cumcm+省简称字母
         $data['contest_url'] = $prov['short_pinyin'].'mcm';
         $data['contest_level'] = 2;
@@ -107,7 +108,8 @@ class Mcm extends Admin_Controller{
             // 创建一个学校竞赛
             $data = array();
             $univsName = $s['univs_name'];
-            $data['contest_name'] = "2014年${provName}宁夏回族自治区大学生数学建模竞赛${univsName}报名官网";
+            $data['contest_name'] = "2014年宁夏回族自治区大学生数学建模竞赛${univsName}报名官网";
+
             // 省赛区域名: cumcm+省简称字母
             $data['contest_url'] = 'mcm';
             $data['contest_level'] = 1;

@@ -149,6 +149,24 @@ class Create extends Admin_Controller{
         exit();
     }
 
+    /**
+     * 更新省赛配置文件
+     */
+    public function province()
+    {
+        $this->db->select('*');
+        //$this->db->limit(1, 0);
+        $query = $this->db->where('parent_id', 3293)->get('contest');
+        $contests = $query->result_array();
+
+        foreach ($contests as $c) {
+            $cid = $c['contest_id'];
+            echo $cid . "</br>";
+            $this->_createRegConf($cid, $c['create_user_id'], '','', '', 0, 3);
+        }
+        echo "OK";
+    }
+
     protected function _create_contest($data = array())
     {
         $data['contest_type'] = 1;
@@ -222,7 +240,7 @@ class Create extends Admin_Controller{
     /**
      * 创建一个报名信息
      */
-    protected function _createRegConf($cid, $uid, $sqremark = '', $xxremark='', $xxmc = '', $baseNumber = 0)
+    protected function _createRegConf($cid, $uid, $sqremark = '', $xxremark='', $xxmc = '', $baseNumber = 0, $type=Contest_regist_config_m::TYPE_REGIST)
     {
         $this->load->model('contest_regist_config_m');
 
@@ -290,7 +308,7 @@ class Create extends Admin_Controller{
             $configData = array(
                     'contest_id' =>$cid,
                     'session' => $session,
-                    'type' => Contest_regist_config_m::TYPE_REGIST,
+                    'type' => $type,
                     'article_url' => '',
                     'base_number' => $baseNumber,
                     'number_width' => 8,

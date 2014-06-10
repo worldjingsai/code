@@ -48,11 +48,16 @@ class Mycontest extends SB_controller{
         if ($rows) {
             foreach ($rows as &$row) {
                 $cid = $row['contest_id'];
+
                 $conf = $this->contest_regist_config_m->get_normal($cid);
                 if (!$conf) {
                     $row['enter_members'] = 0;
                 } else {
-                    $number = $this->team_m->count_team($cid, $conf['session']);
+                    // 需要获取到所有的子竞赛的竞赛id
+                    $cids = array($cid);
+                    $this->contest_m->get_all_son_ids($cid, $cids);
+
+                    $number = $this->team_m->count_detail_by_cid_session($cids, $conf['session']);
                     $row['enter_members'] = $number;
                 }
                 $row['type_name'] = Contest_m::$typeNames[$row['contest_type']];
@@ -197,6 +202,10 @@ class Mycontest extends SB_controller{
             return header('location:/mycontest/my');
         }
 
+        // 需要获取到所有的子竞赛的竞赛id
+        $cids = array($cid);
+        $this->contest_m->get_all_son_ids($cid, $cids);
+
         $is_fee = isset($gets['is_fee']) ? intval($gets['is_fee']) : '-1';
         $is_up_imag = isset($gets['fee_image']) ? intval($gets['fee_image']) : '-1';
         $is_result = isset($gets['is_result']) ? intval($gets['is_result']) :'-1';
@@ -205,7 +214,7 @@ class Mycontest extends SB_controller{
         $tv = isset($gets['keywords']) ? $gets['keywords'] :'';
         $config['total_rows'] = 0;
         if ($conf) {
-            $config['total_rows'] = $this->team_m->count_detail_by_cid_session($conf['contest_id'], $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
+            $config['total_rows'] = $this->team_m->count_detail_by_cid_session($cids, $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
         }
 
         $this->load->library('pagination');
@@ -223,7 +232,7 @@ class Mycontest extends SB_controller{
                 $start = 0;
                 $limit = $config['total_rows'];
             }
-            $rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
+            $rows = $this->team_m->get_detail_by_cid_session($cids, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
         }
 
         // 导出团队信息
@@ -681,7 +690,7 @@ class Mycontest extends SB_controller{
                 $this->myclass->notice('alert("批量更新审核状态成功！");window.location.href="'.$refer.'";');
             }
         }
-        
+
         // 批量下载论文
         if ($this->input->post('batch_down')) {
             set_time_limit(0);
