@@ -694,73 +694,30 @@ class Mycontest extends SB_controller{
         // 批量下载论文
         if ($this->input->post('batch_down')) {
             set_time_limit(0);
-            $this->load->model('team_m');
-            $tInfos = $this->team_m->get_by_team_id_cid($tids, $cid);
+            @ini_set('memory_limit', "10240M");
 
-            $this->load->library('zip');
-            $small = $big = 0;
-            foreach ($tInfos as $t) {
-                if (empty($t['result_file'])) {
-                    continue;
-                }
+            $this->load->model('contest_regist_config_m');
 
-                if ($small == 0 || $small > $t['team_number']) {
-                    $small = $t['team_number'];
-                }
-                if ($big == 0 || $big < $t['team_number']) {
-                    $big = $t['team_number'];
-                }
-                $file_dir = UPLOADPATH . 'paper/';
-                $file_name = $t['result_file'];
-                $show_name = $t['team_number'] . strrchr($file_name, '.');
-
-                $realPath = $file_dir . $t['result_file'];
-
-                // 转存到本地
-                if (!file_exists($realPath)) {
-                    $isQiniu = $this->config->item('is_use_qiniu');
-                    $qiniu = array('is_used' => $isQiniu);
-                    if ($isQiniu) {
-                        $this->config->load('qiniu');
-
-                        $params =array(
-                                'accesskey'=>$this->config->item('accesskey'),
-                                'secretkey'=>$this->config->item('secretkey'),
-                                'bucket'=>$this->config->item('bucket'),
-                                'file_domain'=>$this->config->item('file_domain'),
-                        );
-                        $this->load->library('qiniu_lib',$params);
-                        $url = $this->qiniu_lib->getDownUrl($file_name, $show_name);
-
-                        $puts = @file_get_contents($url);
-                        if ($puts) {
-
-                            // 分成60份
-                            $pos = strrpos($t['result_file'], '/');
-                            $tdir = substr($t['result_file'], 0, $pos);
-                            $dir = $file_dir . $tdir;
-
-                            if(!is_dir($dir)){
-                                mkdir($dir,0777,true);
-                            }
-                            @file_put_contents($realPath, $puts);
-                        }
-                    }
-                }
-                if (FALSE !== ($data = @file_get_contents($realPath)))
-                {
-                    $this->zip->add_data($show_name, $data);
-                }
+            // 批量下载论文
+            $conf = $this->contest_regist_config_m->get_normal($cid);
+            if (empty($conf) ) {
+                echo "没有报名信息" . $cid;
+                return false;
             }
+            $session = $conf['session'];
 
-            if ($this->zip->zipdata)
-            {
-                $this->zip->download($this->_getDownName($small.'~'.$big.'.zip'));
-                $this->zip->clear_data();
-            }
-            else
-            {
-                $this->myclass->notice('alert("文件不存在或者文件为空！");window.location.href="'.$refer.'";');
+            $file_dir = UPLOADPATH . 'paper/'.$cid.'/';
+            $file_name = $cid.'_'.$session.'.zip';
+            $zipFile = $file_dir.$file_name;
+
+            if (FALSE !== ($data = @file_get_contents($zipFile))) {
+                // 输入文件标签
+                Header("Content-type: application/octet-stream");
+                Header("Accept-Ranges: bytes");
+                Header("Accept-Length: ".filesize($zipFile));
+                Header("Content-Disposition: attachment; filename=" . $file_name);
+                echo $data;
+                exit();
             }
         }
     }

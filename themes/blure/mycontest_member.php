@@ -45,7 +45,7 @@
       				</div>
       			</div>
                 <?php }?>
-                
+
   			    <div class="form-group">
   			    <?php if($conf['fee'] > 0) {?>
       				<label class="col-sm-2 control-label" >是否缴费</label>
@@ -199,8 +199,10 @@
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export&<?=$url_query?>">导出全部团队信息</a>
 <a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>
-<!-- input id="btn_down" class="btn btn-primary btn-info" name="batch_down" type="submit" value="选中下载作品" /> -->
+<?php if ($conf['can_down']) {?>
+<input id="btn_down" class="btn btn-primary btn-info" name="batch_down" type="submit" value="下载全部作品" /> >
 <p id="down_notice" class="alert alert-warning red" style="display: none">批量下载可能时间较长请耐心等待</p>
+<?php }?>
 </div>
 </form>
 <?php } else{?>
