@@ -240,7 +240,7 @@ class Create extends Admin_Controller{
     /**
      * 创建一个报名信息
      */
-    protected function _createRegConf($cid, $uid, $sqremark = '', $xxremark='', $xxmc = '', $baseNumber = 0, $type=Contest_regist_config_m::TYPE_REGIST)
+    protected function _createRegConf($cid, $uid, $sqremark = '', $xxremark='', $xxmc = '', $baseNumber = 0, $type='')
     {
         $this->load->model('contest_regist_config_m');
 
@@ -305,6 +305,9 @@ class Create extends Admin_Controller{
             $minMember = 1;
             $maxMember = 3;
             $fee = 0;
+            if (empty($type)) {
+                $type = Contest_regist_config_m::TYPE_REGIST;
+            }
             $configData = array(
                     'contest_id' =>$cid,
                     'session' => $session,
