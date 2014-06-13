@@ -367,7 +367,7 @@ $(document).ready(function(){
 				type: 'GET',
 				data:'',
 				dataType: 'json',
-				timeout: 1000,
+				timeout: 100000,
 				beforeSend:function(){
 					ajax_message('查询中...');
 				},
