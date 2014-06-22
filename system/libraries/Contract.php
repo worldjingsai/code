@@ -30,13 +30,11 @@ function Header()
 	{
 		return true;
 	}
-    $rightheader = $this->number;
-	$leftheader = '360logo.png';
 
-	$this->Image($this->pic_path . '/360logo.png',30,16,0,0); 
-	$this->Image($this->pic_path . '/360bg.jpg',30,100,0,0); 
+	$this->Image($this->pic_path,0,0,$this->w,$this->h); 
+
     // Arial bold 15
-    $this->SetFont('simsun','',9);
+    /*$this->SetFont('simsun','',9);
     // Calculate width of title and position
     //$w = $this->GetStringWidth($title)+6;
     //$this->SetX(100);
@@ -55,9 +53,7 @@ function Header()
 	//$this->Write(10,$rightheader); 
 	$this->Ln(10);
 	$this->Cell(0,1,'','B');
-    $this->Ln(3);
-	
-	
+    $this->Ln(3);*/
 }
 
 function SetChar()
