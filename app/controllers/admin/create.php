@@ -335,7 +335,8 @@ class Create extends Admin_Controller{
                 if ($oldConfig['status'] != Contest_regist_config_m::STATUS_NORMAL) {
                     $this->contest_regist_config_m->updateExpire($id);
                 }
-                if ($oldConfig['current_number'] < $configData['base_number']) {
+                if ($oldConfig['current_number'] == $oldConfig['base_number'] || 
+                    $oldConfig['current_number'] < $configData['base_number']) {
                     $configData['current_number'] = $configData['base_number'];
                 }
                 //var_dump($configData['result_column'])
