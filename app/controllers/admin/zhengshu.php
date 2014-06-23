@@ -25,6 +25,7 @@ class Zhengshu extends Admin_Controller{
      */
     public function make()
     {
+        set_time_limit(0);
         $objReader = PHPExcel_IOFactory::createReader('Excel2007');
         
         $file = UPLOADPATH . 'zhengshu.xlsx';
@@ -61,19 +62,19 @@ class Zhengshu extends Admin_Controller{
             $grade = self::$_grades[$grade];
             
             $times = count($members);
-            for($i=1; $i<=$times; $i++) {
-                $this->_makePdf($members, $teacher, $grade, $teamNumber.'_'.$i);
+            for($j=1; $j<=$times; $j++) {
+                $this->_makePdf($members, $teacher, $grade, $teamNumber.'_'.$j);
                 $first = array_shift($members);
                 array_push($members, $first);
             }
             
-            exit;
             $i++;
         }
     }
     
     protected function _makePdf($members, $teacher, $grade, $fname)
     {
+        
         $pdf = $this->contract;
 
         // 设置pdf纸张 l横向  mm单位是毫米  A4纸张是A4的
@@ -83,13 +84,6 @@ class Zhengshu extends Admin_Controller{
         $pdf->SetMargins(30, 35);
         
         // 设置可以用的字体
-        $pdf->AddGBFont('xihei','华文细黑');
-        $pdf->AddGBFont('simsun','宋体');
-        $pdf->AddGBFont('simhei','黑体');
-        $pdf->AddGBFont('simkai','楷体_GB2312');
-        $pdf->AddGBFont('sinfang','仿宋_GB2312');
-        $pdf->AddGBFont('newtime', 'Times_New_Roman');
-        $pdf->AddGBFont('arial', 'Arial_Black');
         
         // 设置自动分页 距离下边距25.4mm时分页 也是设置下边距
         $pdf->SetAutoPageBreak(false);
@@ -100,43 +94,45 @@ class Zhengshu extends Admin_Controller{
         $pdf->SetPicPath(UPLOADPATH.'template.jpg');
         
         $pdf->AddPage();
-        $pdf->SetFont('newtime','B',22);
+        $pdf->SetFont('times','',21);
+        
         // Background color
         //$this->SetFillColor(200,220,255);
         // Title
-        
-        $pdf->Cell(0,0,'2014 MathorCup Global Mathematical Modeling Challenge',0,0,'C');
-        $pdf->Ln(4);
-        $pdf->Cell(0,25,'Certificate of Achievement',0,0,'C');
-        
-        $pdf->SetFont('newtime','',16);
-        $pdf->Ln(4);
-        $pdf->SetX(140);
-        $pdf->Cell(0,48,'awarded to',0,0,'L');
+        $pdf->Cell(0,0,'2014', 0, 0, 'C');
         $pdf->Ln(1);
-        $l = 55;
+        $pdf->Cell(0,25,'MathorCup Global Collegiate Mathematical Contest in Modeling',0,0,'C');
+        $pdf->Ln(1);
+        $pdf->Cell(0,50,'Certificate of Achievement',0,0,'C');
         
-        $pdf->SetFont('newtime','B',16);
+        $pdf->SetFont('times','',16);
+        $pdf->Ln(4);
+        //$pdf->SetX(140);
+        $pdf->Cell(0,68,'Awarded to',0,0,'C');
+        $pdf->Ln(1);
+        $l = 70;
+        
+        $pdf->SetFont('times','',16);
         foreach ($members as $i=>$member) {
             
             $l += 12;
             $pdf->Ln(1);
-            $pdf->SetX(140);
-            $pdf->Cell(0,$l,$member['name'],0,0,'L');
+            //$pdf->SetX(140);
+            $pdf->Cell(0,$l,$member['name'],0,0,'C');
         }
         
         $pdf->Ln(1);
-        $pdf->SetX(140);
+        //$pdf->SetX(140);
         if ($teacher) {
-            $pdf->Cell(0,105,$teacher.', Adviser',0,0,'L');
+            $pdf->Cell(0,123,$teacher.', Adviser',0,0,'C');
         }
         $pdf->Ln(1);
-        $pdf->SetFont('arial','B',24);
-        $pdf->Cell(0,125,$grade,0,0,'C');
+        $pdf->SetFont('times','',24);
+        $pdf->Cell(0,145,$grade,0,0,'C');
         
         $pdf->Ln(1);
-        $pdf->SetFont('newtime','',16);
-        $pdf->Cell(0,145,'from '.$members[0]['univs'],0,0,'C');
+        $pdf->SetFont('times','',16);
+        $pdf->Cell(0,165,'from '.$members[0]['univs'],0,0,'C');
         
         $pdf->Output(UPLOADPATH.$fname.'.pdf','F');
     }

@@ -1,7 +1,7 @@
 <?php
 
-require_once BASEPATH . 'libraries/fpdf/chinese.php';
-class CI_Contract extends PDF_Chinese
+require_once BASEPATH . 'libraries/fpdf/fpdf.php';
+class CI_Contract extends FPDF
 {
     public $number;
     public $footer_left;
@@ -58,8 +58,8 @@ function Header()
 
 function SetChar()
 {
-    $char = array('£¬', '¡£', '¡¿', '£©', '£º', '¡±', '¡¢', '¡·', '£»', '¡¯');
-    $endchar = array('¡¾', '¡¶', '£¨', '¡°', '¡®');
+    $char = array('ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½');
+    $endchar = array('ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½', 'ï¿½ï¿½');
     $this->GB_character = $char;
     $this->GB_endchar = $endchar;
 }
@@ -92,11 +92,11 @@ function Footer()
 function ChapterBody($file, $param, $fs=10.5, $tdlh=7)
 {
     $this->SetChar();
-	$lh=7;     // ÆÕÍ¨ÎÄ¼þµÄÐÐ¸ß
-	$thlh=6;    // ±íÍ·µÄÐÐ¸ß
-	$tdlh=$tdlh;     // ±í¸ñµÄ¸ß¶È
-	$iw=10;    // itemµÄ¿í¶È
-	$fs=$fs;  //×ÖÌå´óÐ¡
+	$lh=7;     // ï¿½ï¿½Í¨ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½
+	$thlh=6;    // ï¿½ï¿½Í·ï¿½ï¿½ï¿½Ð¸ï¿½
+	$tdlh=$tdlh;     // ï¿½ï¿½ï¿½Ä¸ß¶ï¿½
+	$iw=10;    // itemï¿½Ä¿ï¿½ï¿½
+	$fs=$fs;  //ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
     // Read text file
 
     // Times 12
@@ -113,7 +113,7 @@ function ChapterBody($file, $param, $fs=10.5, $tdlh=7)
                 $nline = '';
                 if(preg_match_all('/\{\$([^\{]*)\}/', $w, $sa))
                 {
-                    // ÏÈÕÒ³öÐèÒªÌæ»»µÄÊý×é
+                    // ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Òªï¿½æ»»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     $replaceArray = array();
 
                     foreach($sa[1] as $k => $v)
@@ -136,18 +136,18 @@ function ChapterBody($file, $param, $fs=10.5, $tdlh=7)
             }
         }
 
-        // ÏÈ¶Ô±äÁ¿½øÐÐÌæ»»
+        // ï¿½È¶Ô±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ»»
         $re = array();
         if(preg_match_all('/\{\$([^\{]*)\}/', $line, $sa))
         {
             foreach($sa[1] as $k => $v)
             {
-                // ²é¿´ÊÇ·ñÓÐ·ÖºÅÂß¼­·Ö¸î·û
+                // ï¿½é¿´ï¿½Ç·ï¿½ï¿½Ð·Öºï¿½ï¿½ß¼ï¿½ï¿½Ö¸ï¿½ï¿½
                 if (strpos($v, ':') !== false)
                 {
                     list($var, $value) = explode(':', $v);
 
-                    // ture false ¹Ø¼ü×ÖµÄÅÐ¶Ï
+                    // ture false ï¿½Ø¼ï¿½ï¿½Öµï¿½ï¿½Ð¶ï¿½
                     if ($value === 'true')
                     {
                         if ( !empty($param[$var]) )
@@ -187,7 +187,7 @@ function ChapterBody($file, $param, $fs=10.5, $tdlh=7)
                     }
                 }
 
-                // ²é¿´ÊÇ·ñÓÐÊúÏßÂß¼­·Ö¸î·û
+                // ï¿½é¿´ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¼ï¿½ï¿½Ö¸ï¿½ï¿½
                 if (strpos($v, '|') !== false)
                 {
                     list($var, $value) = explode('|', $v);
@@ -204,7 +204,7 @@ function ChapterBody($file, $param, $fs=10.5, $tdlh=7)
             }
         }
 
-        // ¶Ô¸ñÊ½½øÐÐÊä³ö
+        // ï¿½Ô¸ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(strpos($line,'<include>') !== false)
 		{
 			$line=trim(str_replace('<include>', '', $line));
@@ -215,14 +215,14 @@ function ChapterBody($file, $param, $fs=10.5, $tdlh=7)
             continue;
         }
 
-        // ¶Ô¸ñÊ½½øÐÐÊä³ö
+        // ï¿½Ô¸ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(strpos($line,'<newpage>') !== false)
 		{
 			$this->AddPage();
             continue;
         }
 
-        // ¶Ô¸ñÊ½½øÐÐÊä³ö
+        // ï¿½Ô¸ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(strpos($line,'<table_header>') !== false)
 		{
 			$line=str_replace('<table_header>', '', $line);
@@ -230,7 +230,7 @@ function ChapterBody($file, $param, $fs=10.5, $tdlh=7)
             continue;
         }
 
-        // ¶Ô¸ñÊ½½øÐÐÊä³ö
+        // ï¿½Ô¸ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		if(strpos($line,'<title>') !== false)
 		{
 			$line=str_replace('<title>', '', $line);
@@ -297,8 +297,8 @@ function ChapterBody($file, $param, $fs=10.5, $tdlh=7)
 
 function PrintTitle($title)
 {
-	$lh=7; //´ó±êÌâÁÐ±íµÄÉÏÏÂ¼ä¸ô
-	$fs=10.5;//×ÖÌå´óÐ¡
+	$lh=7; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
+	$fs=10.5;//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
     // Arial 12
     $this->SetFont('xihei','B',16);
     // Background color
@@ -313,17 +313,17 @@ function PrintTitle($title)
 
 function PrintTable($item)
 {
-	$fs=10.5;//×ÖÌå´óÐ¡
+	$fs=10.5;//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
 	$this->SetFont('xihei','',$fs);
-	$thlh=6;    // ±íÍ·µÄÐÐ¸ß
+	$thlh=6;    // ï¿½ï¿½Í·ï¿½ï¿½ï¿½Ð¸ï¿½
     $this->MultiCell(0,$thlh,$item);
 }
 
 function PrintBItem($item)
 {
-	$lh=7; //´ó±êÌâÁÐ±íµÄÉÏÏÂ¼ä¸ô
-	$fs=10.5;//×ÖÌå´óÐ¡
-	$iw=10;// itemµÄ¿í¶È
+	$lh=7; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
+	$fs=10.5;//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
+	$iw=10;// itemï¿½Ä¿ï¿½ï¿½
 	$font='xihei';
 	$this->Ln(6);
 	$this->SetFont($font,'B',$fs);
@@ -339,9 +339,9 @@ function PrintBItem($item)
 
 function PrintItem($item)
 {
-	$lh=7; //´ó±êÌâÁÐ±íµÄÉÏÏÂ¼ä¸ô
-	$fs=10.5;//×ÖÌå´óÐ¡
-	$iw=10;// itemµÄ¿í¶È
+	$lh=7; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
+	$fs=10.5;//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
+	$iw=10;// itemï¿½Ä¿ï¿½ï¿½
 
 	if (strpos($item,"\t") !== false)
 	{
@@ -357,9 +357,9 @@ function PrintItem($item)
 
 function PrintSubItem($item)
 {
-	$lh=7; //´ó±êÌâÁÐ±íµÄÉÏÏÂ¼ä¸ô
-	$fs=10.5;//×ÖÌå´óÐ¡
-	$iw=10;// itemµÄ¿í¶È
+	$lh=7; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½
+	$fs=10.5;//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
+	$iw=10;// itemï¿½Ä¿ï¿½ï¿½
 
     $this->Cell($iw,$lh,'');
 	if (strpos($item,"\t") !== false)
@@ -376,7 +376,7 @@ function PrintSubItem($item)
 
 function PrintTd($item, $fs=10.5, $lh=7)
 {
-    // table_end ×ÖÌåµÄÑùÊ½Ä¬ÈÏÊÇ¿Õ²»¼Ó´Ö
+    // table_end ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½Ä¬ï¿½ï¿½ï¿½Ç¿Õ²ï¿½ï¿½Ó´ï¿½
     $table_end = 0;
     if (preg_match('/<table_end=([^>]*)>/', $item, $match))
 	{
@@ -385,7 +385,7 @@ function PrintTd($item, $fs=10.5, $lh=7)
         $match=array();
 	}
 
-    // font style ×ÖÌåµÄÑùÊ½Ä¬ÈÏÊÇ¿Õ²»¼Ó´Ö
+    // font style ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½Ä¬ï¿½ï¿½ï¿½Ç¿Õ²ï¿½ï¿½Ó´ï¿½
     $fontstyle = '';
     if (preg_match('/<font_style=([^>]*)>/', $item, $match))
 	{
@@ -394,8 +394,8 @@ function PrintTd($item, $fs=10.5, $lh=7)
         $match=array();
 	}
 
-    // table length ±í¸ñµÄ¿í¶È Ä¬ÈÏÊÇ×ÜÌå¿í¶È
-    // file length ×ÜÌåÎÄ¼þ¿ÉÒÔÏÔÊ¾µÄ¿í¶È
+    // table length ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // file length ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½Ä¿ï¿½ï¿½
     $fl = $this->w-$this->lMargin-$this->rMargin;
     $tl = $fl;
     if (preg_match('/<table_width=([^>]*)>/', $item, $match))
@@ -405,7 +405,7 @@ function PrintTd($item, $fs=10.5, $lh=7)
         $match=array();
 	}
 
-    // border width ±ß¿òµÄ¿í¶ÈÄ¬ÈÏÊÇ0
+    // border width ï¿½ß¿ï¿½Ä¿ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½ï¿½0
     $bw=0;
     if (preg_match('/<border=([^>]*)>/', $item, $match))
 	{
@@ -414,7 +414,7 @@ function PrintTd($item, $fs=10.5, $lh=7)
         $match=array();
 	}
 
-    // aline ±íÍ·¶ÔÆäµÄÎ»ÖÃ£¬Ä¬ÈÏÊÇ¾Ó×ó
+    // aline ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½Ä¬ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½
     $aline = 'L';
     if (preg_match('/<aline=([^>]*)>/', $item, $match))
 	{
@@ -423,7 +423,7 @@ function PrintTd($item, $fs=10.5, $lh=7)
         $match=array();
 	}
 
-    $lh=$lh; //ÐÐµÄ¸ß¶È
+    $lh=$lh; //ï¿½ÐµÄ¸ß¶ï¿½
     if (preg_match('/<height=([^>]*)>/', $item, $match))
 	{
 		$lh=$match[1];
@@ -431,13 +431,13 @@ function PrintTd($item, $fs=10.5, $lh=7)
         $match=array();
 	}
 
-    $fs=$fs;//×ÖÌå´óÐ¡
+    $fs=$fs;//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡
     $this->SetFont('xihei',$fontstyle,$fs);
 
     $lists = explode("\t", $item);
     $col = count($lists);
 
-    // Ä¬ÈÏµÄ±í¸ñ¿í¶ÈÊÇÆ½¾ù·ÖÅäµÄ
+    // Ä¬ï¿½ÏµÄ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     $tw = $tl/$col;
 
     $x = $this->lMargin + ($fl - $tl)/2;
@@ -527,8 +527,8 @@ function PrintTh($item, $fs=10.5)
 function SetTail()
 {
     $y=$this->GetY();
-    // ´óÐ¡×îµÍ²»ÄÜ³¬¹ý220,³¬¹ýÁËÐèÒªÐÂÒ³
-    // Èç¹ûÐ¡ÓÚ200ÕâÉèÖÃÎª200£¬·ñÔòÉèÖÃÎªy
+    // ï¿½ï¿½Ð¡ï¿½ï¿½Í²ï¿½ï¿½Ü³ï¿½ï¿½ï¿½220,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½Ò³
+    // ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½200ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª200ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªy
     if ($y>220)
     {
         $this->addPage();
@@ -555,11 +555,11 @@ function PrintSchedule($file, $param)
 /*
 $pdf = new PDF('P', 'mm', 'A4');
 $pdf->SetMargins(25.4, 35.8);
-$pdf->AddGBFont('simsun','ËÎÌå'); 
-$pdf->AddGBFont('simhei','ºÚÌå'); 
-$pdf->AddGBFont('simkai','¿¬Ìå_GB2312'); 
-$pdf->AddGBFont('sinfang','·ÂËÎ_GB2312'); 
-$pdf->AddGBFont('xihei','»ªÎÄÏ¸ºÚ'); 
+$pdf->AddGBFont('simsun','ï¿½ï¿½ï¿½ï¿½'); 
+$pdf->AddGBFont('simhei','ï¿½ï¿½ï¿½ï¿½'); 
+$pdf->AddGBFont('simkai','ï¿½ï¿½ï¿½ï¿½_GB2312'); 
+$pdf->AddGBFont('sinfang','ï¿½ï¿½ï¿½ï¿½_GB2312'); 
+$pdf->AddGBFont('xihei','ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½'); 
 
 $title = '20000 Leagues Under the Seas';
 $pdf->SetTitle($title);
