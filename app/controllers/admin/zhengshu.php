@@ -17,7 +17,8 @@ class Zhengshu extends Admin_Controller{
     public static $_grades = array(
             '一等奖' => 'First Prize',
             '二等奖' => 'Second Prize',
-            '三等奖' => 'Third Prize'
+            '三等奖' => 'Third Prize',
+            '成功参赛奖' => 'Successful Participant'
     );
     
     /**
@@ -124,7 +125,7 @@ class Zhengshu extends Admin_Controller{
         $pdf->Ln(1);
         //$pdf->SetX(140);
         if ($teacher) {
-            $pdf->Cell(0,123,$teacher.', Adviser',0,0,'C');
+            $pdf->Cell(0,123,$teacher.', Advisor',0,0,'C');
         }
         $pdf->Ln(1);
         $pdf->SetFont('times','',24);
