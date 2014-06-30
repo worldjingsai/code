@@ -334,6 +334,8 @@ $(document).ready(function(){
 					}
 				}
 		});
+		} else {
+			$("#js_user_apply").validate({});
 		}
 		
 		var options = {
