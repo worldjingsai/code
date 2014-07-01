@@ -72,20 +72,22 @@
             <col width="350">
         </colgroup>
         <tbody>
-        <%foreach from=$tplData.reconf.t item=item key=key%>
+        <%foreach from=$tplData.reconf.t item=item key=key name=teamCol%>
         <%if !empty($item.2)%>
         <tr>
-            <th><%$item.0%>:</th>
+            <th><%if $tplData.contest.contest_url == 'cumcm' && $item@index >1%><%else%><span class="red">*</span><%/if%>
+            <%$item.0%>:</th>
             <td>
                 <div class="clearfix">
                 <%if !empty($item.1) && is_array($item.1)%>
                 <%foreach from=$item.1 item=sit%>
                 <input type="radio" value="<%$sit%>" name="t[<%$key%>]" <%if $sit == $tplData.teamColumn.$key|default:''%> checked="checked" <%/if%> 
-                 data-rule-required="true" data-msg-required="请选择" /><%$sit%>
+                <%if $tplData.contest.contest_url == 'cumcm' && $item@index >1%><%else%>data-rule-required="true" data-msg-required="请选择" <%/if%>/><%$sit%>
                 <%/foreach%>
                 <%else%>
-                <input type="text" value="<%$tplData.teamColumn.$key|default:''%>" 
-                                      class="js_notice text " name="t[<%$key%>]" data-rule-required="true" data-msg-required="内容不能为空" value="<%$tplData.teamColumn.$key|default:''%>">
+                <input type="text" value="<%$tplData.teamColumn.$key|default:''%>"  class="js_notice text " name="t[<%$key%>]" 
+                <%if $tplData.contest.contest_url == 'cumcm' && $item@index >1%><%else%> data-rule-required="true" data-msg-required="内容不能为空" <%/if%>
+                value="<%$tplData.teamColumn.$key|default:''%>">
                 <%if !empty($item.1)%><br/><span class="notice"> <%$item.1|default:''%></span><%/if%>
                 <%/if%>
                 </div>
