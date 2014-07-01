@@ -101,7 +101,8 @@ a.red{color:red;}
 .show_top .contest_time .startbm .icon{background:url(../images/iconv.png) no-repeat -2px 0;height:31px;width:31px;display: block; float:left;}
 
 .show_top .up_result{position:absolute; right:400px; bottom:20px;}
-
+.show_top .brother_enter{position:absolute; right:500px; bottom:20px;}
+.show_top .brother_enter .wright{color:#FFF}
 .dhbox {}
 .dhbox ul li b {display: block;font-weight: normal;color: #FFFFFF;font-size: 14px;float: left;line-height: 40px;height: 40px;}
 .dhbox ul li a {display: block;font-family: "微软雅黑";font-size: 18px;color: #FFFFFF;text-decoration: none;float: left; line-height: 40px;}

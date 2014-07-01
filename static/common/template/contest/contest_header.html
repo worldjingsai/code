@@ -76,6 +76,12 @@
   		<%/if%>
   	<%/if%>
   	
+  	<%if !empty($tplData.contest.borther_id)%>
+  	<div class="brother_enter">
+  	<a class="btn btn-info wright" href="/contest/user_apply/<%$tplData.contest.borther_id%>">阅卷老师信息录入</a>
+  	</div>
+  	<%/if%>
+  	
   	<div class="contest_time">
   	<div class="enterbm"><span class="icon"></span>报名时间：<%if $tplData.contest.regist_start_time != '0000-00-00 00:00:00'%><%$tplData.contest.regist_start_time|truncate:16:'':true%><%else%>还未设置<%/if%>
   	~ <%if $tplData.contest.regist_end_time != '0000-00-00 00:00:00'%><%$tplData.contest.regist_end_time|truncate:16:'':true%><%else%>还未设置<%/if%></div>

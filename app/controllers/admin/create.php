@@ -245,7 +245,7 @@ class Create extends Admin_Controller{
         $this->load->model('contest_regist_config_m');
 
             // 团队的配置信息  t字段名 b备注  c是否有效
-            $t = array('参数组别', '学校名称', '教师姓名', '教师性别', '教师职称', '教师电话', '教师Email', '', '', '');
+            $t = array('参赛组别', '学校名称', '教师姓名', '教师性别', '教师职称', '教师电话', '教师Email', '', '', '');
             $b = array('本科组|专科组', $xxmc, '', '男|女', '', '', '', '', '', '');
             $c = array(1, 1, 1, 1, 1, 1, 1, 0, 0, 0);
 
