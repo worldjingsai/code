@@ -165,7 +165,7 @@
 <?php }?>
 
 <td class='w100'>
-<a target="_blank" href="<?php echo site_url('contest/user_apply/'.$contest['contest_id'].'/'.$v['team_id']);?>" class="btn btn-primary btn-sm">编辑</a>
+<a target="_blank" href="<?php echo site_url('contest/user_apply/'.$v['contest_id'].'/'.$v['team_id']);?>" class="btn btn-primary btn-sm">编辑</a>
 <?php if ($v['result_file']) {?><a href="<?php echo site_url('mycontest/result_file/'.$v['team_id']);?>" class="btn btn-primary btn-sm">作品</a><?php }?>
 <!--  <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>
 <a href="<?php echo site_url('admin/topics/del/'.$v['fid'].'/'.$v['cid'].'/'.$v['uid']);?>" class="btn btn-sm btn-danger" data-confirm="真的要删除吗？" data-method="delete" rel="nofollow">删除</a>
