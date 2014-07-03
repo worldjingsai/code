@@ -309,7 +309,7 @@ class Contest extends SB_controller{
     /**
      * 创建报名系统
      */
-    public function user_apply($contest_id) {
+    public function user_apply($contest_id, $tid = 0) {
         if (!$this->is_login) {
             $this->myclass->notice('alert("请登录后再操作");window.location.href="/user/login";');
             return 0;
@@ -361,9 +361,22 @@ class Contest extends SB_controller{
 
         $data['reconf'] = $configs;
 
+        // 竞赛的直接创建者可以修改团队信息
+        if ($tid) {
+            $see = $this->_cheak_uid_by_cid($contest_id);
+            if (!$see) {
+                return show_error('没有权限');
+            }
+            
+            $teamInfo = $this->team_m->get_by_id_status($tid);
+            if ($teamInfo['contest_id'] != $contest_id) {
+                return show_error('没有权限');
+            }
         // 本人是否有报名信息
-        $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $configs['session']);
-
+        } else {
+            $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $configs['session']);
+        }
+        
         $team_id = 0;
         $teamColumn = $memberColumn = array();
         if ($teamInfo) {
@@ -377,8 +390,6 @@ class Contest extends SB_controller{
             $member = $this->input->post('m', true);
 
             $teamData = array(
-                    'create_time' => date('Y-m-d H:i:s'),
-                    'create_user_id' =>$this->user_info['uid'],
                     'status' => Team_m::STATUS_NORMAL,
             );
             if ($configs['is_defined_number']) {
@@ -401,6 +412,8 @@ class Contest extends SB_controller{
                 $this->team_m->update($team_id, $teamData);
                 $this->team_column_m->update($team_id, $teamColumn);
             } else {
+                $teamData['create_time'] = date('Y-m-d H:i:s');
+                $teamData['create_user_id'] = $this->user_info['uid'];
 
                 // 是否需要自定义队号
                 if (empty($configs['is_defined_number'])) {
@@ -424,14 +437,14 @@ class Contest extends SB_controller{
                     $this->member_column_m->add($memberColumn);
                 }
             }
-            $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $configs['session']);
+            $teamInfo = $this->team_m->get_by_id_status($team_id);
 
             $str = '您已成功报名参赛<br/>参数队号：'.$teamInfo['team_number'].'<br/>在右上角您的个人账户”我的竞赛”中可以查看到完整的报名信息<br/>';
             if ($configs['fee'] > 0) {
                 $str .= '请尽快缴纳参赛费,并在右上角您的个人账户”我的竞赛”中上传缴费的付款证明图片及查看是否已缴费的状态';
             }
 
-            return show_json(0, $str, array('return_url' => '/contest/user_apply/'.$contest_id, 'show_time'=>10000));
+            return show_json(0, $str, array('return_url' => '/contest/user_apply/'.$contest_id . '/'.$tid, 'show_time'=>10000));
         }
         $data['teamInfo'] = $teamInfo;
         $data['teamColumn'] = $teamColumn;
@@ -458,11 +471,24 @@ class Contest extends SB_controller{
             $code = 0;
         }
         $message = '';
+        $data = array();
         if ($team_id) {
-             $this->load->model('team_m');
+            $this->load->model('team_m');
             $uid=$this->session->userdata('uid');
-            $t = $this->team_m->get($team_id);
+            $t = $this->team_m->get_by_id_status($team_id);
+            
+            if(empty($t)) {
+                return show_json(404, '团队不存在');
+            }
+            $see = false;
             if ($t['create_user_id'] == $uid) {
+                $see = true;
+            }
+            if (!$see) {
+                $see = $this->_cheak_uid_by_cid($t['contest_id']);
+            }
+            
+            if ($see){
                 $res = $this->team_m->update($team_id, array('status' => team_m::STATUS_CANCLE));
                 if ($res) {
                     $code = 0;
@@ -470,9 +496,18 @@ class Contest extends SB_controller{
                     $code = 500;
                     $message = '更新错误';
                 }
+            } else {
+                $code = 500;
+                $message = '没有权限';
+            }
+            
+            $contest = $this->_get_contest($t['contest_id']);
+            if (isset($contest['contest_url'])) {
+                $data['return_url'] = '/'.$contest['contest_url'];
             }
         }
-        return show_json($code, $message);
+        
+        return show_json($code, $message, $data);
     }
     /**
      * 显示图片

@@ -33,6 +33,12 @@ class Team_m extends SB_Model{
         $query = $this->db->where('team_id',$id)->get($this->tb);
         return $query->row_array();
     }
+    
+    public function get_by_id_status($id, $status = self::STATUS_NORMAL) {
+        $this->db->select('*');
+        $query = $this->db->where('team_id',intval($id))->where('status', intval($status))->get($this->tb);
+        return $query->row_array();
+    }
 
     public function get_by_team_number($team_number, $contest_id, $session){
         $this->db->select('*');

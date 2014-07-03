@@ -524,7 +524,7 @@ class Mycontest extends SB_controller{
             $memberColumn = $this->member_column_m->list_by_team_id($team_id);
             $contest = $this->contest_m->get($teamInfo['contest_id']);
             if ($uid != $contest['create_user_id']) {
-                $see = $this->_cheak_uid_by_pid($teamInfo['contest_id']);
+                $see = $this->_cheak_uid_by_cid($teamInfo['contest_id']);
                 if (!$see) {
                     return header('location:/mycontest/my');
                 }
@@ -651,7 +651,7 @@ class Mycontest extends SB_controller{
             $see = true;
         }
         if (!$see) {
-            $see = $this->_cheak_uid_by_pid($cid);
+            $see = $this->_cheak_uid_by_cid($cid);
         }
         if (!$see) {
             return show_error('没有查看的权限', 404);
@@ -734,32 +734,6 @@ class Mycontest extends SB_controller{
         $this->load->view('search_team_result', $result);
     }
 
-    /**
-     * 根据contestid查看是否有权限
-     */
-    protected function _cheak_uid_by_pid($cid) {
-        if (!$cid) {
-            return false;
-        }
-        $contest = $this->contest_m->get($cid);
-        $uid = $this->session->userdata('uid');
-        $see = false;
-        if (($uid == $contest['create_user_id']) && $this->auth->is_admin()) {
-            $see = true;
-        }
-        if (!$see) {
-            $tmpPid = $contest['parent_id'];
-            while($tmpPid) {
-                $tmpc = $this->contest_m->get($tmpPid);
-                if ($tmpc['create_user_id'] == $uid) {
-                    $see = true;
-                    break;
-                }
-                $tmpPid = $tmpc['parent_id'];
-            }
-        }
-        return $see;
-    }
 
     /**
      * 专门导出参赛队信息

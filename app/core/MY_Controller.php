@@ -306,6 +306,34 @@ class SB_Controller extends Base_Controller{
 
         return $data;
     }
+    
+
+    /**
+     * 根据contestid查看是否有权限
+     */
+    protected function _cheak_uid_by_cid($cid) {
+        if (!$cid) {
+            return false;
+        }
+        $contest = $this->contest_m->get($cid);
+        $uid = $this->session->userdata('uid');
+        $see = false;
+        if (($uid == $contest['create_user_id']) || $this->auth->is_admin()) {
+            $see = true;
+        }
+        if (!$see) {
+            $tmpPid = $contest['parent_id'];
+            while($tmpPid) {
+                $tmpc = $this->contest_m->get($tmpPid);
+                if ($tmpc && $tmpc['create_user_id'] == $uid) {
+                    $see = true;
+                    break;
+                }
+                $tmpPid = isset($tmpc['parent_id']) ? $tmpc['parent_id'] : 0;
+            }
+        }
+        return $see;
+    }
 
 }
 

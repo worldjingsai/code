@@ -138,7 +138,7 @@
 </td>
 
 <td class='auto'>
-<?=$v['team_number']?>
+<a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>"><?=$v['team_number']?></a>
 </td>
 <?php for($j=1; $j<$i-1; $j++) {?>
 <td class='auto'>
@@ -161,7 +161,7 @@
 <?php }?>
 
 <td class='w100'>
-<a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>" class="btn btn-primary btn-sm">详情</a>
+<a target="_blank" href="<?php echo site_url('contest/user_apply/'.$contest['contest_id'].'/'.$v['team_id']);?>" class="btn btn-primary btn-sm">编辑</a>
 <?php if ($v['result_file']) {?><a href="<?php echo site_url('mycontest/result_file/'.$v['team_id']);?>" class="btn btn-primary btn-sm">作品</a><?php }?>
 
 </td>

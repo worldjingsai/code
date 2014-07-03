@@ -181,7 +181,11 @@ $(document).ready(function(){
 										$('#promptMessage').html(responseText.message);
 									}
 									$('#promptMessage').dialog("close");
-									window.location.reload();
+									if (responseText.data.return_url) {
+										window.location.href=responseText.data.return_url;
+									} else {
+										window.location.reload();
+									}
 								} else {
 									$('#promptMessage').html('返回错误' + responseText.message);
 								}

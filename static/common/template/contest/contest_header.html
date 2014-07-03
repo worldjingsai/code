@@ -43,7 +43,9 @@
   	<%if !empty($tplData.reconf.type) && $tplData.reconf.type==2%>
 	  	<%if !empty($tplData.teamInfo) && $tplData.teamInfo.team_id%>
 	  	<div class="team_info">报名队号：<%$tplData.teamInfo.team_number%></div>
-	  	<a class="btn btn-warning" href="/contest/user_apply/<%$tplData.contest.contest_id%>">查看&编辑队伍信息</a>
+	  		<%if $tplData.teamInfo.create_user_id == $user.uid%>
+	  		<a class="btn btn-warning" href="/contest/user_apply/<%$tplData.contest.contest_id%>">查看&编辑队伍信息</a>
+	  		<%/if%>
 	  	<%elseif !empty($tplData.show_enter) %>
 	  	<a class="enter" href="/contest/user_apply/<%$tplData.contest.contest_id%>"><em>报名</em></a>
 	  	<%/if%>
@@ -60,7 +62,7 @@
   	
   	<%if !empty($tplData.show_result)%>
   	<div class="up_result">
-  	<%if  !empty($tplData.teamInfo) && $tplData.teamInfo.team_id%>
+  	<%if  !empty($tplData.teamInfo) && $tplData.teamInfo.team_id && $tplData.teamInfo.create_user_id == $user.uid%>
   	<a class="btn btn-warning" href="/myenter/result/<%$tplData.teamInfo.team_id|default:''%>">上传作品</a>
     <%elseif empty($tplData.user_info.username)%>
     <a class="btn btn-warning" href="/user/login">上传作品</a>
