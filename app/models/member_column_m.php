@@ -34,19 +34,20 @@ class Member_column_m extends SB_Model{
         $query = $this->db->where('member_id',$id)->get($this->tb);
         return $query->row_array();
     }
-    
+
     /**
      * 根据团队id获取报名信息
-     * 
+     *
      * @param unknown $team_id
      */
     public function list_by_team_id($team_id)
     {
         $this->db->select('*');
+        $this->db->order_by('member_id','asc');
         $query = $this->db->where('team_id',$team_id)->get($this->tb);
         return $query->result_array();
     }
-    
+
     /**
      * 根据contest_id获取竞赛和届数获取列表
      */
@@ -77,7 +78,7 @@ class Member_column_m extends SB_Model{
         $this->db->update($this->tb, $data);
         return $this->db->affected_rows();
     }
-    
+
     /**
      * 根据团队ID删除数据
      * @param int $team_id
