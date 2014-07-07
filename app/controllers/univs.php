@@ -101,6 +101,7 @@ class Univs extends SB_Controller{
         // 引入模型
         $this->load->model('article_m');
         $this->load->model('article_content_m');
+        $this->load->model('contest_menu_m');
 
         $cid = $cInfo['contest_id'];
 
@@ -128,7 +129,10 @@ class Univs extends SB_Controller{
             $page = $pageStr ? intval($pageStr) : 1;
             $limit = $this->limit;
 
-            $colums = Contest_m::$columNames;
+            $colums = $this->contest_menu_m->list_colume_by_contestid($cid);
+            if (empty($colums)) {
+                $colums = Contest_m::$columNames;
+            }
 
             $col = isset($args[0]) ? $args[0] : Contest_m::COLUM_NOTICE;
             if (!$col || !isset($colums[$col])){

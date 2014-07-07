@@ -248,6 +248,7 @@ class SB_Controller extends Base_Controller{
         $this->load->model('univs_m');
         $this->load->model('contest_m');
         $this->load->model('contest_regist_config_m');
+        $this->load->model('contest_menu_m');
 
         $cInfo = $this->contest_m->get($cid);
 
@@ -285,7 +286,10 @@ class SB_Controller extends Base_Controller{
         $univs_info = $this->univs_m->get_univs_info_by_univs_id($univs_id);
         $data['university'] = $univs_info;
 
-        $colums = Contest_m::$columNames;
+        $colums = $this->contest_menu_m->list_colume_by_contestid($contest_id);
+        if (empty($colums)) {
+            $colums = Contest_m::$columNames;
+        }
         $data['contest'] = $cInfo;
         $data['colums'] = $colums;
 
@@ -306,7 +310,7 @@ class SB_Controller extends Base_Controller{
 
         return $data;
     }
-    
+
 
     /**
      * 根据contestid查看是否有权限
