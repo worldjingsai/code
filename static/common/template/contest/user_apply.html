@@ -17,7 +17,7 @@
 			   <div class="rg_title">报名竞赛-报名人员限制<%$tplData.reconf.min_member%>~<%$tplData.reconf.max_member%>人</div>
 			   <div class="rg_data">
 			   
-    <form id="js_user_apply" action="" method="post" class="dialog-box">
+    <form id="js_user_apply" action="/contest/user_apply/<%$tplData.contest.contest_id%>/<%$tplData.teamInfo.team_id|default:0%>" method="post" class="dialog-box">
 
 			<div class="sys_info">
        <p class="rg_info">系统信息</p>
@@ -65,7 +65,7 @@
 	<div class="DivH10"></div>
 	<div class="team_info">
 	<p class="rg_info">团队信息</p>
-	<input type="hidden" name="team_id" value="<%$tplData.teamInfo.team_id|default:''%>"/>
+	<input type="hidden" name="team_id" id="team_id" value="<%$tplData.teamInfo.team_id|default:''%>"/>
     <table class="">
         <colgroup>
             <col width="150">

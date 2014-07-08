@@ -56,28 +56,30 @@ class Contest extends SB_controller{
         $session  = intval($this->input->post('session'));
         $team_number = $this->input->post('team_number', true);
         $uid = $this->user_info['uid'];
+        $team_id = intval($this->input->post('team_id'));
 
         if (empty($cid) || empty($session) || empty($team_number)) {
             echo "false";
             return;
         }
+        
+        $return = false;
 
         $this->load->model('team_m');
         // 如果是更新竞赛，并且都没有变化就返回成功
         if ($team_number) {
             $tInfo = $this->team_m->get_by_team_number($team_number, $cid, $session);
             if (empty($tInfo)) {
-                echo "true";
-                return;
-            } else if (!empty($tInfo) && ($tInfo['create_user_id'] === $uid) ) {
-                echo "true";
-                return ;
-            } else {
-                echo "false";
-                return ;
+                $return = true;
+            } elseif ($tInfo['team_id'] == $team_id) {
+                $return = true;
             }
         }
-        echo "false";
+        if ($return) {
+            echo "true";
+        } else {
+            echo "false";
+        }
         return ;
     }
 
@@ -363,15 +365,22 @@ class Contest extends SB_controller{
 
         // 竞赛的直接创建者可以修改团队信息
         if ($tid) {
-            $see = $this->_cheak_uid_by_cid($contest_id);
-            if (!$see) {
-                return show_error('没有权限');
-            }
-            
             $teamInfo = $this->team_m->get_by_id_status($tid);
             if ($teamInfo['contest_id'] != $contest_id) {
                 return show_error('没有权限');
             }
+            $see = false;
+            if ($teamInfo['create_user_id'] == $this->user_info['uid']) {
+                $see = true;
+            }
+            if (!$see) {
+                $see = $this->_cheak_uid_by_cid($contest_id);
+            }
+            
+            if (!$see) {
+                return show_error('没有权限');
+            }
+            
         // 本人是否有报名信息
         } else {
             $teamInfo = $this->team_m->get_by_user_contest_session($this->user_info['uid'], $contest_id, $configs['session']);
@@ -398,7 +407,7 @@ class Contest extends SB_controller{
                     return show_json(100, '参赛队号不能为空', array('return_url' => '/contest/user_apply/'.$contest_id, 'show_time'=>1000));
                 } else {
                     $tInfo = $this->team_m->get_by_team_number($team_number, $contest_id, $configs['session']);
-                    if ($tInfo && $tInfo['create_user_id'] != $this->user_info['uid']) {
+                    if ($tInfo && $tInfo['team_id'] != $tid) {
                         return show_json(200, '参赛队号重复请重新填写', array('return_url' => '/contest/user_apply/'.$contest_id, 'show_time'=>1000));
                     }
                 }

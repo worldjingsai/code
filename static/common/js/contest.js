@@ -31,6 +31,7 @@ function lxfEndtime(){
 // 提交表单开始
 function ajaxFormStart() {
 	ajax_message('提交中...');
+	return true;
 }
 
 // 提交表单成功
@@ -326,7 +327,10 @@ $(document).ready(function(){
 								return $("#team_number").val(); 
 								},
 								"contest_id":$("#team_number").attr("contest_id"),
-								"session":$("#team_number").attr("session")
+								"session":$("#team_number").attr("session"),
+								"team_id":function() {
+									return $("#team_id").val();
+								}
 							}
 						}
 					}
@@ -340,7 +344,7 @@ $(document).ready(function(){
 		});
 		} else {
 			$("#js_user_apply").validate({});
-		}
+		};
 		
 		var options = {
 	    		beforeSubmit: ajaxFormStart,  // pre-submit callback
