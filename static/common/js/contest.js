@@ -30,7 +30,7 @@ function lxfEndtime(){
 
 // 提交表单开始
 function ajaxFormStart() {
-	ajax_message('提交中...');
+	ajax_message('提交中...<br/>如果本页面一直不跳转说明无法提交! <br/> 请点击  <a href="/other/help" target="_blank"> 帮助 建议更换浏览器</a>');
 	return true;
 }
 
