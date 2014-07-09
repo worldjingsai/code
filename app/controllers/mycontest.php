@@ -720,6 +720,14 @@ class Mycontest extends SB_controller{
                 exit();
             }
         }
+        
+        // 批量生成密封号 
+        if ($this->input->post('seal_number')) {
+            set_time_limit(0);
+            @ini_set('memory_limit', "1024M");
+            
+        }
+        
     }
 
     public function ajax_search_team(){

@@ -35,16 +35,26 @@ class User extends SB_Controller{
         $this->load->view('userinfo', $data);
 
     }
+    
+    
     public function reg(){
-
         //加载form类，为调用错误函数,需view前加载
         $this->load->helper('form');
         $data['title'] = '注册新用户';
+        
         if($this->auth->is_login()){
             $this->myclass->notice('alert("已登录，请退出再注册");window.location.href="'.site_url().'";');
             return ;
         }
+        
+        $refer = $this->input->get_post('referer',true);
+        $refer = $refer ? $refer: $this->input->server('HTTP_REFERER', true);
+        if (strpos($refer, '/user/reg')) {
+            $refer = '/';
+        }
+        
         if($_POST && $this->validate_reg_form()){
+            
             $password = $this->input->post('password',true);
             //$ip = $this->myclass->get_ip();
             $ip = '';
@@ -79,15 +89,61 @@ class User extends SB_Controller{
                     //去除session
                     $this->session->unset_userdata('yzm');
                 }
-                redirect();
+                header("location: ".$refer);
             }
         }else{
             $data['register'] = true;
+            $data['referer'] = $refer;
             $this->tplData = $data;
             $this->display("user/register.html");
         }
     }
 
+    public function login (){
+        $data['title'] = '用户登录';
+        $data['referer']=$this->input->get_post('referer',true);
+        $data['referer']=$data['referer']?$data['referer']: $this->input->server('HTTP_REFERER', true);
+        if (strpos($data['referer'], '/user/login')) {
+            $data['referer'] = '/';
+        }
+        if($this->auth->is_login()){
+            // redirect();
+            $this->myclass->notice('alert("此用户已登录");window.location.href="'.$data['referer'].'";');
+        }
+        if($_POST){
+            $username = $this->input->post('username',true);
+            $password = $this->input->post('password',true);
+    
+            $user = $this->user_m->check_login($username, $password);
+    
+            $captcha = $this->input->post('captcha_code');
+            if($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
+                $this->myclass->notice('alert("验证码不正确!!");history.go(-1);');
+            }elseif($user && count($user)){
+                //更新session
+                $this->session->set_userdata(array ('uid' => $user['uid'], 'username' => $user['username'], 'password' =>$user['password'], 'group_type' => $user['group_type'], 'gid' => $user['gid']) );
+                //设置cookie(已去除)
+    
+                //更新openidQQ
+                $openid = strip_tags($this->input->post('openid'));
+                if($openid){
+                    $this->user_m->update_user($user['uid'], array('openid'=>$openid));
+                }
+                header("location: ".$data['referer']);
+                //redirect($data['referer']);
+                exit;
+            }else{
+    
+                $this->myclass->notice('alert("用户名或密码错误!!");history.back();');
+            }
+        }else{
+            $data['login'] = true;
+            $this->tplData = $data;
+            $this->display("user/register.html");
+        }
+    }
+    
+    
     public function username_check($username){
         if(!preg_match('/^(?!_|\s\')(?!.*?_$)[A-Za-z0-9_\x{4e00}-\x{9fa5}\s\']+$/u', $username)){
             $this->form_validation->set_message('username_check', '%s 只能含有汉字、数字、字母、下划线（不能开头或结尾)');
@@ -116,54 +172,6 @@ class User extends SB_Controller{
         }
     }
 
-    public function login (){
-        $data['title'] = '用户登录';
-        $data['referer']=$this->input->get_post('referer',true);
-        $captcha = $this->input->get_post('captcha_code',true);
-        $data['referer']=$data['referer']?$data['referer']: $this->input->server('HTTP_REFERER', true);
-        if (strpos($data['referer'], '/user/login')) {
-            $data['referer'] = '/';
-        }
-        if($this->auth->is_login()){
-            // redirect();
-            $this->myclass->notice('alert("此用户已登录");window.location.href="'.$data['referer'].'";');
-        }
-        if($_POST){
-            $username = $this->input->post('username',true);
-            $password = $this->input->post('password',true);
-
-            if($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
-                return $this->myclass->notice('alert("验证码不正确!!");history.back();');
-            }
-
-            $user = $this->user_m->check_login($username, $password);
-
-            $captcha = $this->input->post('captcha_code');
-            if($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
-                $this->myclass->notice('alert("验证码不正确!!");history.go(-1);');
-            }elseif($user && count($user)){
-                //更新session
-                $this->session->set_userdata(array ('uid' => $user['uid'], 'username' => $user['username'], 'password' =>$user['password'], 'group_type' => $user['group_type'], 'gid' => $user['gid']) );
-                //设置cookie(已去除)
-
-                //更新openidQQ
-                $openid = strip_tags($this->input->post('openid'));
-                if($openid){
-                    $this->user_m->update_user($user['uid'], array('openid'=>$openid));
-                }
-                header("location: ".$data['referer']);
-                //redirect($data['referer']);
-                exit;
-            }else{
-
-                $this->myclass->notice('alert("用户名或密码错误!!");history.back();');
-            }
-        }else{
-            $data['login'] = true;
-            $this->tplData = $data;
-            $this->display("user/register.html");
-        }
-    }
 
     public function logout (){
         $this->session->sess_destroy();
