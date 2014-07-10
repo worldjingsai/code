@@ -4,6 +4,7 @@
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
 <title><?php echo $title?> - 我的竞赛 - <?php echo $settings['site_name']?></title>
 <?php $this->load->view('header-meta');?>
+<link  rel='stylesheet' type='text/css' href='/static/common/css/jquery-ui-1.10.4.custom.min.css' >
 </head>
 <body id="startbbs">
 <?php $this->load->view('header');?>
@@ -110,7 +111,7 @@
 
 
 <?php if(!empty($rows)){?>
-<form name="myform" method="post" action="<?php echo site_url('mycontest/batch_process/'.$conf['contest_id'])?>">
+<form id="js_myform" name="myform" method="post" action="<?php echo site_url('mycontest/batch_process/'.$conf['contest_id'])?>">
 <table class='topics table'>
 <thead>
 <tr>
@@ -199,11 +200,19 @@
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export&<?=$url_query?>">导出全部团队信息</a>
 <a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>
-<?php if ($conf['can_down']) {?>
-<input id="btn_down" class="btn btn-primary btn-info" name="batch_down" type="submit" value="下载全部作品" /> >
-<p id="down_notice" class="alert alert-warning red" style="display: none">批量下载可能时间较长请耐心等待</p>
+<?php if (!empty($conf['can_down'])) {?>
+<input id="btn_down" class="btn btn-primary btn-info" name="batch_down" type="submit" value="下载全部作品" />
+<?php }?>
+<?php if (!empty($conf['is_seal'])) {?>
+<input id="seal_number" class="btn btn-info" name="seal_number" type="submit" value="生成密封号" />
 <?php }?>
 </div>
+
+<div id="alertTest" class="alert alert-warning fade in" role="notice" style="display: none">
+<button type="button" class="close" ><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+<span class="alert_message"></span>
+</div>
+
 </form>
 <?php } else{?>
 暂无团队信息
@@ -224,20 +233,78 @@
 </div>
 </div></div></div>
 <?php $this->load->view ('footer');?>
+<script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#checkall").bind('click',function(){
-  $("input:checkbox").prop("checked",$(this).prop("checked"));//全选
-  });
-  $("input:checkbox").on('change', function(){
-	    //$("#btn_down").attr('disabled', false);
-	    $("#down_notice").hide();
-	  })
-  $("#btn_down").on('click', function(){
-	    //$("#btn_down").attr('disabled', true);
-	    $("#down_notice").show();
+	
+	$(".alert").alert();
+	$(".close").on('click', function() {$(".alert").hide()});
+	
+	$("#checkall").bind('click',function(){
+		$("input:checkbox").prop("checked",$(this).prop("checked"));//全选
+	});
+	$("input:checkbox").on('change', function(){
+		$("#down_notice").hide();
+	});
+	
+	$("#btn_down").on('click', function(){
+		$(".alert").show();
+		$(".alert_message").html('批量下载可能时间较长请耐心等待');
 	    return true;
 	})
+
+	$("#seal_number").on('click', function() {
+		if ($('#promptMessage').length == 0) {
+			var div = '<div class="" id="promptMessage" ></div>';
+			$(document.body).append(div); 
+		} else {
+			$('#promptMessage').dialog('open');
+		}
+		$('#promptMessage').html("<span class='red' >确定要生成密封号吗？!!</span><br/>新生成的密封号将会替换旧的。");
+		$('#promptMessage').dialog({
+		    autoOpen: true,
+		    bgiframe: true, 
+		    width: 400,
+		    modal:true,
+		    resizable:false,
+		    dialogClass: 'prompt',
+		    title:'提示信息',
+		    buttons : {
+		    	"确定" : function(){
+				$.ajax({
+					start: function() {
+						$('#promptMessage').html('密封号生成中请耐心等待...');
+					},
+					url: $("#js_myform").attr('action'),
+					type: "POST",
+					dataType:"json",
+					data:{'seal_number':1},
+					success: function(responseText) {
+						if (responseText.code == 0) {
+							if (responseText.message != '') {
+								$('#promptMessage').html(responseText.message);
+								$('#promptMessage').dialog("close");
+								hideLi.hide('slow');
+							} else {
+								$('#promptMessage').dialog("close");
+								$(".alert").show();
+								$(".alert_message").html('密封号已经生成完成');
+							}
+						} else {
+							$('#promptMessage').html('返回错误' + responseText.message);
+						}
+				    },
+				    error : function() {
+				    	$('#promptMessage').html('系统错误，请重试!');
+				    }
+				});
+				},
+				"取消" : function(){$( this ).dialog( "close" ); return false;}
+			}
+		});
+		return false;
+	})
 });
+
 </script>
 </body></html>
