@@ -18,13 +18,15 @@ class Zhengshu extends Admin_Controller{
             '一等奖' => 'First Prize',
             '二等奖' => 'Second Prize',
             '三等奖' => 'Third Prize',
-            '成功参赛奖' => 'Successful Participant'
+            //'成功参赛奖' => 'Successful Participant'
+    		'成功参赛奖' => 'Third Prize',
     );
     
     /**
      * 读取文件制作证书
+     * isall 是否放在一张纸上
      */
-    public function make()
+    public function make($isall = 0)
     {
         set_time_limit(0);
         $objReader = PHPExcel_IOFactory::createReader('Excel2007');
@@ -32,12 +34,20 @@ class Zhengshu extends Admin_Controller{
         $file = UPLOADPATH . 'zhengshu.xlsx';
         $objPHPExcel = $objReader->load($file);
         
+        $out = TRUE;
+        if ($isall) {
+        	$out = FALSE;
+        }
         $gradeCol = 'F';
         $memberCol = array('I', 'M', 'Q');
         $univsCol = array('K', 'O', 'S');
         $teacherCol = 'V';
         $teamCol = 'A';
         $i = 1;
+        if ($isall) {
+        	$this->_setPdf();
+        }
+        
         while ($teamNumber = $objPHPExcel->getActiveSheet()->getCell($teamCol.$i)->getValue())
         {
             if ($teamNumber == '队号') {
@@ -56,7 +66,7 @@ class Zhengshu extends Admin_Controller{
             
             $grade = $objPHPExcel->getActiveSheet()->getCell($gradeCol.$i)->getValue();
             if (!isset(self::$_grades[$grade])) {
-                echo '没有这个等级' . "<br/>";
+                //echo '没有这个等级' . "<br/>";
                 $i++;
                 continue;
             }
@@ -64,36 +74,26 @@ class Zhengshu extends Admin_Controller{
             
             $times = count($members);
             for($j=1; $j<=$times; $j++) {
-                $this->_makePdf($members, $teacher, $grade, $teamNumber.'_'.$j);
+            	if ($isall && $teacher && $j == 1) {
+            		$this->_makePdf($members, $teacher, $grade, $teamNumber.'_'.$j, $out);
+            	}
+                $this->_makePdf($members, $teacher, $grade, $teamNumber.'_'.$j, $out);
                 $first = array_shift($members);
                 array_push($members, $first);
             }
-            
             $i++;
+        }
+        if ($isall) {
+        	$this->_outPdf();
         }
     }
     
-    protected function _makePdf($members, $teacher, $grade, $fname)
+    protected function _makePdf($members, $teacher, $grade, $fname, $isout = true)
     {
-        
-        $pdf = $this->contract;
-
-        // 设置pdf纸张 l横向  mm单位是毫米  A4纸张是A4的
-        $pdf->FPDF('l', 'mm', 'A4');
-        
-        // 设置pdf纸张边距 左右30 上35.8
-        $pdf->SetMargins(30, 35);
-        
-        // 设置可以用的字体
-        
-        // 设置自动分页 距离下边距25.4mm时分页 也是设置下边距
-        $pdf->SetAutoPageBreak(false);
-        
-        // 设置作者
-        $pdf->SetAuthor('MathorCup');
-        
-        $pdf->SetPicPath(UPLOADPATH.'template.jpg');
-        
+    	if ($isout) {
+    		$this->_setPdf();
+    	}
+    	$pdf = $this->contract;
         $pdf->AddPage();
         $pdf->SetFont('times','',21);
         
@@ -134,7 +134,33 @@ class Zhengshu extends Admin_Controller{
         $pdf->Ln(1);
         $pdf->SetFont('times','',16);
         $pdf->Cell(0,165,'from '.$members[0]['univs'],0,0,'C');
-        
-        $pdf->Output(UPLOADPATH.$fname.'.pdf','F');
+        if ($isout) {
+        	$pdf->Output(UPLOADPATH.$fname.'.pdf','F');
+        }
+    }
+    
+    protected function _setPdf() {
+
+    	$pdf = $this->contract;
+    	
+    	// 设置pdf纸张 l横向  mm单位是毫米  A4纸张是A4的
+    	$pdf->FPDF('l', 'mm', 'A4');
+    	
+    	// 设置pdf纸张边距 左右30 上35.8
+    	$pdf->SetMargins(30, 35);
+    	
+    	// 设置可以用的字体
+    	
+    	// 设置自动分页 距离下边距25.4mm时分页 也是设置下边距
+    	$pdf->SetAutoPageBreak(false);
+    	
+    	// 设置作者
+    	$pdf->SetAuthor('MathorCup');
+    	
+    	$pdf->SetPicPath(UPLOADPATH.'template.jpg');
+    }
+    
+    protected function _outPdf($name = 'zhengshu.pdf') {
+    	$this->contract->Output(UPLOADPATH.$name,'F');
     }
 }

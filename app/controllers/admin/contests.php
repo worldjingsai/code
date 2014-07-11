@@ -180,7 +180,7 @@ class Contests extends Admin_Controller{
                     }
 
                     $this->load->model('member_column_m');
-                    $members = $this->member_column_m->listByTeamIds($mt);
+                    $members = $this->member_column_m->list_by_team_id($mt);
                     $showMembers = array();
                     foreach ($members as $tmpm) {
                         $showMembers[$tmpm['team_id']][] = $tmpm;

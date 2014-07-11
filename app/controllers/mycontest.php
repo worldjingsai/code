@@ -184,7 +184,7 @@ class Mycontest extends SB_controller{
 
 		$gets = $this->input->get(null, true);
 
-		$uid = $this->session->userdata ('uid');
+		$uid = $this->session->userdata('uid');
 		$act = $this->input->get('act', true);
 		$mem = $this->input->get('mem', true);
 		$limit = 100;
@@ -228,6 +228,7 @@ class Mycontest extends SB_controller{
 		if($conf) {
 			$conf['team_column'] = json_decode($conf['team_column'], true);
 			$conf['member_column'] = json_decode($conf['member_column'], true);
+			$conf['result_column'] = json_decode($conf['result_column'], true);
 			if ($act == 'export') {
 				$start = 0;
 				$limit = $config['total_rows'];
@@ -238,12 +239,22 @@ class Mycontest extends SB_controller{
 		// 导出团队信息
 		if ($act == 'export') {
 			return $this->_export($rows, $conf, $mem, $contest);
-
+		} else {
+			$tids = array();
+			foreach ($rows as $row) {
+				$tids[$row['team_id']] = $row['team_id'];
+			}
+			$this->load->model('member_column_m');
+			$members = $this->member_column_m->list_by_team_id($tids);
+			$this->load->helper('team_helper');
+			$show_rows = con_team_member($rows, $members);
+			$show_field = get_show_field($conf);
 		}
 		$data['gets'] = $gets;
 		$data['url_query'] = http_build_query((array)$gets);
 		$data['title'] = '我的竞赛';
-		$data['rows'] = $rows;
+		$data['rows'] = $show_rows;
+		$data['field'] = $show_field;
 		$data['contest'] = $contest;
 		$data['conf'] = $conf;
 		$this->load->view('mycontest_member', $data);
@@ -298,6 +309,7 @@ class Mycontest extends SB_controller{
 		if($conf) {
 			$conf['team_column'] = json_decode($conf['team_column'], true);
 			$conf['member_column'] = json_decode($conf['member_column'], true);
+			$conf['result_column'] = json_decode($conf['result_column'], true);
 			if ($act == 'export') {
 				$start = 0;
 				$limit = $config['total_rows'];
@@ -813,7 +825,7 @@ class Mycontest extends SB_controller{
 				}
 
 				$this->load->model('member_column_m');
-				$members = $this->member_column_m->listByTeamIds($mt);
+				$members = $this->member_column_m->list_by_team_id($mt);
 				$showMembers = array();
 				foreach ($members as $tmpm) {
 					$showMembers[$tmpm['team_id']][] = $tmpm;
