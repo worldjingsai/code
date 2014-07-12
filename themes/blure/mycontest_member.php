@@ -117,7 +117,7 @@
 <tr>
 <th align='left' class='auto'><input id="checkall" type="checkbox" ></th>
 <th align='left' class='auto'>队号</th>
-<?php $i=1;?>
+
 <?php foreach($field as $k=>$v) {?>
 <th align='center' class='auto'><?php echo $v;?></th>
 <?php }?>
@@ -235,17 +235,17 @@
 <script type="text/javascript" src="/static/common/js/jquery-ui-1.10.4.custom.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+
 	$(".alert").alert();
 	$(".close").on('click', function() {$(".alert").hide()});
-	
+
 	$("#checkall").bind('click',function(){
 		$("input:checkbox").prop("checked",$(this).prop("checked"));//全选
 	});
 	$("input:checkbox").on('change', function(){
 		$("#down_notice").hide();
 	});
-	
+
 	$("#btn_down").on('click', function(){
 		$(".alert").show();
 		$(".alert_message").html('批量下载可能时间较长请耐心等待');
@@ -255,14 +255,14 @@ $(document).ready(function(){
 	$("#seal_number").on('click', function() {
 		if ($('#promptMessage').length == 0) {
 			var div = '<div class="" id="promptMessage" ></div>';
-			$(document.body).append(div); 
+			$(document.body).append(div);
 		} else {
 			$('#promptMessage').dialog('open');
 		}
 		$('#promptMessage').html("<span class='red' >确定要生成密封号吗？!!</span><br/>新生成的密封号将会替换旧的。");
 		$('#promptMessage').dialog({
 		    autoOpen: true,
-		    bgiframe: true, 
+		    bgiframe: true,
 		    width: 400,
 		    modal:true,
 		    resizable:false,

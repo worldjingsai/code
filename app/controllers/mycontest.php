@@ -240,15 +240,18 @@ class Mycontest extends SB_controller{
 		if ($act == 'export') {
 			return $this->_export($rows, $conf, $mem, $contest);
 		} else {
-			$tids = array();
-			foreach ($rows as $row) {
-				$tids[$row['team_id']] = $row['team_id'];
+			$tids = $show_rows = $show_field = $members = array();
+			if (!empty($rows)) {
+				foreach ($rows as $row) {
+					$tids[$row['team_id']] = $row['team_id'];
+				}
+				$this->load->model('member_column_m');
+
+				$members = $this->member_column_m->list_by_team_id($tids);
+				$this->load->helper('team_helper');
+				$show_rows = con_team_member($rows, $members);
+				$show_field = get_show_field($conf);
 			}
-			$this->load->model('member_column_m');
-			$members = $this->member_column_m->list_by_team_id($tids);
-			$this->load->helper('team_helper');
-			$show_rows = con_team_member($rows, $members);
-			$show_field = get_show_field($conf);
 		}
 		$data['gets'] = $gets;
 		$data['url_query'] = http_build_query((array)$gets);
@@ -320,7 +323,19 @@ class Mycontest extends SB_controller{
 		// 导出团队信息
 		if ($act == 'export') {
 			return $this->_export($rows, $conf, $mem, $contest);
+		} else {
+			$tids = $show_rows = $show_field = $members = array();
+			if (!empty($rows)) {
+				foreach ($rows as $row) {
+					$tids[$row['team_id']] = $row['team_id'];
+				}
+				$this->load->model('member_column_m');
 
+				$members = $this->member_column_m->list_by_team_id($tids);
+				$this->load->helper('team_helper');
+				$show_rows = con_team_member($rows, $members);
+				$show_field = get_show_field($conf);
+			}
 		}
 		$data['gets'] = $gets;
 		$data['url_query'] = http_build_query((array)$gets);
@@ -329,78 +344,6 @@ class Mycontest extends SB_controller{
 		$data['contest'] = $contest;
 		$data['conf'] = $conf;
 		$this->load->view('mycontest_member_delete', $data);
-	}
-
-	/**
-	 * 根据cid获取参赛的所有队列表
-	 * @param unknown $cid
-	 * @param number $page
-	 */
-	public function all_my_team_list($cid, $page = 1) {
-
-		$gets = $this->input->get(null, true);
-
-		$uid = $this->session->userdata ('uid');
-		$act = $this->input->get('act', true);
-		$mem = $this->input->get('mem', true);
-		$limit = 100;
-
-		$config = $this->pageConfig;
-		$config['per_page'] = $limit;
-		$config['uri_segment'] = 4;
-		$config['base_url'] = site_url('mycontest/all_my_team_list/' . $cid . '/');
-		$config['url_arguments'] = $gets;
-		$this->load->model('contest_regist_config_m');
-		$this->load->model('team_m');
-		$conf = $this->contest_regist_config_m->get_normal($cid);
-		$contest = $this->contest_m->get($cid);
-		if ($uid != $contest['create_user_id']) {
-			return header('location:/mycontest/my');
-		}
-
-		$is_fee = isset($gets['is_fee']) ? $gets['is_fee'] : '-1';
-		$is_up_imag = isset($gets['fee_image']) ? $gets['fee_image'] : '-1';
-		$is_result = isset($gets['is_result']) ? $gets['is_result'] :'-1';
-		$tk = isset($gets['select']) ? $gets['select'] : '';
-		$tv = isset($gets['keywords']) ? $gets['keywords'] :'';
-		$config['total_rows'] = 0;
-
-		// 需要获取到所有的子竞赛的竞赛id
-		$ids = array($cid);
-		$this->contest_m->get_all_son_ids($cid, $ids);
-		if ($conf) {
-			$config['total_rows'] = $this->team_m->count_detail_by_cid_session($ids, $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv);
-		}
-
-		$this->load->library('pagination');
-		$this->pagination->initialize($config);
-
-		$start = ($page-1)*$limit;
-		$data['pagination'] = $this->pagination->create_links();
-
-		// 获取数据
-		$rows = array();
-		if($conf) {
-			$conf['team_column'] = json_decode($conf['team_column'], true);
-			$conf['member_column'] = json_decode($conf['member_column'], true);
-			if ($act == 'export') {
-				$start = 0;
-				$limit = $config['total_rows'];
-			}
-			$rows = $this->team_m->get_detail_by_cid_session($cid, $conf['session'], $start, $limit, $is_fee, $is_up_imag, $is_result, $tk, $tv);
-		}
-
-		// 导出团队信息
-		if ($act == 'export') {
-			return $this->_export($rows, $conf, $mem, $contest);
-		}
-		$data['gets'] = $gets;
-		$data['url_query'] = http_build_query((array)$gets);
-		$data['title'] = '我的竞赛';
-		$data['rows'] = $rows;
-		$data['contest'] = $contest;
-		$data['conf'] = $conf;
-		$this->load->view('mycontest_member', $data);
 	}
 
 
@@ -506,11 +449,25 @@ class Mycontest extends SB_controller{
 		// 导出团队信息
 		if ($act == 'export') {
 			return $this->_export($rows, $conf, $mem, $contest);
+		} else {
+			$tids = $show_rows = $show_field = $members = array();
+			if (!empty($rows)) {
+				foreach ($rows as $row) {
+					$tids[$row['team_id']] = $row['team_id'];
+				}
+				$this->load->model('member_column_m');
+
+				$members = $this->member_column_m->list_by_team_id($tids);
+				$this->load->helper('team_helper');
+				$show_rows = con_team_member($rows, $members);
+				$show_field = get_show_field($conf);
+			}
 		}
 		$data['gets'] = $gets;
 		$data['url_query'] = http_build_query((array)$gets);
 		$data['title'] = '我的竞赛';
-		$data['rows'] = $rows;
+		$data['rows'] = $show_rows;
+		$data['field'] = $show_field;
 		$data['contest'] = $contest;
 		$data['conf'] = $conf;
 		$this->load->view('mycontest_sons_member', $data);
@@ -687,7 +644,7 @@ class Mycontest extends SB_controller{
 			$file_dir = UPLOADPATH . 'paper/'.$cid.'/';
 			$file_name = $cid.'_'.$session.'.zip';
 			$zipFile = $file_dir.$file_name;
-		
+
 			if (FALSE !== ($data = @file_get_contents($zipFile))) {
 				// 输入文件标签
 				Header("Content-type: application/octet-stream");
@@ -700,7 +657,7 @@ class Mycontest extends SB_controller{
 				return show_error('文件不存在', 409);
 			}
 		}
-		
+
 		// 批量生成密封号
 		if ($this->input->post('seal_number')) {
 			set_time_limit(0);
@@ -716,7 +673,7 @@ class Mycontest extends SB_controller{
 			}
 			return show_json($code, $message);
 		}
-		
+
 		$tids = array_slice($this->input->post(), 0, -1);
 		$tids = array_map('intval', $tids);
 		if(empty($tids)){
@@ -751,7 +708,7 @@ class Mycontest extends SB_controller{
 			}
 		}
 
-		
+
 	}
 
 	public function ajax_search_team(){
@@ -865,7 +822,7 @@ class Mycontest extends SB_controller{
 				} else {
 					$content .= ',"否"';
 				}
-				
+
 				if ($seal_num) {
 					$content .= ',"'. (empty($seal_num[$v['team_id']]) ? '' : $seal_num[$v['team_id']]) .'"';
 				}

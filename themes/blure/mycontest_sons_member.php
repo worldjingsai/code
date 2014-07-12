@@ -114,11 +114,9 @@
 <tr>
 <th align='left' class='auto'><input id="checkall" type="checkbox" ></th>
 <th align='left' class='auto'>队号</th>
-<?php $i=1;?>
-<?php  foreach($conf['team_column'] as $k=>$v) {?>
 
-<?php if($i++ > 5) {break;}?>
-<th align='right' class='auto'><?php echo $v[0];?></th>
+<?php foreach($field as $k=>$v) {?>
+<th align='center' class='auto'><?php echo $v;?></th>
 <?php }?>
 
 <?php if($conf['fee'] > 0) {?>
@@ -140,11 +138,13 @@
 <td class='auto'>
 <a href="<?php echo site_url('mycontest/team_info/'.$v['team_id']);?>"><?=$v['team_number']?></a>
 </td>
-<?php for($j=1; $j<$i-1; $j++) {?>
-<td class='auto'>
-<?php echo $v["t$j"];?>
+
+<?php foreach($field as $rk=>$rv) {?>
+<td class='auto' title="<?php echo isset($v[$rk]) ? $v[$rk] : '';?>">
+<?php echo isset($v[$rk]) ? sb_substr($v[$rk], 10) : '';?>
 </td>
 <?php }?>
+
 <?php if($conf['fee'] > 0) {?>
 <th class='auto'>
 <?php if($v['is_fee']) {?>是<?php }else {?>否<?php }?>
