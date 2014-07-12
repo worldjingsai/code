@@ -204,7 +204,6 @@ class Mycontest extends SB_controller{
 
 		// 需要获取到所有的子竞赛的竞赛id
 		$cids = array($cid);
-		$this->contest_m->get_all_son_ids($cid, $cids);
 
 		$is_fee = isset($gets['is_fee']) ? intval($gets['is_fee']) : '-1';
 		$is_up_imag = isset($gets['fee_image']) ? intval($gets['fee_image']) : '-1';
@@ -214,6 +213,7 @@ class Mycontest extends SB_controller{
 		$tv = isset($gets['keywords']) ? $gets['keywords'] :'';
 		$config['total_rows'] = 0;
 		if ($conf) {
+			$this->contest_m->get_all_son_ids($cid, $cids);
 			$config['total_rows'] = $this->team_m->count_detail_by_cid_session($cids, $conf['session'], $is_fee, $is_up_imag, $is_result, $tk, $tv, 1, $is_valid);
 		}
 
