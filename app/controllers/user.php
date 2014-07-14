@@ -35,26 +35,26 @@ class User extends SB_Controller{
         $this->load->view('userinfo', $data);
 
     }
-    
-    
+
+
     public function reg(){
         //加载form类，为调用错误函数,需view前加载
         $this->load->helper('form');
         $data['title'] = '注册新用户';
-        
+
         if($this->auth->is_login()){
             $this->myclass->notice('alert("已登录，请退出再注册");window.location.href="'.site_url().'";');
             return ;
         }
-        
+
         $refer = $this->input->get_post('referer',true);
         $refer = $refer ? $refer: $this->input->server('HTTP_REFERER', true);
         if (strpos($refer, '/user/reg')) {
             $refer = '/';
         }
-        
+
         if($_POST && $this->validate_reg_form()){
-            
+
             $password = $this->input->post('password',true);
             //$ip = $this->myclass->get_ip();
             $ip = '';
@@ -113,9 +113,9 @@ class User extends SB_Controller{
         if($_POST){
             $username = $this->input->post('username',true);
             $password = $this->input->post('password',true);
-    
+
             $user = $this->user_m->check_login($username, $password);
-    
+
             $captcha = $this->input->post('captcha_code');
             if($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
                 $this->myclass->notice('alert("验证码不正确!!");history.go(-1);');
@@ -123,7 +123,7 @@ class User extends SB_Controller{
                 //更新session
                 $this->session->set_userdata(array ('uid' => $user['uid'], 'username' => $user['username'], 'password' =>$user['password'], 'group_type' => $user['group_type'], 'gid' => $user['gid']) );
                 //设置cookie(已去除)
-    
+
                 //更新openidQQ
                 $openid = strip_tags($this->input->post('openid'));
                 if($openid){
@@ -133,7 +133,7 @@ class User extends SB_Controller{
                 //redirect($data['referer']);
                 exit;
             }else{
-    
+
                 $this->myclass->notice('alert("用户名或密码错误!!");history.back();');
             }
         }else{
@@ -142,8 +142,8 @@ class User extends SB_Controller{
             $this->display("user/register.html");
         }
     }
-    
-    
+
+
     public function username_check($username){
         if(!preg_match('/^(?!_|\s\')(?!.*?_$)[A-Za-z0-9_\x{4e00}-\x{9fa5}\s\']+$/u', $username)){
             $this->form_validation->set_message('username_check', '%s 只能含有汉字、数字、字母、下划线（不能开头或结尾)');

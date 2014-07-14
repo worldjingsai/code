@@ -17,7 +17,7 @@
         <p class="my_item"><a class="btn " href="/mycontest/index">我的竞赛</a></p>
         </div>
     <%else%> 
-        <div id="js_register" >
+        <div id="js_register"  style="display:none">
         <p><span class="fr"><a href="javascript:" class="js_login">登录</a></span><a href="javascript:" class="js_register current">注册账号</a></p>
         
         <form action="/user/reg" method="post" id="register_form">
@@ -60,7 +60,7 @@
         </form>
         </div>
         
-      <div id="js_login" style="display:none">
+      <div id="js_login" >
         <p><span class="fr"><a href="javascript:" class="js_login current">登录</a></span><a href="javascript:" class="js_register">注册账号</a></p>
         
         <form action="/user/login" method="post" id="login_form">
@@ -77,7 +77,7 @@
         </div>
 	     <div class="DivH10"></div>
 	     <div class="input-group fl">
-	        <label class="input-group-addon w_60" for="captcha_code" >验证吗</label>
+	        <label class="input-group-addon w_60" for="captcha_code" >验证码</label>
 	        <input type="text" id="captcha_code" name="captcha_code" style="width:40px;" class="form-control"  value="" maxlength="4">
 	    </div>
 	    <span class="captcha_table fr"> <a href="javascript:reloadcode();" title="更换一张验证码图片"><img src="/captcha_code/index" name="checkCodeImg" id="checkCodeImg" border="0" /></a> </span>
