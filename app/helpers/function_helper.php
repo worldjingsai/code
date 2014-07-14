@@ -175,71 +175,95 @@ function send_mail($username,$password,$to,$subject,$message)
 }
 
 
-	function auto_link_pic($str, $type = 'both', $popup = FALSE)
+function auto_link_pic($str, $type = 'both', $popup = FALSE)
+{
+	if ($type != 'email')
 	{
-		if ($type != 'email')
+		if (preg_match_all("#(^|\s|\()((http(s?)://)|(www\.))(\w+[^\s\)\<]+)#i", $str, $matches))
 		{
-			if (preg_match_all("#(^|\s|\()((http(s?)://)|(www\.))(\w+[^\s\)\<]+)#i", $str, $matches))
-			{
-				$pop = ($popup == TRUE) ? " target=\"_blank\" " : "";
+			$pop = ($popup == TRUE) ? " target=\"_blank\" " : "";
 
-				for ($i = 0; $i < count($matches['0']); $i++)
+			for ($i = 0; $i < count($matches['0']); $i++)
+			{
+				$period = '';
+				if (preg_match("|\.$|", $matches['6'][$i]))
 				{
-					$period = '';
-					if (preg_match("|\.$|", $matches['6'][$i]))
-					{
-						$period = '.';
-						$matches['6'][$i] = substr($matches['6'][$i], 0, -1);
-					}
-					$img_ext = array('jpg','png','gif','jpeg');
-					$file_ext=strtolower(end(explode(".",$matches['0'][$i])));
-					if(in_array($file_ext,$img_ext)){
-						$str = str_replace($matches['0'][$i],
-											$matches['1'][$i].'<img src="http'.
-											$matches['4'][$i].'://'.
-											$matches['5'][$i].
-											$matches['6'][$i].'" class="img-responsive" alt="">'.
-											$period, $str);
-					} else {
-						$str = str_replace($matches['0'][$i],
-											$matches['1'][$i].'<a href="http'.
-											$matches['4'][$i].'://'.
-											$matches['5'][$i].
-											$matches['6'][$i].'"'.$pop.'>http'.
-											$matches['4'][$i].'://'.
-											$matches['5'][$i].
-											$matches['6'][$i].'</a>'.
-											$period, $str);
-					}
+					$period = '.';
+					$matches['6'][$i] = substr($matches['6'][$i], 0, -1);
+				}
+				$img_ext = array('jpg','png','gif','jpeg');
+				$file_ext=strtolower(end(explode(".",$matches['0'][$i])));
+				if(in_array($file_ext,$img_ext)){
+					$str = str_replace($matches['0'][$i],
+										$matches['1'][$i].'<img src="http'.
+										$matches['4'][$i].'://'.
+										$matches['5'][$i].
+										$matches['6'][$i].'" class="img-responsive" alt="">'.
+										$period, $str);
+				} else {
+					$str = str_replace($matches['0'][$i],
+										$matches['1'][$i].'<a href="http'.
+										$matches['4'][$i].'://'.
+										$matches['5'][$i].
+										$matches['6'][$i].'"'.$pop.'>http'.
+										$matches['4'][$i].'://'.
+										$matches['5'][$i].
+										$matches['6'][$i].'</a>'.
+										$period, $str);
 				}
 			}
 		}
+	}
 
-		if ($type != 'url')
+	if ($type != 'url')
+	{
+		if (preg_match_all("/([a-zA-Z0-9_\.\-\+]+)@([a-zA-Z0-9\-]+)\.([a-zA-Z0-9\-\.]*)/i", $str, $matches))
 		{
-			if (preg_match_all("/([a-zA-Z0-9_\.\-\+]+)@([a-zA-Z0-9\-]+)\.([a-zA-Z0-9\-\.]*)/i", $str, $matches))
+			for ($i = 0; $i < count($matches['0']); $i++)
 			{
-				for ($i = 0; $i < count($matches['0']); $i++)
+				$period = '';
+				if (preg_match("|\.$|", $matches['3'][$i]))
 				{
-					$period = '';
-					if (preg_match("|\.$|", $matches['3'][$i]))
-					{
-						$period = '.';
-						$matches['3'][$i] = substr($matches['3'][$i], 0, -1);
-					}
-
-					$str = str_replace($matches['0'][$i], safe_mailto($matches['1'][$i].'@'.$matches['2'][$i].'.'.$matches['3'][$i]).$period, $str);
+					$period = '.';
+					$matches['3'][$i] = substr($matches['3'][$i], 0, -1);
 				}
+
+				$str = str_replace($matches['0'][$i], safe_mailto($matches['1'][$i].'@'.$matches['2'][$i].'.'.$matches['3'][$i]).$period, $str);
 			}
 		}
-
-		return $str;
 	}
 
+	return $str;
+}
 
-	function br2nl($text)
+
+function br2nl($text)
+{
+	return preg_replace('/<br\\s*?\/??>/i', '', $text);
+}
+
+if (! function_exists('get_download_name')) {
+	function get_download_name($name)
 	{
-		return preg_replace('/<br\\s*?\/??>/i', '', $text);
+		$name = strip_tags($name);
+		// google系
+		if(preg_match("/AppleWebKit/i", $_SERVER['HTTP_USER_AGENT'])) {
+			$name = htmlspecialchars($name);
+			// IE系
+		} elseif (preg_match("/MSIE/i", $_SERVER['HTTP_USER_AGENT'])) {
+			$name = urlencode($name);
+			$name = str_replace("+", "%20", $name);
+			// 火狐系不做处理
+		} elseif (preg_match("/FireFox/i", $_SERVER['HTTP_USER_AGENT'])) {
+			// $name = $name;
+		
+			// 其他，360兼容模式
+		} else {
+			$name = urlencode($name);
+			$name = str_replace("+", "%20", $name);
+		}
+		return $name;
 	}
+}
 /* End of file function_helper.php */
 /* Location: ./system/helpers/function_helper.php */

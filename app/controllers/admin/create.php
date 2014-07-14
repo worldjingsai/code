@@ -323,7 +323,8 @@ class Create extends Admin_Controller{
                     'result_column' => json_encode($resultColumn),
                     'create_time' => date('Y-m-d H:i:s'),
                     'create_user_id' => $uid,
-                    'status' => Contest_regist_config_m::STATUS_NORMAL
+                    'status' => Contest_regist_config_m::STATUS_NORMAL,
+                    'export_formate' => 'cumcm',
             );
 
             // 如果有是更新

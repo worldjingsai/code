@@ -187,6 +187,7 @@ class Mycontest extends SB_controller{
 		$uid = $this->session->userdata('uid');
 		$act = $this->input->get('act', true);
 		$mem = $this->input->get('mem', true);
+		$formate = $this->input->get('formate', true);
 		$limit = 100;
 
 		$config = $this->pageConfig;
@@ -238,7 +239,18 @@ class Mycontest extends SB_controller{
 
 		// 导出团队信息
 		if ($act == 'export') {
-			return $this->_export($rows, $conf, $mem, $contest);
+			if (empty($rows)) {
+				return $this->myclass->notice('alert("没有报名信息");');
+			}
+			
+			$this->load->helper('excel_helper');
+			if ($formate && function_exists($formate.'_formate') && $formate == $conf['export_formate']) {
+				$function = $formate.'_formate';
+			} else {
+				$function = 'team_formate';
+			}
+			return $function($conf, $rows, $mem, $contest);
+			
 		} else {
 			$tids = $show_rows = $show_field = $members = array();
 			if (!empty($rows)) {
@@ -322,7 +334,12 @@ class Mycontest extends SB_controller{
 
 		// 导出团队信息
 		if ($act == 'export') {
-			return $this->_export($rows, $conf, $mem, $contest);
+			if (empty($rows)) {
+				return $this->myclass->notice('alert("没有报名信息");');
+			}
+			
+			$this->load->helper('excel_helper');
+			return team_formate($conf, $rows, $mem, $contest);
 		} else {
 			$tids = $show_rows = $show_field = $members = array();
 			if (!empty($rows)) {
@@ -401,6 +418,7 @@ class Mycontest extends SB_controller{
 
 		$act = $this->input->get('act', true);
 		$mem = $this->input->get('mem', true);
+		$formate = $this->input->get('formate', true);
 		$limit = 100;
 
 		$data['current_cid_str'] = $cid;
@@ -448,7 +466,16 @@ class Mycontest extends SB_controller{
 
 		// 导出团队信息
 		if ($act == 'export') {
-			return $this->_export($rows, $conf, $mem, $contest);
+			if (empty($rows)) {
+				return $this->myclass->notice('alert("没有报名信息");');
+			}
+			
+			if ($formate && function_exists($formate.'_formate') && $formate == $conf['export_formate']) {
+				$function = $formate.'_formate';
+			} else {
+				$function = 'team_formate';
+			}
+			return $function($conf, $rows, $mem, $contest);
 		} else {
 			$tids = $show_rows = $show_field = $members = array();
 			if (!empty($rows)) {
@@ -721,129 +748,5 @@ class Mycontest extends SB_controller{
 		$this->load->model('team_m');
 		$result['rows'] = $this->team_m->get_detail_by_cid_session($contest_id,$session,$is_fee,$is_upload_fee_image,$page,$limit);
 		$this->load->view('search_team_result', $result);
-	}
-
-
-	/**
-	 * 专门导出参赛队信息
-	 * @param 数据列 $rows
-	 * @param 报名配置文件 $conf
-	 * @param 是否导出参赛者信息 $mem
-	 * @param 竞赛信息 $contest
-	 */
-	protected function _export($rows, $conf, $mem, $contest)
-	{
-		// 导出团队信息
-		if(!empty($rows)){
-			$title = '"队号"';
-			$mk = $sk = array();
-
-			foreach($conf['team_column'] as $k=>$v) {
-				if ($v[2] > 0) {
-
-					$sk[$k] = $k;
-					$title .= ',"'.$v[0].'"';
-				}
-			}
-			if (!empty($conf['fee'])) {
-				$title .= ',"是否缴费"';
-				$title .= ',"是否上传缴费图片"';
-			}
-			if (!empty($conf['is_checked'])) {
-				$title .= ',"是否审核通过"';
-			}
-			$title .= ',"团队组别","团队选题","是否上传作品"';
-
-			$seal_num = array();
-			if (!empty($conf['is_seal'])) {
-				$this->load->model('seal_number_m');
-				$seals = $this->seal_number_m->list_by_cid_session($conf['contest_id'], $conf['session']);
-				if ($seals) {
-					foreach ($seals as $se) {
-						$seal_num[$se['team_id']] = $se['seal_number'];
-					}
-					$title .= ',"密封号"';
-				}
-			}
-
-			// 导出团队信息
-			if ($mem) {
-				for($i=1; $i<=$conf['max_member']; $i++) {
-					foreach($conf['member_column'] as $k=>$v) {
-						if ($v[2] > 0) {
-							$mk[$k] = $k;
-							$title .= ',"队员'.$i.$v[0].'"';
-						}
-					}
-				}
-				$mt = array();
-				foreach($rows as $k=>$v){
-					$mt[$v['team_id']] = $v['team_id'];
-				}
-
-				$this->load->model('member_column_m');
-				$members = $this->member_column_m->list_by_team_id($mt);
-				$showMembers = array();
-				foreach ($members as $tmpm) {
-					$showMembers[$tmpm['team_id']][] = $tmpm;
-				}
-			}
-			$title.="\r\n";
-			$content = '';
-			foreach($rows as $k=>$v){
-				$content .= '"'.$v['team_number'].'"';
-				foreach($sk as $kk) {
-					$content .= ',"'.$v[$kk].'"';
-				}
-				// 是否缴费
-				if (!empty($conf['fee'])) {
-					if ($v['is_fee'] >= 1) {
-						$content .= ',"是"';
-					} else {
-						$content .= ',"否"';
-					}
-					if ($v['fee_image']) {
-						$content .= ',"是"';
-					} else {
-						$content .= ',"否"';
-					}
-				}
-				// 是否审核
-				if (!empty($conf['is_checked'])) {
-					if ($v['is_valid']) {
-						$content .= ',"是"';
-					} else {
-						$content .= ',"否"';
-					}
-				}
-				$content.= ',"'.$v['team_level'] .'","'.$v['problem_number'].'"';
-				if ($v['result_file']) {
-					$content .= ',"是"';
-				} else {
-					$content .= ',"否"';
-				}
-
-				if ($seal_num) {
-					$content .= ',"'. (empty($seal_num[$v['team_id']]) ? '' : $seal_num[$v['team_id']]) .'"';
-				}
-				if ($mem) {
-					foreach($showMembers[$v['team_id']] as $mv) {
-						foreach ($mk as $kk) {
-							$content .= ',"'.$mv[$kk].'"';
-						}
-					}
-				}
-				$content.="\r\n";
-			}
-			$fname = $contest['contest_name'];
-			if ($mem) {
-				$fname .= '_团队和队员信息表';
-			} else {
-				$fname .= '_团队信息表';
-			}
-			return $this->exportCsv($fname . '.csv' , $title.$content);
-		} else {
-			return $this->myclass->notice('alert("没有报名团队");');
-		}
 	}
 }

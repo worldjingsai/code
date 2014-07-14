@@ -199,6 +199,14 @@
 <!-- input class="btn btn-primary btn-danger" name="batch_del" type="submit" value="缴费" /-->
 <a class="btn btn-primary"  href="?act=export&<?=$url_query?>">导出全部团队信息</a>
 <a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>
+<?php if (!empty($conf['export_formate'])) {?>
+<?php if (strpos(',', $conf['export_formate']) !== FALSE) {?>
+	<a class="btn btn-primary"  href="?act=export&mem=1&<?=$url_query?>">导出全部团队和队员信息</a>
+<?php } else {?>
+	<a class="btn btn-success"  href="?act=export&formate=<?php echo $conf['export_formate'];?>&mem=1&<?=$url_query?>">按照格式导出数据</a>
+<?php }?>
+<?php }?>
+
 <?php if (!empty($conf['can_down'])) {?>
 <input id="btn_down" class="btn btn-primary btn-info" name="batch_down" type="submit" value="下载全部作品" />
 <?php }?>

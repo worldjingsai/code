@@ -53,46 +53,6 @@ class Base_Controller extends CI_Controller{
         return ;
     }
 
-    /**
-     * 导出CSV格式的数据
-     * @param string $filename
-     * @param string $data
-     */
-    public function exportCsv($filename,$data){
-        $filename = $this->_getDownName($filename);
-        $data = mb_convert_encoding($data, 'GBK', "UTF8");
-        header("Content-type:text/csv");
-        header("Content-Disposition:attachment;filename=".$filename);
-        header('Cache-Control:must-revalidate,post-check=0,pre-check=0');
-        header('Expires:0');
-        header('Pragma:public');
-        echo $data;
-    }
-
-    /**
-     * 获取GB2312编码文字
-     */
-    public function _getDownName($name){
-        $name = strip_tags($name);
-        // google系
-        if(preg_match("/AppleWebKit/i", $_SERVER['HTTP_USER_AGENT'])) {
-            $name = htmlspecialchars($name);
-            // IE系
-        } elseif (preg_match("/MSIE/i", $_SERVER['HTTP_USER_AGENT'])) {
-            $name = urlencode($name);
-            $name = str_replace("+", "%20", $name);
-            // 火狐系不做处理
-        } elseif (preg_match("/FireFox/i", $_SERVER['HTTP_USER_AGENT'])) {
-            // $name = $name;
-
-            // 其他，360兼容模式
-        } else {
-            $name = urlencode($name);
-            $name = str_replace("+", "%20", $name);
-        }
-        return $name;
-    }
-
 }
 
 class SB_Controller extends Base_Controller{
