@@ -43,20 +43,4 @@ class Team_column_m extends SB_Model{
         $this->db->update($this->tb, $data);
         return $this->db->affected_rows();
     }
-
-    /**
-     * 根据contest_id获取竞赛和届数获取列表
-     */
-    public function listByCidAndSession($cid, $session){
-        $this->db->select('*');
-        $this->db->from($this->tb);
-        $this->db->order_by('team_id','asc');
-        $this->db->where('contest_id', $cid)->where('session', $session)->where('status',1);
-        $query = $this->db->get();
-        if($query->num_rows() > 0){
-            return $query->result_array();
-        } else {
-            return false;
-        }
-    }
 }

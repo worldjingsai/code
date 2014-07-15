@@ -242,7 +242,7 @@ class Mycontest extends SB_controller{
 			if (empty($rows)) {
 				return $this->myclass->notice('alert("没有报名信息");');
 			}
-			
+
 			$this->load->helper('excel_helper');
 			if ($formate && function_exists($formate.'_formate') && $formate == $conf['export_formate']) {
 				$function = $formate.'_formate';
@@ -250,7 +250,7 @@ class Mycontest extends SB_controller{
 				$function = 'team_formate';
 			}
 			return $function($conf, $rows, $mem, $contest);
-			
+
 		} else {
 			$tids = $show_rows = $show_field = $members = array();
 			if (!empty($rows)) {
@@ -337,7 +337,7 @@ class Mycontest extends SB_controller{
 			if (empty($rows)) {
 				return $this->myclass->notice('alert("没有报名信息");');
 			}
-			
+
 			$this->load->helper('excel_helper');
 			return team_formate($conf, $rows, $mem, $contest);
 		} else {
@@ -469,7 +469,8 @@ class Mycontest extends SB_controller{
 			if (empty($rows)) {
 				return $this->myclass->notice('alert("没有报名信息");');
 			}
-			
+
+			$this->load->helper('excel_helper');
 			if ($formate && function_exists($formate.'_formate') && $formate == $conf['export_formate']) {
 				$function = $formate.'_formate';
 			} else {
