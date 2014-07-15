@@ -27,7 +27,14 @@
 		<div class="top_logo FL">环球<span class="c_red">竞赛</span>网 <span class="ml_10">world</span><span class="c_red fs_italic">jingsai</span>.com  <span class="ml_10">出国or保研?N多大赛奖项等你拿！</span></div>
 		<div class="FR"><%if $tplData.is_login eq 1 %><a target="_blank" href="/user/info/<%$tplData.user_info.uid%>" class="user_info"><%$tplData.user_info.username%></a><span class="doc">|</span><a href="/settings/index">个人设置</a><span class="doc">|</span><a href="/mycontest/index">我的竞赛</a><span class="doc">|</span><a href="/user/logout">退出</a><%else%><a target="_blank" href="/user/login">登录</a><span class="doc">|</span><a href="/user/reg">注册</a> <%/if%><span class="doc">|</span><a href="/other/help" target="_blank">帮助</a></div>
 	</div>
+
 </div>
+
+	<!--[if lt IE 10]>
+	<div class="info">
+	<div class="ie_notice">您使用了低版本IE浏览器，建议更换浏览器后再报名，否则可能影响正常报名，请点击<a href="/other/help" target="_blank">帮助</a></div>
+	</div>
+	<![endif]--> 
 
 <div class="contest_header">
 	<div class="info">
