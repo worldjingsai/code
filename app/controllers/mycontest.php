@@ -371,7 +371,6 @@ class Mycontest extends SB_controller{
 	 */
 	public function sons_team_list($cid, $page = 1)
 	{
-
 		if (empty($cid)  || !preg_match('/^(\d|_)*$/', $cid)) {
 			$this->myclass->notice('alert("没有选择竞赛");window.location.href="/mycontest/my";');
 			return 0;
@@ -428,7 +427,7 @@ class Mycontest extends SB_controller{
 		$config = $this->pageConfig;
 		$config['per_page'] = $limit;
 		$config['uri_segment'] = 4;
-		$config['base_url'] = site_url('mycontest/my_team_list/' . $cid . '/');
+		$config['base_url'] = site_url('mycontest/sons_team_list/' . $data['current_cid_str'] . '/');
 		$config['url_arguments'] = $gets;
 		$this->load->model('contest_regist_config_m');
 		$this->load->model('team_m');

@@ -42,13 +42,13 @@ class Settings extends SB_Controller {
 			$this->user_m->update_user($uid, $data);
 			$data = $this->user_m->get_user_by_id($uid);
 			//$this->myclass->notice('alert("更新账户成功");history.back();');
-			
+
 		}
 		$data['title'] = '账户设置';
 		$this->load->view('settings_profile', $data);
 
 	}
-	
+
 	public function avatar() {
 		$data['title'] = '头像设置';
 		$uid=$this->session->userdata('uid');
@@ -64,28 +64,38 @@ class Settings extends SB_Controller {
 				$data['msg'] = $this->upload->display_errors();
 			}
 			//header("location:".$_SERVER["PHP_SELF"]);
-			
+
 		}
 		$data['avatars']['big'] = $this->upload_m->get_avatar_url($uid, 'big');
 		$data['avatars']['middle'] = $this->upload_m->get_avatar_url($uid, 'middle');
 		$data['avatars']['small'] = $this->upload_m->get_avatar_url($uid, 'small');
 		$this->load->view('settings_avatar', $data);
 	}
-	
-	public function password() 
+
+	public function password()
 	{
-	    $data = $this->data;
+		$data = $this->data;
 		$data ['title'] = '修改密码';
 		$this->auth->is_login( $this->session->userdata ( 'uid' ), $this->session->userdata ( 'password' ) );
 		if ($_POST) {
 			$password = $this->input->post ('password',true);
-			$newpassword = $this->input->post ('newpassword',true);
-			$data = array ('uid' => $this->session->userdata ( 'uid' ), 'password' => md5 ( $password ), 'newpassword' => md5 ( $newpassword ) );
-			if ($this->user_m->update_pwd ( $data )) {
-				$data ['msg'] = '更新成功';
-				$this->session->set_userdata ( 'password', $data ['newpassword'] );
+			$newpassword = $this->input->post('newpassword',true);
+			$newpassword2 = $this->input->post('newpassword2',true);
+
+			if (md5($password) !== $this->session->userdata ( 'password' )) {
+				$data['msg'] = '原密码不正确，修改失败';
+			} elseif (!preg_match('/^(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?=.*[A-Za-z]).*$/', $newpassword)) {
+				$data['msg'] = '密码至少要包含一个字母和一个数字，修改失败';
+			} elseif ($newpassword != $newpassword2) {
+				$data['msg'] = '新密码和确认密码不一致，修改失败';
 			} else {
-				$data ['msg'] = '修改失败';
+				$data = array('uid' => $this->session->userdata ( 'uid' ), 'password' => md5 ( $password ), 'newpassword' => md5 ( $newpassword ) );
+				if ($this->user_m->update_pwd( $data )) {
+					$data['smsg'] = '更新成功';
+					$this->session->set_userdata ( 'password', $data['newpassword'] );
+				} else {
+					$data['msg'] = '修改失败';
+				}
 			}
 			$this->load->view ( 'settings_password', $data );
 		} else {
@@ -93,5 +103,5 @@ class Settings extends SB_Controller {
 		}
 
 	}
-	
+
 }

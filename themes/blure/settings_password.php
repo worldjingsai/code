@@ -4,6 +4,7 @@
 <meta content='width=device-width, initial-scale=1.0' name='viewport'>
 <title><?php echo $title;?>- <?php echo $settings['site_name'];?></title>
 <?php echo $this->load->view('header-meta');?>
+
 </head>
 <body id="startbbs">
 <?php echo $this->load->view('header');?>
@@ -22,9 +23,13 @@
     </ul>
 </div>
 <span style="color:red" id="error"><?php echo isset($msg)?$msg:''; ?></span>
+<span style="color:green" ><?php echo isset($smsg)?$smsg:''; ?></span>
 <div class='inner'>
-<form accept-charset="UTF-8" action="<?php echo site_url('settings/password');?>" class="simple_form form-horizontal" id="edit_user_313" method="post" novalidate="novalidate"><div style="margin:0;padding:0;display:inline">
-<input name="utf8" type="hidden" value="&#x2713;" /><input name="_method" type="hidden" value="put" /><input name="authenticity_token" type="hidden" value="bFgf4gFtDOwT1iCoDRGI7aqc14eXt1h403ny+0VSrz0=" /></div>
+<form accept-charset="UTF-8" action="<?php echo site_url('settings/password');?>" class="simple_form form-horizontal" id="edit_user_313" method="post" novalidate="novalidate">
+<div style="margin:0;padding:0;display:inline">
+<input name="utf8" type="hidden" value="&#x2713;" />
+<input name="_method" type="hidden" value="put" />
+<input name="authenticity_token" type="hidden" value="bFgf4gFtDOwT1iCoDRGI7aqc14eXt1h403ny+0VSrz0=" /></div>
 <strong class='fade'>如果你不想更改密码，请留空以下输入框。</strong>
 <div class='sep5'></div>
 <div class="form-group">

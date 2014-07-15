@@ -27,7 +27,7 @@
 &nbsp;
 </div>
 </div>
-<a href="/" class="startbbs"><?php echo $settings['site_name']?></a> <span class="chevron">&nbsp;›&nbsp;</span> <?php echo $category['cname'];?>
+<a href="/section/index" class="startbbs"><?php echo $settings['site_name']?></a> <span class="chevron">&nbsp;›&nbsp;</span> <?php echo $category['cname'];?>
 </div>
 <div class='cell'>
 <?php echo $category['content'];?>
