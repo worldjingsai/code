@@ -28,7 +28,7 @@
 <th align='left' class='auto'>竞赛名称</th>
 <th align='right' class='auto'>报名时间</th>
 <th align='right' class='auto'>备注</th>
-<th class='w100'>操作</th>
+<th align='center' class='auto'>操作</th>
 </tr>
 </thead>
 <tbody>
@@ -52,8 +52,9 @@ echo "已交费";
 </td>
 <td>
 <a class="btn btn-primary btn-sm" href="<?php echo site_url('/myenter/team/' . $v['team_id']);?>">详情</a>
-
-<a class="btn btn-primary btn-sm" href="<?php echo site_url('/data/myenter/export_team?team_id='.$v['team_id']);?>">导出参赛队信息</a>
+<a class="btn btn-primary btn-sm" href="<?php echo site_url('/myenter/result/' . $v['team_id']);?>">作品</a>
+<a class="btn btn-primary btn-sm" href="<?php echo site_url('/contest/user_apply/' . $v['contest_id']);?>" target="_blank">编辑</a>
+<a class="btn btn-primary btn-sm" href="<?php echo site_url('/data/myenter/export_team?team_id='.$v['team_id']);?>">导出</a>
 </td>
 <!--  td class='w100'>
 <a href="<?php echo site_url('forum/edit/'.$v['fid']);?>" class="btn btn-primary btn-sm">编辑</a>

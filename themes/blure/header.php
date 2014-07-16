@@ -31,11 +31,11 @@
               </ul>
             </li>-->
            </ul>
-		<form class="form-inline navbar-left" style="margin-top: 8px;" role="search" action="http://www.google.com/search" method="get" target="_blank">
+		<!-- form class="form-inline navbar-left" style="margin-top: 8px;" role="search" action="http://www.google.com/search" method="get" target="_blank">
 		      <div class="form-group" style="width:55%">
 		        <input type="text" class="form-control" name="q" placeholder="输入关键字回车"><input type=hidden name=sitesearch value="<?php echo base_url()?>">
 		      </div>
-		</form>
+		</form-->
           <ul class="nav navbar-nav navbar-right">
 
 	        <?php if($this->session->userdata('uid')){ ?>

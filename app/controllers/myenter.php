@@ -329,76 +329,20 @@ class Myenter extends SB_controller{
         if($conf) {
             $conf['team_column'] = json_decode($conf['team_column'], true);
             $conf['member_column'] = json_decode($conf['member_column'], true);
+            $conf['result_column'] = json_decode($conf['result_column'], true);
         }
 
         $t = $this->team_column_m->get($team_id);
-        $m = $this->member_column_m->list_by_team_id($team_id);
 
-        if(!empty($t) && !empty($m)){
+        if(!empty($data)){
 
-            // 导出团队信息
-            $title = '"队号"';
-            $mk = $sk = array();
-
-            foreach($conf['team_column'] as $k=>$v) {
-                if ($v[2] > 0) {
-                    $sk[$k] = $k;
-                    $title .= ',"'.$v[0].'"';
-                }
-            }
-            if (!empty($conf['fee'])) {
-                $title .= ',"是否缴费"';
-                $title .= ',"是否上传缴费图片"';
-            }
-            $title .= ',"团队组别","团队选题","是否上传作品"';
-
-            // 导出团队信息
-            for($i=1; $i<=$conf['max_member']; $i++) {
-                foreach($conf['member_column'] as $k=>$v) {
-                    if ($v[2] > 0) {
-                        $mk[$k] = $k;
-                        $title .= ',"队员'.$i.$v[0].'"';
-                    }
-                }
-            }
-
-            $title.="\r\n";
-            $content = '';
-            $v = $data;
-            $content .= '"'.$v['team_number'].'"';
-            foreach($sk as $kk) {
-                $content .= ',"'.$t[$kk].'"';
-            }
-            // 是否缴费
-            if (!empty($conf['fee'])) {
-                if ($v['is_fee'] >= 1) {
-                    $content .= ',"是"';
-                } else {
-                    $content .= ',"否"';
-                }
-                if ($v['fee_image']) {
-                    $content .= ',"是"';
-                } else {
-                    $content .= ',"否"';
-                }
-            }
-            $content.= ',"'.$v['team_level'] .'","'.$v['problem_number'].'"';
-            if ($v['result_file']) {
-                $content .= ',"是"';
-            } else {
-                $content .= ',"否"';
-            }
-
-            foreach($m as $mv) {
-                foreach ($mk as $kk) {
-                    $content .= ',"'.$mv[$kk].'"';
-                }
-            }
-
-            $content.="\r\n";
+        	$this->load->helper('excel_helper');
+        	$rows[0] = array_merge($data, $t);
+        	$conf['is_seal'] = 0;
+        	return team_formate($conf, $rows, 1, array('contest_name' => $data['team_number']));
+        } else {
+        	return $this->myclass->notice('alert("没有报名信息！");window.location.href="'.site_url('myenter/enter').'";');
         }
 
-        $fname = '团队信息表' . $team_id;
-        return $this->exportCsv($fname . '.csv' , $title.$content);
     }
 }
