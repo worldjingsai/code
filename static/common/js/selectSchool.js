@@ -95,7 +95,7 @@ $(document).ready(function(){
 	});
 
 	var se = new selectSchool();
-	$("#school_name").on("click",function(){
+	$("#school_name").on("focus",function(){
 		se.pop();
 		$("#js_schoole_select").css("display", "");
 		});

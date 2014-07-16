@@ -40,7 +40,6 @@ class User extends SB_Controller{
     public function reg(){
         //加载form类，为调用错误函数,需view前加载
         $this->load->helper('form');
-        $data['title'] = '注册新用户';
 
         if($this->auth->is_login()){
             $this->myclass->notice('alert("已登录，请退出再注册");window.location.href="'.site_url().'";');
@@ -64,22 +63,25 @@ class User extends SB_Controller{
                 'openid' => strip_tags($this->input->post('openid')),
                 'univs_id' => intval($this->input->post('univs_id')),
                 'email' => $this->input->post('email',true),
-                'tel'   => intval($this->input->post('tel')),
+                'tel'   => floatval($this->input->post('tel')),
                 'ip' => $ip,
                 'group_type' => 2,
                 'gid' => 3,
                 'regtime' => time(),
                 'is_active' => 1
             );
+            if (empty($data['univs_id'])) {
+                $data['univs_name'] = $this->input->post('univs_name',true);
+            }
             $check_reg = $this->user_m->check_reg($data['email']);
             $check_username = $this->user_m->check_username($data['username']);
             //$captcha = $this->input->post('captcha_code');
             if(!empty($check_reg)){
-                $this->myclass->notice('alert("邮箱已注册，请换一个邮箱！");history.back();');
+                $data['msg'] = '邮箱已注册，请换一个邮箱!';
             }elseif(!empty($check_username)){
-                $this->myclass->notice('alert("用户名已存在!!");history.back();');
+                $data['msg'] = '用户名已存在，请更换!!';
             }elseif($this->input->post('password_c')!=$password){
-                $this->myclass->notice('alert("密码输入不一致!!");history.back();');
+                $data['msg'] = '密码输入不一致!!';
            // }elseif($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
              //   $this->myclass->notice('alert("验证码不正确!!");history.back();');
             }else{
@@ -89,14 +91,16 @@ class User extends SB_Controller{
                     //去除session
                     $this->session->unset_userdata('yzm');
                 }
-                header("location: ".$refer);
+                return header("location: ".$refer);
             }
-        }else{
-            $data['register'] = true;
-            $data['referer'] = $refer;
-            $this->tplData = $data;
-            $this->display("user/register.html");
+            $data['univs_name'] = $this->input->post('univs_name',true);
         }
+
+        $data['title'] = '注册新用户';
+        $data['register'] = true;
+        $data['referer'] = $refer;
+        $this->tplData = $data;
+        $this->display("user/register.html");
     }
 
     public function login (){
@@ -115,10 +119,14 @@ class User extends SB_Controller{
             $password = $this->input->post('password',true);
 
             $user = $this->user_m->check_login($username, $password);
+            if (empty($user)) {
+                $user = $this->user_m->check_email_login($username, $password);
+            }
 
+            $data['username'] = $username;
             $captcha = $this->input->post('captcha_code');
             if($this->config->item('show_captcha')=='on' && $this->session->userdata('yzm')!=$captcha) {
-                $this->myclass->notice('alert("验证码不正确!!");history.go(-1);');
+                $data['lmsg'] = '验证码不正确!';
             }elseif($user && count($user)){
                 //更新session
                 $this->session->set_userdata(array ('uid' => $user['uid'], 'username' => $user['username'], 'password' =>$user['password'], 'group_type' => $user['group_type'], 'gid' => $user['gid']) );
@@ -129,18 +137,15 @@ class User extends SB_Controller{
                 if($openid){
                     $this->user_m->update_user($user['uid'], array('openid'=>$openid));
                 }
-                header("location: ".$data['referer']);
-                //redirect($data['referer']);
-                exit;
+                return header("location: ".$data['referer']);
             }else{
-
-                $this->myclass->notice('alert("用户名或密码错误!!");history.back();');
+                $data['lmsg'] = '用户名或密码错误!';
             }
-        }else{
-            $data['login'] = true;
-            $this->tplData = $data;
-            $this->display("user/register.html");
         }
+        $data['login'] = true;
+        $this->tplData = $data;
+        $this->display("user/register.html");
+
     }
 
 

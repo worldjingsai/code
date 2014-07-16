@@ -19,6 +19,13 @@ class User_m extends SB_Model{
         $query = $this->db->get_where('users',array('username'=>$username));
         return $query->row_array();
     }
+
+    /**
+     * 用用户名登录
+     * @param unknown $username
+     * @param unknown $password
+     * @return boolean|unknown
+     */
     function check_login($username,$password){
         $query = $this->check_username($username);
         if (empty($query)) {
@@ -32,6 +39,27 @@ class User_m extends SB_Model{
             return false;
         }
     }
+
+    /**
+     * 有email来登录
+     * @param unknown $email
+     * @param unknown $password
+     * @return boolean|unknown
+     */
+    function check_email_login($email, $password){
+    	$query = $this->check_reg($email);
+    	if (empty($query)) {
+    		return false;
+    	}
+    	$password = md5($password);
+    	if($query['password']==$password){
+    		$this->db->where('uid', @$query['uid'])->update('users',array('lastlogin'=>time()));
+    		return $query;
+    	}else{
+    		return false;
+    	}
+    }
+
     public function get_user_by_id($uid){
         $query = $this->db->get_where('users', array('uid'=>$uid));
         return $query->row_array();

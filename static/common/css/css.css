@@ -536,6 +536,7 @@ font-weight: bold;
 
 .register .button{float:left; margin-top:3px; width:100%; text-align:center;}
 .register .btn{width:100%;}
+.warning{color:#ff0000; font-size:18px; margin-top:10px;}
 
 .movie_out {
 	margin-top:-3px;

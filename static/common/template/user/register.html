@@ -11,37 +11,37 @@
 	<input type="hidden" name="referer" value="<%$tplData.referer|default:''%>"/>
 	<div class="input-group ">
         <label for="username" class="input-group-addon w_60">用户名</label>
-        <input type="text" class="form-control" id="username" name="username" maxlength="20">
+        <input type="text" class="form-control" id="username" name="username" maxlength="20" value="<%$tplData.username|default:''%>">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="email"  class="input-group-addon w_60">邮箱</label>
-        <input type="text" class="form-control" id="email" name="email" maxlength="50">
+        <input type="text" class="form-control" id="email" name="email" maxlength="50" value="<%$tplData.email|default:''%>">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="password"  class="input-group-addon w_60">密码</label>
-        <input type="password" class="form-control" id="password" name="password" maxlength="20">
+        <input type="password" class="form-control" id="password" name="password" maxlength="20" value="">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="password_c" class="input-group-addon w_60">确认密码</label>
-        <input type="password" class="form-control" id="password_c" name="password_c" maxlength="20">
+        <input type="password" class="form-control" id="password_c" name="password_c" maxlength="20" value="">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="school_name" class="input-group-addon w_60">学校</label>
-        <input type="text" class="form-control" id="school_name" name="univs_id">
-        <input type="hidden" value="" id="univs_id" name="univs_id"></input>
+        <input type="text" class="form-control" id="school_name" name="univs_name" value="<%$tplData.univs_name|default:''%>">
+        <input type="hidden" value="<%$tplData.univs_id|default:''%>" id="univs_id" name="univs_id"></input>
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
         <label for="tel" class="input-group-addon w_60">手机</label>
-        <input type="text" class="form-control" id="tel" name="tel" maxlength="11">
+        <input type="text" class="form-control" id="tel" name="tel" maxlength="11" value="<%$tplData.tel|default:''%>">
     </div>
     <div class="DivH10"></div>
 	<div class="tc"><button type="submit" class="btn btn-large btn-info w_200">立即注册</button></div>
-	
+	<div class="tc warning"><%$tplData.msg|default:''%></div>
 	</form>
     </div>
 	
@@ -50,8 +50,8 @@
 	<form action="/user/login" method="post" id="login_form">
 	<input type="hidden" name="referer" value="<%$tplData.referer|default:''%>"/>
 	<div class="input-group ">
-        <label class="input-group-addon w_60" for="login_username">用户名</label>
-        <input type="text" id="login_username" class="form-control" name="username" value="">
+        <label class="input-group-addon w_60" for="login_username">用户名或邮箱</label>
+        <input type="text" id="login_username" class="form-control" name="username" value="<%$tplData.username|default:''%>">
     </div>
     <div class="DivH10"></div>
     <div class="input-group ">
@@ -67,6 +67,7 @@
     <span class="captcha_table fr"> <a href="javascript:reloadcode();" title="更换一张验证码图片"><img src="/captcha_code/index" name="checkCodeImg" id="checkCodeImg" border="0" /></a> <a href="javascript:reloadcode();">换一张</a></span>
     <div class="DivH10"></div>
 	<div class="tc"><button type="submit" class="btn btn-large btn-info w_200">立即登录</button>
+	<div class="tc warning"><%$tplData.lmsg|default:''%></div>
 	<a href="/user/findpwd">忘记密码</a>
 	</div>
 	
